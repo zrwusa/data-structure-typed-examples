@@ -8,14 +8,22 @@ import {
     countSmallerCase1,
     deleteLeaves,
     deleteLeavesCase1,
-    DFS, ladderLengthCase1, ladderLengthDFS, pathSumIII, pathSumIIICase5, runAllLongestCommonPrefix, runTestTrie,
+    DFS,
+    ladderLengthCase1,
+    ladderLengthDFS,
+    pathSumIII,
+    pathSumIIICase5,
+    runAllLongestCommonPrefix,
+    runTestTrie,
     showBinaryTree,
     testAVLTree,
     testBinaryTree,
     testBinaryTreeCase2,
     testBST,
     testBST2,
-    testBSTCase1, testSymmetricTree, testSymmetricTreeCase2,
+    testBSTCase1,
+    testSymmetricTree,
+    testSymmetricTreeCase2,
     treeData,
     treeMaxDepth,
     trimABST,
@@ -63,7 +71,8 @@ export const TreeScreen = () => {
         <AlgorithmPanel algorithm={testBinaryTree} testCase={testBinaryTreeCase2} buttonLabel={'Test BinaryTree'}/>
 
         <AlgorithmPanel algorithm={showBinaryTree} testCase={[binaryTreeData ? JSON.parse(binaryTreeData) : []]}
-                        buttonLabel={'Show BinaryTree'}><TextField fullWidth label="Array of Node Values" value={binaryTreeDataInput}
+                        buttonLabel={'Show BinaryTree'}><TextField fullWidth label="Array of Node Values"
+                                                                   value={binaryTreeDataInput}
                                                                    onChange={(e) => {
                                                                        setBinaryTreeDataInput(e.target.value);
                                                                    }}/></AlgorithmPanel>

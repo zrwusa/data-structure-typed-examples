@@ -10,7 +10,6 @@ import {
     Direction,
     fourthQuadrantMove,
     fourthQuadrantMoveByIndex,
-    getRouteByParentsHash,
     isOneDiffOrdered,
     isOneDiffOrderedPieced,
     MatrixCell,
@@ -18,13 +17,6 @@ import {
 } from '../helpers';
 import {
     combinationCase2,
-    cutOffTreeCase1,
-    cutOffTreeCase2,
-    cutOffTreeCase3,
-    cutOffTreeCase4,
-    cutOffTreeCase5,
-    cutOffTreeCase6,
-    cutOffTreeCase7,
     ladderLengthCase1,
     ladderLengthCase2,
     ladderLengthCase3,
@@ -661,8 +653,6 @@ export const runAllUpdateMatrix = async () => {
     await runAlgorithm(updateMatrixByIndex, false, updateMatrixCase4);
 };
 // runAllUpdateMatrix().then()
-
-
 
 
 // 698	Partition to K Equal Sum Subsets	★★★	93	131	241	282	842			Partition

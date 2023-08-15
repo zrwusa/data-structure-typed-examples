@@ -3,10 +3,11 @@ import React from 'react';
 import Button from '@mui/material/Button';
 import FCCard from '../../../components/demos/fc-card';
 import CCClock from '../../../components/demos/cc-clock';
-import {ApiRequest} from '../../../components';
-import {Panel} from '../../../components';
+import {ApiRequest, Panel} from '../../../components';
 
-export interface DemoHomeProps{ title?: string; }
+export interface DemoHomeProps {
+    title?: string;
+}
 
 const DemoHome: React.FC<DemoHomeProps> = () => {
 

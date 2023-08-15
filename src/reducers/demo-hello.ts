@@ -1,4 +1,4 @@
-import type {DemoHelloState, DemoHelloActions} from '../types';
+import type {DemoHelloActions, DemoHelloState} from '../types';
 import {EDemoHelloAction} from '../constants';
 
 const initialState: DemoHelloState = {

@@ -57,7 +57,6 @@ function partition(s: string): string[][] {
 // 312. Burst Balloons
 
 
-
 // 139. Word Break
 // time complexity is O(2*wordDict.length^validWord)
 function wordBreakBruteForce(s: string, wordDict: string[]): boolean {

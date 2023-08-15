@@ -14,7 +14,6 @@ import {
 } from 'data-structure-typed';
 import {Coordinate, getDirectionVector} from '../../algorithms';
 import {uuidV4} from '../../utils';
-import {useEffect, useState} from 'react';
 
 export interface VividAlgorithmProps {
     data?: { [key in string]: any },
@@ -27,7 +26,15 @@ export interface VividAlgorithmProps {
 }
 
 export const VividAlgorithm = function (props: VividAlgorithmProps) {
-    const {data, referenceData, relatedNodeKey, relatedRouteKey, svgHeight = 300, svgWidth = '100%', isDebug = false} = props;
+    const {
+        data,
+        referenceData,
+        relatedNodeKey,
+        relatedRouteKey,
+        svgHeight = 300,
+        svgWidth = '100%',
+        isDebug = false
+    } = props;
     const _handleEdgeClick = (edge: AbstractEdge) => {
         console.log(edge);
     }
@@ -54,7 +61,6 @@ export const VividAlgorithm = function (props: VividAlgorithmProps) {
     const arrowCut = 0.3;
 
     const treePanelWidth = 700;
-
 
 
     const lineStrokeWidth = 1;
@@ -195,7 +201,7 @@ export const VividAlgorithm = function (props: VividAlgorithmProps) {
 
     const VividBinaryTree: React.FC<{ node: BinaryTreeNode<any> | null, maxHeight?: number }> = ({node, maxHeight}) => {
         return (
-            <svg  width={svgWidth} height={svgHeight}>
+            <svg width={svgWidth} height={svgHeight}>
                 {node
                     ? <VividBinaryTreeRecursive node={node} level={1} index={0} familyLength={1}
                                                 maxHeight={maxHeight}/>
@@ -207,7 +213,7 @@ export const VividAlgorithm = function (props: VividAlgorithmProps) {
     };
 
     const VividGraph: React.FC<{ data: AbstractGraph<AbstractVertex, AbstractEdge> }> = ({data}) => {
-        return (<svg  width={svgWidth} height={svgHeight}>
+        return (<svg width={svgWidth} height={svgHeight}>
                 {
                     data
                         ? <VividGraphIllustrator graph={data}/>
@@ -228,7 +234,7 @@ export const VividAlgorithm = function (props: VividAlgorithmProps) {
         const matrixHeight = rectSize * rowCount;
 
         return (
-            <svg  width={svgWidth} height={svgHeight}>
+            <svg width={svgWidth} height={svgHeight}>
                 <g>
                     {data.map((row, i) => {
                         return row.map((col, j) => {

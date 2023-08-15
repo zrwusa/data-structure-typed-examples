@@ -3,23 +3,25 @@ import type {AxiosError, AxiosRequestConfig} from 'axios';
 import type {
     DemoHelloAction1Payload,
     DemoHelloAction2Payload,
-    DemoThunkSuccessPayload, LoginSuccessPayload,
+    DemoThunkSuccessPayload,
+    LoginSuccessPayload,
     LogoutPayload
 } from '../stores/payloads';
-import {ESystemAction, EDemoHelloAction, EDemoThunkAction, EUser} from '../../constants';
+import {EDemoHelloAction, EDemoThunkAction, ESystemAction, EUser} from '../../constants';
 
 export interface BunnyRequestAction extends AnyAction {
     type: ESystemAction.REQUEST;
     payload: AxiosRequestConfig;
 }
-export interface BunnyRequestFailedAction  extends AnyAction {
+
+export interface BunnyRequestFailedAction extends AnyAction {
     type: ESystemAction.REQUEST_FAILED;
     payload: AxiosError;
 }
 
 export type SystemActions = BunnyRequestAction | BunnyRequestFailedAction;
 
-export interface DemoThunkSuccessAction  extends AnyAction {
+export interface DemoThunkSuccessAction extends AnyAction {
     type: EDemoThunkAction.DEMO_THUNK_SUCCESS;
     payload: DemoThunkSuccessPayload;
 }

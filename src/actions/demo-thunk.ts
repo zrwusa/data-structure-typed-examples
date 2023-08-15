@@ -1,6 +1,6 @@
 import {AxiosError} from 'axios';
 import api from '../helpers/api';
-import type {ThunkResult, DemoThunkReqPayload, DemoThunkSuccessAction, DemoThunkSuccessPayload} from '../types';
+import type {DemoThunkReqPayload, DemoThunkSuccessAction, DemoThunkSuccessPayload, ThunkResult} from '../types';
 import {EDemoThunkAction} from '../constants';
 import {bunnyRequestAction, bunnyRequestFailedAction} from './system';
 

@@ -2,13 +2,13 @@ import api from '../helpers/api';
 import type {AxiosError, AxiosResponse} from 'axios';
 import type {
     BunnyProtocol,
-    ThunkResult,
     LoginFailedAction,
     LoginSuccessAction,
     LoginSuccessPayload,
     LogoutAction,
     LogoutPayload,
-    ReqLoginPayload
+    ReqLoginPayload,
+    ThunkResult
 } from '../types';
 import {EUser} from '../constants';
 import {bunnyRequestAction} from './system';

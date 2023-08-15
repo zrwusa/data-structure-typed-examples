@@ -3,8 +3,14 @@ import api from '../../../helpers/api';
 import {AxiosResponse} from 'axios';
 import type {BunnyProtocol, DemoPost} from '../../../types';
 
-interface RequestProps { title: string, }
-interface RequestStates { name: string, posts: Array<DemoPost>, }
+interface RequestProps {
+    title: string,
+}
+
+interface RequestStates {
+    name: string,
+    posts: Array<DemoPost>,
+}
 
 export class ApiRequest extends Component<RequestProps, RequestStates> {
     constructor(props: RequestProps) {

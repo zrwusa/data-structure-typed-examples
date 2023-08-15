@@ -1,7 +1,7 @@
 import {AxiosError, AxiosRequestConfig} from 'axios';
 import type {BunnyRequestAction} from '../types';
-import {ESystemAction} from '../constants';
 import {BunnyRequestFailedAction} from '../types';
+import {ESystemAction} from '../constants';
 
 export const bunnyRequestAction: (payload: AxiosRequestConfig) => BunnyRequestAction = (payload) => {
     return {

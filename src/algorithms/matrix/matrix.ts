@@ -5,7 +5,8 @@ import {
     fourthQuadrantMove,
     fourthQuadrantMoveByIndex,
     getRouteByParentsHash,
-    MatrixCell, runAlgorithm
+    MatrixCell,
+    runAlgorithm
 } from '../helpers';
 import {wait, WaitManager} from '../../utils';
 import {
@@ -14,7 +15,8 @@ import {
     cutOffTreeCase3,
     cutOffTreeCase4,
     cutOffTreeCase5,
-    cutOffTreeCase6, cutOffTreeCase7
+    cutOffTreeCase6,
+    cutOffTreeCase7
 } from '../tree';
 
 export const matrixUnique = (arr: number[][]) => {

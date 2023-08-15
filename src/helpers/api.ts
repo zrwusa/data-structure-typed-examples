@@ -1,5 +1,4 @@
 import axios from 'axios';
-import store from '../stores/root';
 
 const isDevServerProxy = false;
 

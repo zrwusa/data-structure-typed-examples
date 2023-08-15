@@ -1,4 +1,4 @@
-import type {DemoThunkState, DemoThunkActions} from '../types';
+import type {DemoThunkActions, DemoThunkState} from '../types';
 import {EDemoThunkAction} from '../constants';
 
 const initialState: DemoThunkState = {

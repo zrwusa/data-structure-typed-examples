@@ -14,7 +14,8 @@ export const Header: React.FC<HeaderProps> = (props) => {
             <img src={logo} alt="data-structure-typed logo"/>
         </Link>
         {children}
-        <Link href="https://github.com/zrwusa/data-structure-typed" target="_blank" rel="noopener" underline="hover" color="inherit">
+        <Link href="https://github.com/zrwusa/data-structure-typed" target="_blank" rel="noopener" underline="hover"
+              color="inherit">
             <Typography variant="h6" gutterBottom>
                 Try data-structure-typed
             </Typography>

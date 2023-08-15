@@ -8,15 +8,14 @@ import {Route, Routes} from 'react-router';
 // When deploying the catch-all must be configured,/* to index.html,
 // In this case we use the http-server,just config "?" as catch-all config at the end of the starting script E.g. http-server -P http://localhost:8080? ./build/
 // More details visit link https://stackoverflow.com/a/36623117/14710617
-import Home from './pages/home';
 import DemoHome from './pages/demos/demo-home';
 import DemoRoute from './pages/demos/demo-route';
 import Login from './pages/login/Login';
 import DemoThunkCC from './pages/demos/demo-thunk-cc';
 import {
-    UncategorizedScreen,
     DfsCombinationPermutationScreen,
     DpScreen,
+    GraphScreen,
     HashScreen,
     HeapPriorityQueueScreen,
     LinkedListScreen,
@@ -24,9 +23,10 @@ import {
     QueueDequeScreen,
     SlidingWindowScreen,
     StackScreen,
-    TwoPointersScreen
+    TreeScreen,
+    TwoPointersScreen,
+    UncategorizedScreen
 } from './pages/algorithm';
-import {TreeScreen, GraphScreen} from './pages/algorithm';
 import {ChatPage} from './pages/chat/Chat';
 import DemoThunkFC from './pages/demos/demo-thunk-fc';
 
@@ -38,10 +38,9 @@ interface IProps {
 const App: React.FunctionComponent<IProps> = () => {
     const flexboxLayout = true;
     const Content = <Routes>
-        <Route path="/" element={<Home/>}/>
+        <Route path="/" element={<TreeScreen/>}/>
         <Route path="/demo-home" element={<DemoHome/>}/>
         <Route path="/demo-route-cate/:id" element={<DemoRoute/>}/>
-        {/*<Route path="/demo-fc-redux-hook" element={<DemoFCReduxHook />}/>*/}
         <Route path="/login" element={<Login/>}/>
         <Route path="/demo-thunk-cc" element={<DemoThunkCC/>}/>
         <Route path="/demo-thunk-fc" element={<DemoThunkFC/>}/>
@@ -59,7 +58,6 @@ const App: React.FunctionComponent<IProps> = () => {
         <Route path="/algorithm/two-pointers" element={<TwoPointersScreen/>}/>
         <Route path="/algorithm/uncategorized" element={<UncategorizedScreen/>}/>
         <Route path="/chat" element={<ChatPage/>}/>
-        {/*<Route path="/demo-redirect" element={<Protected><DemoRedirect/></Protected>} />*/}
     </Routes>;
 
     return (

@@ -1,6 +1,7 @@
-import type {UserState, UserActions} from '../types';
+import type {UserActions, UserState} from '../types';
 import {EUser} from '../constants';
- const initialState: UserState = {
+
+const initialState: UserState = {
     user: {email: '', access_token: '', nickname: ''},
     isValid: false,
     fetching: false,

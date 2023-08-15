@@ -1,5 +1,5 @@
 import './ChatSession.scss';
-import React, {useEffect, useState, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {uuidV4} from '../../utils/utils';
 
 export interface ChatSessionProps {

@@ -1,5 +1,5 @@
 import {runAlgorithm} from '../helpers';
-import {canPartitionCase3, minCostTicketsCase1, numDistinctCase3} from './cases';
+import {minCostTicketsCase1, numDistinctCase3} from './cases';
 import {TProxyHandler} from '@qiwi/deep-proxy';
 import {WaitManager} from '../../utils/utils';
 
@@ -87,8 +87,6 @@ export function minDistance(word1: string, word2: string): number {
 
     return dp[0][0];
 }
-
-
 
 
 // 474

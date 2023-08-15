@@ -1,2 +1,2 @@
-export  * from './thunk';
+export * from './thunk';
 export * from './payloads';

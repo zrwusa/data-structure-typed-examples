@@ -96,7 +96,7 @@ function configFactory(): Configuration {
         resolve: {
             modules: ['node_modules', 'react'],
             extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
-            alias: {'data-structure-typed': path.resolve(__dirname, 'src/packages/data-structures')}
+            // alias: {'data-structure-typed': path.resolve(__dirname, 'src/packages/data-structures')}
         },
         output: {
             path: path.resolve(__dirname, buildPath),
@@ -130,7 +130,7 @@ function configFactory(): Configuration {
             isDev && new ReactRefreshPlugin(),
             isProd ? new CleanWebpackPlugin() : Function(),
             new HtmlWebpackPlugin({
-                title: 'React-Bunny',
+                title: 'data-structure-typed examples',
                 filename: 'index.html',
                 template: './src/index.html',
                 favicon: './src/assets/favicon.ico'

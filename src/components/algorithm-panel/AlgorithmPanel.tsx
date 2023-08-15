@@ -42,7 +42,7 @@ export const AlgorithmPanel: React.FC<AlgorithmPanelProps> = ({
     const [svgHeight, setSvgHeight] = useState<string | number>(480);
 
     return (
-        <Paper elevation={3}
+        <Paper
             sx={{
                 mb: 2,
                 p: 2,
