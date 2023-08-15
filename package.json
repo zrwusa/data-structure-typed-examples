@@ -1,6 +1,6 @@
 {
   "name": "data-structure-typed-examples",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "main": "index.tsx",
   "license": "MIT",
   "scripts": {
