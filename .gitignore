@@ -1,0 +1,13 @@
+.idea/
+node_modules/
+
+build/
+dist/
+public/
+.DS_Store
+
+tsconfig.tsbuildinfo
+yarn-error.log
+
+src/learnings
+notes/
