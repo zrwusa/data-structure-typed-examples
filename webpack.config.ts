@@ -132,7 +132,8 @@ function configFactory(): Configuration {
             new HtmlWebpackPlugin({
                 title: 'React-Bunny',
                 filename: 'index.html',
-                template: './src/index.html'
+                template: './src/index.html',
+                favicon: './src/assets/favicon.ico'
             }),
             new MiniCssExtractPlugin({
                 // Options similar to the same options in webpackOptions.output both options are optional

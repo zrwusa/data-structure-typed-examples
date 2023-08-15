@@ -1,12 +1,12 @@
 {
   "name": "data-structure-typed-examples",
-  "version": "0.6.16",
+  "version": "1.0.2",
   "main": "index.tsx",
   "license": "MIT",
   "scripts": {
     "dev": "cross-env NODE_ENV=development DEV_PORT=3000 DEV_API_PORT=8080 webpack serve",
+    "dev:serve": "http-server -P http://localhost:8080? ./public/",
     "build": "cross-env NODE_ENV=production webpack",
-    "serve": "http-server -P http://localhost:8080? ./public/",
     "lint": "eslint --ext .ts,.tsx src/",
     "lint:style": "stylelint 'src/**/*.{scss,sass,css}'"
   },
