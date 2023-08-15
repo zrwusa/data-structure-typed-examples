@@ -1,6 +1,13 @@
 # data-structure-typed-examples
 
-## Installation
+## Review the online examples first, and then proceed to use data-structure-typed package.
+
+[online examples](https://data-structure-typed-examples.vercel.app)
+
+[install & use the package](https://github.com/zrwusa/data-structure-typed)
+
+
+## Installation of Example also provided
 
 For development
 
