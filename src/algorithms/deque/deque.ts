@@ -47,7 +47,7 @@ export function maxSlidingWindowObjectDeque(nums: number[], k: number): number[]
 
     for (let i = 1; i < nums.length; i++) {
         if (i - deque.get(0)![1] >= k) deque.pollFirst();
-        while (deque.size() !== 0 && nums[i] >= deque.get(deque.size() - 1)![0]) deque.pollLast();
+        while (deque.size !== 0 && nums[i] >= deque.get(deque.size - 1)![0]) deque.pollLast();
         deque.addLast([nums[i], i]);
         if (i >= k - 1) ans.push(deque.get(0)![0]);
     }

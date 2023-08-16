@@ -48,10 +48,10 @@ export const runAllFindKthLargest = async () => {
 //23. Merge k Sorted Lists
 function mergeKLists(lists: SinglyLinkedListNode[]): SinglyLinkedListNode | null {
     // TODO dev tools was disconnected issue
-    const heap = new PriorityQueue<SinglyLinkedListNode>({nodes: [], comparator: (a, b) => a.value - b.value});
+    const heap = new PriorityQueue<SinglyLinkedListNode>({nodes: [], comparator: (a, b) => a.val - b.val});
     for (const l of lists) {
         if (l) {
-            heap.add(l.value);
+            heap.add(l.val);
         }
     }
     if (heap.size < 1) {
@@ -75,7 +75,7 @@ function mergeKLists(lists: SinglyLinkedListNode[]): SinglyLinkedListNode | null
                 prev.next = cur;
                 prev = prev.next;
                 if (cur.next) {
-                    heap.add(cur.next.value);
+                    heap.add(cur.next.val);
                 }
             }
         }

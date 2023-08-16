@@ -203,7 +203,7 @@ export function findMode(root: BSTNode<number> | null): number[] {
 export async function trimABST(data: Array<number | null>, low: number, high: number, proxyHandler?: TProxyHandler): Promise<BSTNode<number | null> | null> {
     const clonedData = [...data];
     const proxy: { tree: BST<number | null> } = new DeepProxy({
-        tree: new BST({comparator: (a, b) => a - b})
+        tree: new BST<number | null>({comparator: (a, b) => a - b})
     }, proxyHandler);
     proxy.tree.fill(clonedData);
 

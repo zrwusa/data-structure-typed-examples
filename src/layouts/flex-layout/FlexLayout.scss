@@ -13,7 +13,6 @@
     display: flex;
     justify-items: center;
     justify-content: space-between;
-    border-bottom: $border-thin-gray;
   }
 
   &__content-wrap {
@@ -21,7 +20,6 @@
     //min-height: calc(100vh - #{$header-height} - #{$panel-gap *2});
     display: flex;
     flex: 1;
-    gap: $panel-gap;
   }
 
   &__content {
@@ -31,12 +29,10 @@
 
   &__nav {
     width: 280px;
-    border-right: $border-thin-gray;
   }
 
   &__footer {
     height: $footer-height;
-    //border: $border-thin-gray;
   }
 
   &__title--des {

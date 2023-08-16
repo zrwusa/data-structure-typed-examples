@@ -41,30 +41,9 @@ class MyGraph<V extends MyVertex, E extends MyEdge> extends DirectedGraph<V, E> 
     }
 }
 
-const waitMan = new WaitManager(5);
+const waitMan = new WaitManager(10);
 
 export const testGraphs = async (proxyHandler: TProxyHandler) => {
-
-    // const directedGraph = new DirectedGraph();
-    // console.log('directedGraph.addVertex(1)', directedGraph.addVertex(new DirectedVertex(1)));
-    // console.log('directedGraph.addVertex(2)', directedGraph.addVertex(new DirectedVertex(2)));
-    // console.log('directedGraph.addEdge(1, 2)', directedGraph.addEdge(new DirectedEdge(1, 2)));
-    // console.log('directedGraph.getAllEdges(1, 2)', directedGraph.getAllEdges(1, 2));
-    // console.log('directedGraph.getAllEdges(directedGraph.getVertex(1), directedGraph.getVertex(2))`, directedGraph.getAllEdges(directedGraph.getVertex(1), directedGraph.getVertex(2)));
-    // console.log('directedGraph.getAllEdges(1,'100')', directedGraph.getAllEdges(1, '100'));
-    // console.log('directedGraph.removeEdgeBetween(1,2)', directedGraph.removeEdgeBetween(1, 2));
-    // console.log('directedGraph.getAllEdges(1, 2)', directedGraph.getAllEdges(1, 2));
-
-    // const graph = new UndirectedGraph();
-    // console.log('graph.addVertex(1)', graph.addVertex(new UndirectedVertex(1)));
-    // console.log('graph.addVertex(2)', graph.addVertex(new UndirectedVertex(2)));
-    // console.log('graph.addEdge(1, 2)', graph.addEdge(new UndirectedEdge(1, 2, 100)));
-    // console.log('graph.getAllEdges(1, 2)', graph.getAllEdges(1, 2));
-    // console.log('graph.getAllEdges(graph.getVertex(1), graph.getVertex(2))`, graph.getAllEdges(graph.getVertex(1), graph.getVertex(2)));
-    // console.log('graph.getAllEdges(1,'100')', graph.getAllEdges(1, '100'));
-    // console.log('graph.removeEdgeBetween(1,2)', graph.removeEdgeBetween(1, 2));
-    // console.log('graph.getAllEdges(1, 2)', graph.getAllEdges(1, 2));
-
 
     const vars: { myGraph: DirectedGraph<MyVertex, MyEdge> } = new DeepProxy({myGraph: new DirectedGraph<MyVertex, MyEdge>()}, proxyHandler);
     await wait(waitMan.time3);
@@ -85,7 +64,6 @@ export const testGraphs = async (proxyHandler: TProxyHandler) => {
     console.log(`vars.myGraph.addVertex(new MyVertex(8, 'data8'))`, vars.myGraph.addVertex(new MyVertex(8, 'data8')));
     await wait(waitMan.time3);
     console.log(`vars.myGraph.addVertex(new MyVertex(9, 'data9'))`, vars.myGraph.addVertex(new MyVertex(9, 'data9')));
-    // console.log(JSON.stringify(vars.myGraph.edgeSet()), vars.myGraph.vertexSet());
     await wait(waitMan.time3);
     console.log(`vars.myGraph.addEdge(new MyEdge(1, 2, 10, 'edge-data1-2'))`, vars.myGraph.addEdge(new MyEdge(1, 2, 10, 'edge-data1-2')));
     await wait(waitMan.time3);
@@ -103,8 +81,6 @@ export const testGraphs = async (proxyHandler: TProxyHandler) => {
     await wait(waitMan.time3);
     console.log(`vars.myGraph.getEdge(1, 2)`, vars.myGraph.getEdge(1, 2));
 
-    // console.log(JSON.stringify(vars.myGraph.edgeSet()), vars.myGraph.vertexSet());
-
     await wait(waitMan.time3);
     console.log(`vars.myGraph.addEdge(new MyEdge(3, 1, 3, 'edge-data-3-1'))`, vars.myGraph.addEdge(new MyEdge(3, 1, 3, 'edge-data-3-1')));
 
@@ -112,9 +88,6 @@ export const testGraphs = async (proxyHandler: TProxyHandler) => {
     console.log(`vars.myGraph.addEdge(new MyEdge(1, 9, 19, 'edge-data1-9'))`, vars.myGraph.addEdge(new MyEdge(1, 9, 19, 'edge-data1-9')));
     await wait(waitMan.time3);
     console.log(`vars.myGraph.addEdge(new MyEdge(9, 7, 97, 'edge-data9-7'))`, vars.myGraph.addEdge(new MyEdge(9, 7, 97, 'edge-data9-7')));
-
-    // await wait(waitMan.time3);
-    // console.log(`vars.myGraph.addEdge(new MyEdge(7, 1, 71, 'edge-data7-1'))`, vars.myGraph.addEdge(new MyEdge(7, 1, 71, 'edge-data7-1')));
 
     await wait(waitMan.time3);
     console.log(`vars.myGraph.addEdge(new MyEdge(7, 9, 79, 'edge-data7-9'))`, vars.myGraph.addEdge(new MyEdge(7, 9, 79, 'edge-data7-9')));
@@ -164,10 +137,6 @@ export const testGraphs = async (proxyHandler: TProxyHandler) => {
 
     await wait(waitMan.time3);
     console.log(vars.myGraph.dijkstraWithoutHeap(1, null, true, true));
-    // const myGraphEdge3to1 = vars.myGraph.getEdge(3, 1);
-    //
-    // console.log(`vars.myGraph.getAllEdges(3, 1)', vars.myGraph.getAllEdges(3, 1));
-    // myGraphEdge3to1 && console.log(`vars.myGraph.removeEdge(myGraphEdge3to1)', vars.myGraph.removeEdge(myGraphEdge3to1));
 };
 
 
@@ -320,7 +289,7 @@ export async function networkDelayTime(times: number[][], n: number, k: number, 
         graph.addEdge(new DirectedEdge(u, v, w));
     }
 
-    if (!graph.containsVertex(n)) {
+    if (!graph.hasVertex(n)) {
         return -1;
     }
 

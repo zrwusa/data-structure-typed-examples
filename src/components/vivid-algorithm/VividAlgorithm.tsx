@@ -14,6 +14,7 @@ import {
 } from 'data-structure-typed';
 import {Coordinate, getDirectionVector} from '../../algorithms';
 import {uuidV4} from '../../utils';
+import {UIEvent, useRef, useState} from 'react';
 
 export interface VividAlgorithmProps {
     data?: { [key in string]: any },
@@ -612,7 +613,7 @@ export const VividAlgorithm = function (props: VividAlgorithmProps) {
             <div>
                 <div key={data.index || -1}>
                     <span>{data.index}</span>
-                    <span>{data.value}</span>
+                    <span>{data.val}</span>
                 </div>
             </div>
         );
