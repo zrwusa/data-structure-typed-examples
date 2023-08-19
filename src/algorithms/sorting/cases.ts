@@ -1,7 +1,5 @@
-export {}
-
-export const sortCase3: number[] = [];
-for (let i = 0; i < 100000; i++) sortCase3.push(Math.floor(Math.random() * i));
+import {getRandomInt} from '../../utils';
+export const sortCase3: number[] = Array.from(new Array(10000), () => getRandomInt(1, 10000));
 
 export const sortCase4: number[] = [];
 for (let i = 0; i < 100000; i++) sortCase4.push(Math.floor(Math.random() * i));

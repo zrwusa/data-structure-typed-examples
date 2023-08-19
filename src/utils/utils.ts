@@ -543,3 +543,7 @@ export function zip<T = number, T1 = number>(array1: T[], array2: T1[], options?
     }
     return isToObj ? zippedObjCoords : zipped;
 }
+
+export function getRandomInt(min: number, max: number) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}

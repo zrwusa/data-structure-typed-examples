@@ -26,14 +26,14 @@ export function maxSlidingWindow(nums: number[], k: number): number[] {
 export function maxSlidingWindowLinkedDeque(nums: number[], k: number): number[] {
     const deque: Deque<[number, number]> = new Deque<[number, number]>();
     const ans: number[] = [];
-    deque.addLast([nums[0], 0]);
+    deque.push([nums[0], 0]);
     if (k === 1) ans.push(nums[0]);
 
     for (let i = 1; i < nums.length; i++) {
-        if (i - deque.get(0)![1] >= k) deque.pollFirst();
-        while (deque.size !== 0 && nums[i] >= deque.get(deque.size - 1)![0]) deque.pollLast();
-        deque.addLast([nums[i], i]);
-        if (i >= k - 1) ans.push(deque.get(0)![0]);
+        if (i - deque.getAt(0)![1] >= k) deque.shift();
+        while (deque.length !== 0 && nums[i] >= deque.getAt(deque.length - 1)![0]) deque.pop();
+        deque.push([nums[i], i]);
+        if (i >= k - 1) ans.push(deque.getAt(0)![0]);
     }
 
     return ans;

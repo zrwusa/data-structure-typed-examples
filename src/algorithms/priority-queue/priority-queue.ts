@@ -12,8 +12,15 @@ import {
     reorganizeStringCase1,
     topKFrequentCase1
 } from './cases';
-import {MaxPriorityQueue, MinPriorityQueue, PriorityQueue, SinglyLinkedListNode} from 'data-structure-typed';
+import {
+    DoublyLinkedListNode,
+    MaxPriorityQueue,
+    MinPriorityQueue,
+    PriorityQueue,
+    SinglyLinkedListNode
+} from 'data-structure-typed';
 import {sortCase3, sortCase4} from '../sorting/cases';
+import {getRandomInt} from '../../utils';
 
 export function findKthLargestMinHeap(nums: number[], k: number): number {
     const heap = new PriorityQueue<number>({nodes: [], comparator: (a, b) => a - b});
@@ -46,12 +53,12 @@ export const runAllFindKthLargest = async () => {
 };
 
 //23. Merge k Sorted Lists
-function mergeKLists(lists: SinglyLinkedListNode[]): SinglyLinkedListNode | null {
+function mergeKLists(lists: DoublyLinkedListNode[]): DoublyLinkedListNode | null {
     // TODO dev tools was disconnected issue
-    const heap = new PriorityQueue<SinglyLinkedListNode>({nodes: [], comparator: (a, b) => a.val - b.val});
+    const heap = new PriorityQueue<DoublyLinkedListNode>({comparator: (a, b) => a.val - b.val});
     for (const l of lists) {
         if (l) {
-            heap.add(l.val);
+            heap.add(l);
         }
     }
     if (heap.size < 1) {
@@ -59,13 +66,13 @@ function mergeKLists(lists: SinglyLinkedListNode[]): SinglyLinkedListNode | null
     }
     // TODO after no-non-null-assertion not ensure the logic
     const polled = heap.poll();
-    const ans: SinglyLinkedListNode | null = polled ? polled : null;
+    const ans: DoublyLinkedListNode | null = polled ? polled : null;
     if (ans) {
         ans.prev = null;
         if (ans.next) {
             heap.add(ans.next);
         }
-        let prev: SinglyLinkedListNode = ans;
+        let prev: DoublyLinkedListNode = ans;
         while (!heap.isEmpty()) {
             // TODO after no-non-null-assertion not ensure the logic
             const polled = heap.poll();
@@ -75,7 +82,7 @@ function mergeKLists(lists: SinglyLinkedListNode[]): SinglyLinkedListNode | null
                 prev.next = cur;
                 prev = prev.next;
                 if (cur.next) {
-                    heap.add(cur.next.val);
+                    heap.add(cur.next);
                 }
             }
         }
@@ -415,10 +422,10 @@ const testPriorityQueue3 = () => {
 };
 
 
-const heapSort = () => {
-    const minPriorityQueue = new PriorityQueue<number>({nodes: sortCase3, comparator: (a, b) => a - b});
-    minPriorityQueue.sort()
-    console.log('sorted by PriorityQueue');
+const heapSort = async () => {
+    const minPriorityQueue = new PriorityQueue<number>({nodes: Array.from(new Array(10000), () => getRandomInt(1, 10000)), comparator: (a, b) => a - b});
+    const sorted = minPriorityQueue.sort()
+    console.log('sorted by PriorityQueue', sorted);
 };
 
 

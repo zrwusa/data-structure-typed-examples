@@ -64,10 +64,10 @@ export const TreeScreen = () => {
         <AlgorithmPanel algorithm={binaryTreeInorderTraversal} testCase={[binaryTree.root]}
                         buttonLabel={'Binary Tree Inorder Traversal'}
                         referenceData={binaryTree.root} relatedNodeKey="node"/>
-        <AlgorithmPanel algorithm={treeMaxDepth} testCase={[treeData]} buttonLabel={'Max Depth'}/>
 
-        <AlgorithmPanel algorithm={countSmallerBST} testCase={countSmallerCase1}
-                        buttonLabel={'Count Smaller BST'}/>
+        <AlgorithmPanel algorithm={testBST} testCase={testBSTCase1} buttonLabel={'Test BST'}/>
+        <AlgorithmPanel algorithm={testBST2} testCase={[[3, 4, 2, 1, 2, 3, 4]]} buttonLabel={'Test BST II'}/>
+        <AlgorithmPanel algorithm={testAVLTree} testCase={testBSTCase1} buttonLabel={'Test AVL'}/>
         <AlgorithmPanel algorithm={testBinaryTree} testCase={testBinaryTreeCase2} buttonLabel={'Test BinaryTree'}/>
 
         <AlgorithmPanel algorithm={showBinaryTree} testCase={[binaryTreeData ? JSON.parse(binaryTreeData) : []]}
@@ -76,11 +76,14 @@ export const TreeScreen = () => {
                                                                    onChange={(e) => {
                                                                        setBinaryTreeDataInput(e.target.value);
                                                                    }}/></AlgorithmPanel>
-        <AlgorithmPanel algorithm={testBST} testCase={testBSTCase1} buttonLabel={'Test BST'}/>
-        <AlgorithmPanel algorithm={testBST2} testCase={[[3, 4, 2, 1, 2, 3, 4]]} buttonLabel={'Test BST II'}/>
-        <AlgorithmPanel algorithm={testAVLTree} testCase={testBSTCase1} buttonLabel={'Test AVL'}/>
+
 
         <AlgorithmPanel algorithm={trimABST} testCase={trimABSTCase2} buttonLabel={'Trim a BST'}/>
+        <AlgorithmPanel algorithm={treeMaxDepth} testCase={[treeData]} buttonLabel={'Max Depth'}/>
+
+        <AlgorithmPanel algorithm={countSmallerBST} testCase={countSmallerCase1}
+                        buttonLabel={'Count Smaller BST'}/>
+
         <AlgorithmPanel algorithm={deleteLeaves} testCase={deleteLeavesCase1}
                         buttonLabel={'Delete Leaves With a Given Value'}/>
         <AlgorithmPanel algorithm={ladderLengthDFS} testCase={ladderLengthCase1} buttonLabel={'Ladder Length'}/>

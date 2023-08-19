@@ -1,5 +1,4 @@
 import * as React from 'react';
-import {TreeNode} from '../../types';
 import {
     AbstractEdge,
     AbstractGraph,
@@ -9,12 +8,33 @@ import {
     DirectedEdge,
     DirectedGraph,
     SinglyLinkedListNode,
-    Stack,
+    Stack, TreeNode,
     UndirectedEdge
 } from 'data-structure-typed';
 import {Coordinate, getDirectionVector} from '../../algorithms';
 import {uuidV4} from '../../utils';
 import {UIEvent, useRef, useState} from 'react';
+
+
+
+
+const VividLinkedListNode: React.FC<{ data: SinglyLinkedListNode }> = ({ data }) => {
+    const nodes: SinglyLinkedListNode[] = [];
+    let cur: SinglyLinkedListNode | null = data;
+
+    while (cur !== null) {
+        nodes.push(cur);
+        cur = cur.next;
+    }
+
+    const renderedList = nodes.map((node: SinglyLinkedListNode, index) => {
+            const {val} = node;
+            return <div key={index}>{val}</div>
+
+    });
+
+    return <div>{renderedList}</div>;
+};
 
 export interface VividAlgorithmProps {
     data?: { [key in string]: any },
@@ -36,6 +56,7 @@ export const VividAlgorithm = function (props: VividAlgorithmProps) {
         svgWidth = '100%',
         isDebug = false
     } = props;
+
     const _handleEdgeClick = (edge: AbstractEdge) => {
         console.log(edge);
     }
@@ -608,19 +629,33 @@ export const VividAlgorithm = function (props: VividAlgorithmProps) {
         );
     };
 
-    const VividLinkedListNode: React.FC<{ data: SinglyLinkedListNode }> = ({data}) => {
-        return (
-            <div>
-                <div key={data.index || -1}>
-                    <span>{data.index}</span>
-                    <span>{data.val}</span>
-                </div>
-            </div>
-        );
-    };
+
+    // const VividLinkedListNode: React.FC<{ data: SinglyLinkedListNode }> = ({data}) => {
+    //     const renderNode = (node: SinglyLinkedListNode) => {
+    //         if (!node) {
+    //             return null;
+    //         }
+    //
+    //         return (
+    //             <div className="singly-linked-list-node">
+    //                 <span>{node.index}</span>
+    //                 <span>{node.val}</span>
+    //                 {node.next? renderNode(node.next): null}
+    //             </div>
+    //         );
+    //     }
+    //     return (
+    //         <div>
+    //             {
+    //                 renderNode(data)
+    //             }
+    //         </div>
+    //     );
+    // };
 
     // TODO
     const VividBinaryTreeNode: React.FC<{ data: BinaryTreeNode<any> }> = ({data}) => {
+
         return (
             <div>
                 <div key={data.id}>

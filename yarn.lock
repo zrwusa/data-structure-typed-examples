@@ -3013,10 +3013,10 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-data-structure-typed@^1.15.2:
-  version "1.15.2"
-  resolved "https://registry.yarnpkg.com/data-structure-typed/-/data-structure-typed-1.15.2.tgz#6560a5292ec8c8e212c829e8e804da17e31fc7d8"
-  integrity sha512-BTFY3eiwg8MCQl6kKqBVq29gt81eRRsXO5owVxWiTddHFs/XdsnfX3krp7BSH/BWuRthGfI7+6SFyK5IQTsDcQ==
+data-structure-typed@^1.17.0:
+  version "1.17.0"
+  resolved "https://registry.yarnpkg.com/data-structure-typed/-/data-structure-typed-1.17.0.tgz#443c2872b3541bad446009114c9c728154201f27"
+  integrity sha512-7gkKkgF9hfWyXrzMZl0aPrteb23PHZiM/k9nMdOi7Fk+DSujBecYIV7eHZxJlB9210fRvVmbj6yYjvewkGJ7Hg==
 
 dayjs@^1.10.4:
   version "1.11.9"

@@ -1,6 +1,6 @@
 import {SinglyLinkedListNode} from 'data-structure-typed';
 import {DeepProxy, TProxyHandler} from '@qiwi/deep-proxy';
-import {wait} from '../../utils/utils';
+import {wait} from '../../utils';
 
 
 /* --- start Linked List ---*/
@@ -49,7 +49,7 @@ export async function reverseLinkedList(head: SinglyLinkedListNode | null, proxy
 
 // 21. Merge Two Sorted Lists
 export function mergeTwoLists(l1: SinglyLinkedListNode | null, l2: SinglyLinkedListNode | null): SinglyLinkedListNode | null {
-    const dummy = new SinglyLinkedListNode(0, null, null, null);
+    const dummy = new SinglyLinkedListNode(0);
     let tail = dummy;
     while (l1 && l2) {
         if (l1.val < l2.val) {

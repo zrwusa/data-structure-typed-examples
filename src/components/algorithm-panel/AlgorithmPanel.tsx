@@ -29,6 +29,7 @@ export const AlgorithmPanel: React.FC<AlgorithmPanelProps> = ({
                                                                   relatedRouteKey,
                                                                   children
                                                               }) => {
+
     const [values, setValues] = useState<{ [key in string]: unknown }>();
     const [loading, setLoading] = React.useState(false);
     const _clickHandler = async () => {
