@@ -146,6 +146,7 @@ export async function cutOffTree(forest: number[][], proxyHandler?: TProxyHandle
                             // TODO after no-non-null-assertion not ensure the logic
                             if (proxyVariables !== undefined) {
                                 proxyVariables.route.push(route);
+                                await wait(waitManager.time5);
                             }
 
                             return level + 1;

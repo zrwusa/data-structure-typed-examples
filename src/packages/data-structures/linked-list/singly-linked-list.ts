@@ -75,10 +75,6 @@ export class SinglyLinkedList<T> {
         return this._length;
     }
 
-    protected set length(value: number) {
-        this._length = value;
-    }
-
     /**
      * The `fromArray` function creates a new SinglyLinkedList instance and populates it with the elements from the given
      * array.
@@ -111,7 +107,7 @@ export class SinglyLinkedList<T> {
             this.tail!.next = newNode;
             this.tail = newNode;
         }
-        this.length++;
+        this._length++;
     }
 
     /**
@@ -126,7 +122,7 @@ export class SinglyLinkedList<T> {
             const val = this.head.val;
             this.head = null;
             this.tail = null;
-            this.length--;
+            this._length--;
             return val;
         }
 
@@ -137,7 +133,7 @@ export class SinglyLinkedList<T> {
         const val = this.tail!.val;
         current.next = null;
         this.tail = current;
-        this.length--;
+        this._length--;
         return val;
     }
 
@@ -149,7 +145,7 @@ export class SinglyLinkedList<T> {
         if (!this.head) return null;
         const removedNode = this.head;
         this.head = this.head.next;
-        this.length--;
+        this._length--;
         return removedNode.val;
     }
 
@@ -167,7 +163,7 @@ export class SinglyLinkedList<T> {
             newNode.next = this.head;
             this.head = newNode;
         }
-        this.length++;
+        this._length++;
     }
 
     /**
@@ -216,21 +212,27 @@ export class SinglyLinkedList<T> {
         const prevNode = this.getNodeAt(index - 1);
         const removedNode = prevNode!.next;
         prevNode!.next = removedNode!.next;
-        this.length--;
+        this._length--;
         return removedNode!.val;
     }
 
+    delete(valueOrNode: T): boolean;
+    delete(valueOrNode: SinglyLinkedListNode<T>): boolean;
     /**
-     * The `delete` function removes a specified value from a linked list and returns true if the value was found and
-     * removed, otherwise it returns false.
-     * @param {T} value - The value parameter represents the value of the node that needs to be deleted from the linked
-     * list.
-     * @returns The `delete` method returns a boolean value. It returns `true` if the value was successfully deleted from
-     * the linked list, and `false` if the value was not found in the linked list.
+     * The delete function removes a node with a specific value from a singly linked list.
+     * @param {T | SinglyLinkedListNode<T>} valueOrNode - The `valueOrNode` parameter can accept either a value of type `T`
+     * or a `SinglyLinkedListNode<T>` object.
+     * @returns The `delete` method returns a boolean value. It returns `true` if the value or node is found and
+     * successfully deleted from the linked list, and `false` if the value or node is not found in the linked list.
      */
-    delete(value: T): boolean {
-        let current = this.head;
-        let prev = null;
+    delete(valueOrNode: T | SinglyLinkedListNode<T>): boolean {
+        let value: T;
+        if (valueOrNode instanceof SinglyLinkedListNode) {
+            value = valueOrNode.val;
+        } else {
+            value = valueOrNode;
+        }
+        let current = this.head, prev = null;
 
         while (current) {
             if (current.val === value) {
@@ -245,7 +247,7 @@ export class SinglyLinkedList<T> {
                         this.tail = prev;
                     }
                 }
-                this.length--;
+                this._length--;
                 return true;
             }
             prev = current;
@@ -256,7 +258,7 @@ export class SinglyLinkedList<T> {
     }
 
     /**
-     * The `insert` function inserts a value at a specified index in a singly linked list.
+     * The `insertAt` function inserts a value at a specified index in a singly linked list.
      * @param {number} index - The index parameter represents the position at which the new value should be inserted in the
      * linked list. It is of type number.
      * @param {T} val - The `val` parameter represents the value that you want to insert into the linked list at the
@@ -264,7 +266,7 @@ export class SinglyLinkedList<T> {
      * @returns The `insert` method returns a boolean value. It returns `true` if the insertion is successful, and `false`
      * if the index is out of bounds.
      */
-    insert(index: number, val: T): boolean {
+    insertAt(index: number, val: T): boolean {
         if (index < 0 || index > this.length) return false;
         if (index === 0) {
             this.unshift(val);
@@ -279,7 +281,7 @@ export class SinglyLinkedList<T> {
         const prevNode = this.getNodeAt(index - 1);
         newNode.next = prevNode!.next;
         prevNode!.next = newNode;
-        this.length++;
+        this._length++;
         return true;
     }
 
@@ -395,20 +397,25 @@ export class SinglyLinkedList<T> {
         return null;
     }
 
+    insertBefore(existingValue: T, newValue: T): boolean
+    insertBefore(existingValue: SinglyLinkedListNode<T>, newValue: T): boolean
     /**
      * The `insertBefore` function inserts a new value before an existing value in a singly linked list.
-     * @param {T} existingValue - The existing value is the value that already exists in the linked list and before which
-     * we want to insert a new value.
+     * @param {T | SinglyLinkedListNode<T>} existingValueOrNode - The existing value or node that you want to insert the
+     * new value before. It can be either the value itself or a node containing the value in the linked list.
      * @param {T} newValue - The `newValue` parameter represents the value that you want to insert into the linked list.
-     * @returns The `insertBefore` function returns a boolean value. It returns `true` if the `newValue` is successfully
-     * inserted before the first occurrence of `existingValue` in the linked list. It returns `false` if the
-     * `existingValue` is not found in the linked list.
+     * @returns The method `insertBefore` returns a boolean value. It returns `true` if the new value was successfully
+     * inserted before the existing value, and `false` otherwise.
      */
-    insertBefore(existingValue: T, newValue: T): boolean {
-        if (!this.head) {
-            return false;
-        }
+    insertBefore(existingValueOrNode: T | SinglyLinkedListNode<T>, newValue: T): boolean {
+        if (!this.head) return false;
 
+        let existingValue: T;
+        if (existingValueOrNode instanceof SinglyLinkedListNode) {
+            existingValue = existingValueOrNode.val;
+        } else {
+            existingValue = existingValueOrNode;
+        }
         if (this.head.val === existingValue) {
             this.unshift(newValue);
             return true;
@@ -420,7 +427,7 @@ export class SinglyLinkedList<T> {
                 const newNode = new SinglyLinkedListNode(newValue);
                 newNode.next = current.next;
                 current.next = newNode;
-                this.length++;
+                this._length++;
                 return true;
             }
             current = current.next;
@@ -429,16 +436,24 @@ export class SinglyLinkedList<T> {
         return false;
     }
 
+    insertAfter(existingValueOrNode: T, newValue: T): boolean
+    insertAfter(existingValueOrNode: SinglyLinkedListNode<T>, newValue: T): boolean
     /**
-     * The function inserts a new value after an existing value in a singly linked list.
-     * @param {T} existingValue - The existing value is the value of the node after which we want to insert the new value.
-     * @param {T} newValue - The `newValue` parameter represents the value that you want to insert into the linked list
-     * after the node with the `existingValue`.
-     * @returns The method is returning a boolean value. It returns true if the insertion is successful and false if the
-     * existing value is not found in the linked list.
+     * The `insertAfter` function inserts a new node with a given value after an existing node in a singly linked list.
+     * @param {T | SinglyLinkedListNode<T>} existingValueOrNode - The existing value or node in the linked list after which
+     * the new value will be inserted. It can be either the value of the existing node or the existing node itself.
+     * @param {T} newValue - The value that you want to insert into the linked list after the existing value or node.
+     * @returns The method returns a boolean value. It returns true if the new value was successfully inserted after the
+     * existing value or node, and false if the existing value or node was not found in the linked list.
      */
-    insertAfter(existingValue: T, newValue: T): boolean {
-        const existingNode = this.findNode(existingValue);
+    insertAfter(existingValueOrNode: T | SinglyLinkedListNode<T>, newValue: T): boolean {
+        let existingNode: T | SinglyLinkedListNode<T> | null;
+
+        if (existingValueOrNode instanceof SinglyLinkedListNode) {
+            existingNode = existingValueOrNode;
+        } else {
+            existingNode = this.findNode(existingValueOrNode);
+        }
 
         if (existingNode) {
             const newNode = new SinglyLinkedListNode(newValue);
@@ -447,7 +462,7 @@ export class SinglyLinkedList<T> {
             if (existingNode === this.tail) {
                 this.tail = newNode;
             }
-            this.length++;
+            this._length++;
             return true;
         }
 

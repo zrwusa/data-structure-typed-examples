@@ -2,29 +2,29 @@ import { TreeNode } from "data-structure-typed";
 
 export const treeData: TreeNode<number> = new TreeNode('1', '1', 0, [
     new TreeNode('1-1', '2', 0, [
-            new TreeNode('1-1-1', '3', 0, [
-                    new TreeNode('1-1-1-1', '4'),
-                    new TreeNode('1-1-1-2', '5', 0, []
+            new TreeNode('1-1-1', '4', 0, [
+                    new TreeNode('1-1-1-1', '8'),
+                    new TreeNode('1-1-1-2', '9', 0, []
                     )
                 ]
             ),
-            new TreeNode('1-1-2', '4', 0, [
-                    new TreeNode('1-1-2-1', '6'),
-                    new TreeNode('1-1-2-2', '7')
+            new TreeNode('1-1-2', '5', 0, [
+                    new TreeNode('1-1-2-1', '10'),
+                    new TreeNode('1-1-2-2', '11')
                 ]
             )
         ]
     ),
-    new TreeNode('1-2', '8', 0, [
-            new TreeNode('1-2-1', '9', 0, [
-                    new TreeNode('1-2-1-1', '10'),
-                    new TreeNode('1-2-1-2', '11')
+    new TreeNode('1-2', '3', 0, [
+            new TreeNode('1-2-1', '6', 0, [
+                    new TreeNode('1-2-1-1', '12'),
+                    new TreeNode('1-2-1-2', '13')
                 ]
             ),
-            new TreeNode('1-2-2', '12', 0, [
-                    new TreeNode('1-2-2-1', '13'),
-                    new TreeNode('1-2-2-2', '14', 0, [
-                            new TreeNode('1-2-2-2-1', '15')
+            new TreeNode('1-2-2', '7', 0, [
+                    new TreeNode('1-2-2-1', '14'),
+                    new TreeNode('1-2-2-2', '15', 0, [
+                            new TreeNode('1-2-2-2-1', '16')
                         ]
                     )
                 ]

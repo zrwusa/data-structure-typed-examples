@@ -33,7 +33,7 @@ import {
 import {OrderType} from '../../types';
 
 const waitManager = new WaitManager(10);
-const {time2} = waitManager;
+const {time2, time5, time10} = waitManager;
 
 export async function binaryTreeInorderTraversal(root: BinaryTreeNode<number> | undefined, proxyHandler: TProxyHandler): Promise<number[]> {
     type Variables = {
@@ -78,49 +78,52 @@ export async function binaryTreeInorderTraversal(root: BinaryTreeNode<number> | 
 
 }
 
-export const DFS = async (node: TreeNode<number>, type: OrderType, proxyHandler: TProxyHandler) => {
-    type Variables = { current: TreeNode<number>, nodeNeedPrint: TreeNode<number> | undefined }
+export const DFS = async (node: TreeNode, type: OrderType, proxyHandler: TProxyHandler) => {
+    type Variables = { current: TreeNode, nodeNeedPrint: TreeNode }
 
     const variablesProxy = new DeepProxy<Variables>({
         current: node,
         nodeNeedPrint: node
     }, proxyHandler);
 
-    if (!variablesProxy.current) {
-        return;
-    }
+    const dfs = async (node: TreeNode, type: OrderType) => {
+        if (!node) return;
 
-    const {children} = variablesProxy.current;
-    if (children && children.length > 0) {
-        const left = children[0];
-        const right = children[1];
-        switch (type) {
-            case 'InOrder':
-                await DFS(left, type, proxyHandler);
-                // console.log(node.id);
-                variablesProxy.nodeNeedPrint = node;
-                await wait(time2);
+        variablesProxy.current = node;
+        variablesProxy.nodeNeedPrint = node;
 
-                await DFS(right, type, proxyHandler);
-                break;
-            case 'PreOrder':
-                // console.log(node.id);
-                variablesProxy.nodeNeedPrint = node;
-                await wait(time2);
+        await wait(time5);
 
-                await DFS(left, type, proxyHandler);
-                await DFS(right, type, proxyHandler);
-                break;
-            case 'PostOrder':
-                await DFS(left, type, proxyHandler);
-                await DFS(right, type, proxyHandler);
-                // console.log(node.id);
-                variablesProxy.nodeNeedPrint = node;
-                await wait(time2);
-
-                break;
+        const {children} = node;
+        if (children && children.length > 0) {
+            const left = children[0];
+            const right = children[1];
+            switch (type) {
+                case 'InOrder':
+                    await dfs(left, type);
+                    variablesProxy.current = node;
+                    variablesProxy.nodeNeedPrint = node;
+                    await wait(time5);
+                    await dfs(right, type);
+                    break;
+                case 'PreOrder':
+                    variablesProxy.current = node;
+                    variablesProxy.nodeNeedPrint = node;
+                    await wait(time5);
+                    await dfs(left, type);
+                    await dfs(right, type);
+                    break;
+                case 'PostOrder':
+                    await dfs(left, type);
+                    await dfs(right, type);
+                    variablesProxy.current = node;
+                    variablesProxy.nodeNeedPrint = node;
+                    await wait(time5);
+                    break;
+            }
         }
     }
+    await dfs(variablesProxy.current, type);
 };
 
 // 102	Binary Tree Level Order Traversal	★★	107	429	872			collecting nodes

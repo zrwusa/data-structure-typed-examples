@@ -17,11 +17,11 @@ export const GraphScreen = () => {
     return <>
         <AlgorithmPanel algorithm={testGraphs} testCase={[]} buttonLabel={'Test Graphs'}/>
         <AlgorithmPanel algorithm={cutOffTree} testCase={cutOffTreeCase}
-                        buttonLabel={'Cut Off Tree For Golf Event'}
+                        buttonLabel={'Cut off Trees for Golf Event'}
                         relatedNodeKey="cur"
                         referenceData={cutOffTreeCase[0]}
                         relatedRouteKey="route">
-            <TextField fullWidth label="Cut Off Tree Case" value={cutOffTreeCaseInput}
+            <TextField fullWidth label="Cut off Trees Case" value={cutOffTreeCaseInput}
                        onChange={(e) => {
                            const {value} = e.target;
                            setCutOffTreeCaseInput(value);
