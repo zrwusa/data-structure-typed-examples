@@ -11,8 +11,8 @@ const {time1} = waitManager;
 export async function testBinaryTree(arr: number[], proxyHandler?: TProxyHandler) {
     const clonedData = [...arr];
 
-    const proxy: { tree: BinaryTree<number> } = new DeepProxy({
-        tree: new BinaryTree<number>({})
+    const proxy: { tree: BinaryTree } = new DeepProxy({
+        tree: new BinaryTree({})
     }, proxyHandler);
     proxy.tree.fill(clonedData)
 
@@ -23,8 +23,8 @@ export async function testBinaryTree(arr: number[], proxyHandler?: TProxyHandler
 export async function showBinaryTree(arr: number[], proxyHandler?: TProxyHandler) {
     const clonedData = [...arr];
 
-    const proxy: { tree: BinaryTree<number> } = new DeepProxy({
-        tree: new BinaryTree<number>({autoIncrementId: true})
+    const proxy: { tree: BinaryTree } = new DeepProxy({
+        tree: new BinaryTree({autoIncrementId: true})
     }, proxyHandler);
     proxy.tree.fill(clonedData)
 
@@ -38,7 +38,7 @@ export const runTestBinaryTree = async () => {
 export async function testSymmetricTree(arr: Array<number | null>, proxyHandler?: TProxyHandler) {
     const clonedData = [...arr];
 
-    const proxy: { tree: BinaryTree<number | null> } = new DeepProxy({tree: new BinaryTree<number | null>({})}, proxyHandler);
+    const proxy: { tree: BinaryTree<BinaryTreeNode<number | null>> } = new DeepProxy({tree: new BinaryTree<BinaryTreeNode<number | null>>({})}, proxyHandler);
 
     proxy.tree.fill(clonedData)
     const root = proxy.tree.root;
@@ -236,8 +236,8 @@ export function pathSumIIIBruteForce2(root: BinaryTreeNode<number> | null, targe
 
 export async function pathSumIII(data: Array<number | null>, targetSum: number, proxyHandler?: TProxyHandler): Promise<number> {
     const clonedData = [...data];
-    const proxy: { tree: BinaryTree<number | null> } = new DeepProxy({
-        tree: new BinaryTree<number | null>({
+    const proxy: { tree: BinaryTree<BinaryTreeNode<number | null>> } = new DeepProxy({
+        tree: new BinaryTree<BinaryTreeNode<number | null>>({
             // nodeOrData: {
             //     id: 0,
             //     val: clonedData[0]
@@ -284,8 +284,8 @@ export const runPathSumIII = async () => {
 // 1325. Delete Leaves With a Given Value
 export async function deleteLeaves(data: Array<number | null>, target: number, proxyHandler?: TProxyHandler): Promise<BinaryTreeNode<number | null> | null> {
     const clonedData = [...data];
-    const proxy: { bst: BinaryTree<number | null> } = new DeepProxy({
-        bst: new BinaryTree<number | null>()
+    const proxy: { bst: BinaryTree<BinaryTreeNode<number | null>> } = new DeepProxy({
+        bst: new BinaryTree<BinaryTreeNode<number | null>>()
     }, proxyHandler);
 
     proxy.bst.fill(clonedData)

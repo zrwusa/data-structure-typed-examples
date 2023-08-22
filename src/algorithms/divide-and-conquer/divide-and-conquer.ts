@@ -184,8 +184,8 @@ const countSmallerBIT = function (nums: number[]): number[] {
 //  sorted case BST will give a time complexity O(n^2)
 export const countSmallerBST = async (nums: number[], proxyHandler: TProxyHandler) => {
     const rootIndex = nums.length - 1;
-    const proxyVariables = new DeepProxy<{ bst: BST<number> }>({
-        bst: new BST<number>({
+    const proxyVariables = new DeepProxy<{ bst: BST }>({
+        bst: new BST({
             // nodeOrData: {
             //     id: nums[rootIndex],
             //     val: nums[rootIndex],

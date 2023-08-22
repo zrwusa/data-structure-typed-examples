@@ -10,7 +10,7 @@ const {time1} = waitManager;
 export async function testBST(arr: number[], proxyHandler?: TProxyHandler) {
     const clonedData = [...arr];
     const proxy = new DeepProxy({
-        tree: new BST<number>({
+        tree: new BST({
             // nodeOrData: {
             //     id: clonedData[0],
             //     val: clonedData[0]
@@ -32,7 +32,7 @@ export async function testBST(arr: number[], proxyHandler?: TProxyHandler) {
 
 export async function testBST2(nums: [], proxyHandler?: TProxyHandler) {
     const proxy = new DeepProxy({
-        tree: new BST<number>()
+        tree: new BST()
     }, proxyHandler);
 
     for (const i of nums) {
@@ -202,8 +202,8 @@ export function findMode(root: BSTNode<number> | null): number[] {
 // 669. Trim a Binary Search Tree
 export async function trimABST(data: Array<number | null>, low: number, high: number, proxyHandler?: TProxyHandler): Promise<BSTNode<number | null> | null> {
     const clonedData = [...data];
-    const proxy: { tree: BST<number | null> } = new DeepProxy({
-        tree: new BST<number | null>({comparator: (a, b) => a - b})
+    const proxy: { tree: BST<BSTNode<number | null>> } = new DeepProxy({
+        tree: new BST({comparator: (a, b) => a - b})
     }, proxyHandler);
     proxy.tree.fill(clonedData);
 

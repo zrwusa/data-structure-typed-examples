@@ -2,7 +2,7 @@ import {wait, WaitManager} from '../../../utils/utils';
 import {AVLTree} from 'data-structure-typed';
 
 export const testAVLTreeCase1 = [];
-export const testAVLCase6 = async (proxy: { tree: AVLTree<number> }) => {
+export const testAVLCase6 = async (proxy: { tree: AVLTree }) => {
 
     const waitManager = new WaitManager(100);
     const {time1, time2, time3} = waitManager;

@@ -17,35 +17,51 @@ import {DeepProxy, TProxyHandler} from '@qiwi/deep-proxy';
 import {canFinishCase1, canFinishCase3, criticalConnectionsCase1} from './cases';
 
 
-class MyVertex extends DirectedVertex {
-    data: string;
+class MyVertex<V extends string> extends DirectedVertex<V> {
 
-    constructor(id: VertexId, data: string) {
-        super(id);
-        this.data = data;
+    constructor(id: VertexId, val?: V) {
+        super(id, val);
+        this._data = val;
+    }
+
+    private _data: string | undefined;
+
+    get data(): string | undefined {
+        return this._data;
+    }
+
+    set data(value: string | undefined) {
+        this._data = value;
     }
 }
 
-class MyEdge extends DirectedEdge {
-    data: string;
+class MyEdge<E extends string> extends DirectedEdge<E> {
 
-    constructor(v1: VertexId, v2: VertexId, weight: number, data: string) {
-        super(v1, v2, weight);
-        this.data = data;
+    constructor(v1: VertexId, v2: VertexId, weight?: number, val?: E) {
+        super(v1, v2, weight, val);
+        this._data = val;
+    }
+
+    private _data: string | undefined;
+
+    get data(): string | undefined {
+        return this._data;
+    }
+
+    set data(value: string | undefined) {
+        this._data = value;
     }
 }
 
-class MyGraph<V extends MyVertex, E extends MyEdge> extends DirectedGraph<V, E> {
-    constructor() {
-        super();
-    }
+class MyDirectedGraph<V extends MyVertex<string>, E extends MyEdge<string>> extends DirectedGraph<V, E> {
+
 }
 
 const waitMan = new WaitManager(10);
 
 export const testGraphs = async (proxyHandler: TProxyHandler) => {
 
-    const vars: { myGraph: DirectedGraph<MyVertex, MyEdge> } = new DeepProxy({myGraph: new DirectedGraph<MyVertex, MyEdge>()}, proxyHandler);
+    const vars: { myGraph: MyDirectedGraph<MyVertex<string>, MyEdge<string>> } = new DeepProxy({myGraph: new MyDirectedGraph<MyVertex<string>, MyEdge<string>>(MyVertex, MyEdge)}, proxyHandler);
     await wait(waitMan.time3);
     console.log(`vars.myGraph.addVertex(new MyVertex(1, 'data1'))`, vars.myGraph.addVertex(new MyVertex(1, 'data1')));
     await wait(waitMan.time3);
@@ -75,12 +91,11 @@ export const testGraphs = async (proxyHandler: TProxyHandler) => {
     await wait(waitMan.time3);
     console.log(`vars.myGraph.getEdge(1,'100')`, vars.myGraph.getEdge(1, '100'));
     await wait(waitMan.time3);
-    console.log(JSON.stringify(vars.myGraph.edgeSet()), vars.myGraph.vertexSet());
+    console.log(JSON.stringify(vars.myGraph.edgeSet()), vars.myGraph.vertices);
     await wait(waitMan.time3);
     console.log(`vars.myGraph.removeEdgeBetween(1,2)`, vars.myGraph.removeEdgeBetween(1, 2));
     await wait(waitMan.time3);
     console.log(`vars.myGraph.getEdge(1, 2)`, vars.myGraph.getEdge(1, 2));
-
     await wait(waitMan.time3);
     console.log(`vars.myGraph.addEdge(new MyEdge(3, 1, 3, 'edge-data-3-1'))`, vars.myGraph.addEdge(new MyEdge(3, 1, 3, 'edge-data-3-1')));
 
@@ -217,7 +232,7 @@ function canFinish(numCourses: number, prerequisites: number[][]): boolean {
 }
 
 function canFinishByGraph(numCourses: number, prerequisites: number[][]): boolean {
-    const graph = new DirectedGraph();
+    const graph = new DirectedGraph(DirectedVertex, DirectedEdge);
 
     const time1 = timeStart();
     for (let i = 0; i < numCourses; i++) {
@@ -248,7 +263,7 @@ const runAllCanFinish = async () => {
 // runAllCanFinish().then()
 // 399	Evaluate Division	★★★	839	952	990	721	737	union find
 function calcEquation(equations: [string, string][], values: number[], queries: [string, string][]): number[] {
-    const graph = new DirectedGraph<DirectedVertex, DirectedEdge>();
+    const graph = new DirectedGraph<DirectedVertex, DirectedEdge>(DirectedVertex, DirectedEdge);
     for (const equation of equations) {
         for (const variable of equation) {
             graph.addVertex(new DirectedVertex(variable));
@@ -277,10 +292,10 @@ function calcEquation(equations: [string, string][], values: number[], queries: 
 export async function networkDelayTime(times: number[][], n: number, k: number, proxyHandler?: TProxyHandler): Promise<number> {
     let graph;
     if (proxyHandler) {
-        const vars: { graph: DirectedGraph<DirectedVertex, DirectedEdge> } = new DeepProxy({graph: new DirectedGraph()}, proxyHandler);
+        const vars: { graph: DirectedGraph<DirectedVertex, DirectedEdge> } = new DeepProxy({graph: new DirectedGraph(DirectedVertex, DirectedEdge)}, proxyHandler);
         graph = vars.graph;
     } else {
-        graph = new DirectedGraph();
+        graph = new DirectedGraph(DirectedVertex, DirectedEdge);
     }
 
     for (const [u, v, w] of times) {
@@ -393,7 +408,7 @@ function criticalConnections(n: number, connections: number[][]): number[][] {
  */
 function criticalConnectionsByGraph(n: number, connections: number[][]): number[][] {
     //Critical connection is Bridge
-    const graph = new UndirectedGraph();
+    const graph = new UndirectedGraph(UndirectedVertex, UndirectedEdge);
 
     const time1 = timeStart();
     for (const [v1, v2] of connections) {
@@ -442,10 +457,10 @@ export async function regionsBySlashes(grid: string[], proxyHandler?: TProxyHand
 
     let graph2;
     if (proxyHandler) {
-        const vars = new DeepProxy({graph2: new DirectedGraph()}, proxyHandler);
+        const vars = new DeepProxy({graph2: new DirectedGraph(DirectedVertex, DirectedEdge)}, proxyHandler);
         graph2 = vars.graph2;
     } else {
-        graph2 = new DirectedGraph();
+        graph2 = new DirectedGraph(DirectedVertex, DirectedEdge);
     }
     const grid2: [string, string][] = [
         ['a', 'f'], ['f', 'g'], ['g', 'a'],

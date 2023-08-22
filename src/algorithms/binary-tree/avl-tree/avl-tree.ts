@@ -5,7 +5,7 @@ import {wait, WaitManager} from '../../../utils/utils';
 import {testBSTCase1} from '../bst';
 import {testAVLCase6} from './cases';
 
-const avlTree = new AVLTree<number>();
+const avlTree = new AVLTree();
 
 export const performanceAVLTree = () => {
     for (let i = 0; i < 1e+5; i++) {
@@ -23,7 +23,7 @@ const {time1} = waitManager;
 export const testAVLTree = async (arr: number[], proxyHandler?: TProxyHandler) => {
     const clonedData = [...arr];
     const proxyVariables = new DeepProxy({
-        tree: new AVLTree<number>({
+        tree: new AVLTree({
             // nodeOrData: {
             //     id: clonedData[0],
             //     val: clonedData[0]

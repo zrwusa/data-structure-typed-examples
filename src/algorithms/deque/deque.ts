@@ -69,7 +69,7 @@ export function maxSlidingWindowHeap(nums: number[], k: number): number[] {
 }
 
 export function maxSlidingWindowBST(nums: number[], k: number): number[] {
-    const n = nums.length, ans: number[] = [], bst: BST<number> = new BST({
+    const n = nums.length, ans: number[] = [], bst: BST = new BST({
         comparator: (a, b) => b - a,
         loopType: LoopType.iterative
     });
@@ -87,7 +87,7 @@ export function maxSlidingWindowBST(nums: number[], k: number): number[] {
 }
 
 export function maxSlidingWindowBST2(nums: number[], k: number): number[] {
-    const n = nums.length, ans: number[] = [], bst: BST<number> = new BST({
+    const n = nums.length, ans: number[] = [], bst: BST = new BST({
         comparator: (a, b) => b - a,
         loopType: LoopType.recursive
     });
@@ -105,7 +105,7 @@ export function maxSlidingWindowBST2(nums: number[], k: number): number[] {
 }
 
 export function maxSlidingWindowBST3(nums: number[], k: number): number[] {
-    const n = nums.length, ans: number[] = [], bst: BST<number> = new BST({
+    const n = nums.length, ans: number[] = [], bst: BST = new BST({
         comparator: (a, b) => b - a,
         loopType: LoopType.iterative
     });
@@ -127,7 +127,7 @@ export function maxSlidingWindowBST3(nums: number[], k: number): number[] {
 }
 
 export function maxSlidingWindowBST4(nums: number[], k: number): number[] {
-    const n = nums.length, ans: number[] = [], bst: BST<number> = new BST({
+    const n = nums.length, ans: number[] = [], bst: BST = new BST({
         comparator: (a, b) => b - a,
         loopType: LoopType.recursive
     });

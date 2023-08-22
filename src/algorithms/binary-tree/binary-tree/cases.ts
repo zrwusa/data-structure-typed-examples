@@ -3,7 +3,7 @@ import {wait, WaitManager} from '../../../utils/utils';
 
 export const testBinaryTreeCase1: [] = [];
 export const testBinaryTreeCase2: [(number | null)[]] = [[1, 2, 3, 4, 5, 6, 7, null, 8, 9]];
-export const testBinaryTreeCase6 = async (proxy: { tree: BinaryTree<number> }) => {
+export const testBinaryTreeCase6 = async (proxy: { tree: BinaryTree }) => {
     const waitManager = new WaitManager(100);
     const {time1, time2, time3} = waitManager;
 

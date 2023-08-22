@@ -499,8 +499,8 @@ export const VividAlgorithm = function (props: VividAlgorithmProps) {
     };
 
 
-    const VividGraphIllustrator: React.FC<{ graph: AbstractGraph<AbstractVertex, AbstractEdge> }> = ({graph}) => {
-        const vertices = graph.vertexSet();
+    const VividGraphIllustrator: React.FC<{ graph: AbstractGraph<AbstractVertex<any>, AbstractEdge<any>> }> = ({graph}) => {
+        const vertices = graph.vertices;
         const vertexCount = vertices.size;
         const edges = graph.edgeSet();
         const coordsMap: Map<AbstractVertex, Coordinate> = new Map<AbstractVertex, Coordinate>();

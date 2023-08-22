@@ -34,7 +34,7 @@ import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
 export const TreeScreen = () => {
-    const binaryTree = new BinaryTree<number>({});
+    const binaryTree = new BinaryTree({});
     binaryTree.fill([1, 2, 3]);
 
     const [binaryTreeDataInput, setBinaryTreeDataInput] = useState('[-10,9,20,null,null,15,7]');

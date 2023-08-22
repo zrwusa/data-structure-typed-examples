@@ -24,7 +24,7 @@ export const deleteLeavesCase1: DeleteLeavesParams = [[1, 2, 3, 2, null, 2, 4], 
 export const deleteLeavesCase2: DeleteLeavesParams = [[1, 3, 3, 3, 2], 3];
 export const deleteLeavesCase3: DeleteLeavesParams = [[1, 2, null, 2, null, 2], 2];
 
-export const testBSTCase6 = async (proxy: { tree: BST<number> }) => {
+export const testBSTCase6 = async (proxy: { tree: BST }) => {
 
     const waitManager = new WaitManager(100);
     const {time1, time2, time3} = waitManager;

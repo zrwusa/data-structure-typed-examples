@@ -7,14 +7,17 @@
  */
 import {arrayRemove, uuidV4} from '../../utils';
 import {PriorityQueue} from '../priority-queue';
-import type {DijkstraResult, IGraph, VertexId} from '../types';
+import type {DijkstraResult, VertexId} from '../types';
+import {IGraph} from '../interfaces';
 
-export class AbstractVertex {
-    constructor(id: VertexId) {
+export abstract class AbstractVertex<T = number> {
+
+    protected constructor(id: VertexId, val?: T) {
         this._id = id;
+        this._val = val;
     }
 
-    protected _id: VertexId;
+    private _id: VertexId;
 
     get id(): VertexId {
         return this._id;
@@ -23,22 +26,45 @@ export class AbstractVertex {
     set id(v: VertexId) {
         this._id = v;
     }
+
+    private _val: T | undefined;
+
+    get val(): T | undefined {
+        return this._val;
+    }
+
+    set val(value: T | undefined) {
+        this._val = value;
+    }
+
+    // /**
+    //  * In TypeScript, a subclass inherits the interface implementation of its parent class, without needing to implement the same interface again in the subclass. This behavior differs from Java's approach. In Java, if a parent class implements an interface, the subclass needs to explicitly implement the same interface, even if the parent class has already implemented it.
+    //  * This means that using abstract methods in the parent class cannot constrain the grandchild classes. Defining methods within an interface also cannot constrain the descendant classes. When inheriting from this class, developers need to be aware that this method needs to be overridden.
+    //  * @param id
+    //  * @param val
+    //  */
+    // abstract _createVertex(id: VertexId, val?: T): AbstractVertex<T>;
 }
 
-export abstract class AbstractEdge {
+export abstract class AbstractEdge<T = number> {
 
-
-    /**
-     * The function is a protected constructor that initializes the weight and generates a unique hash code for an edge.
-     * @param {number} [weight] - The `weight` parameter is an optional number that represents the weight of the edge. If
-     * no weight is provided, it will default to the value of `AbstractEdge.DEFAULT_EDGE_WEIGHT`.
-     */
-    protected constructor(weight?: number) {
+    protected constructor(weight?: number, val?: T) {
         this._weight = weight !== undefined ? weight : 1;
+        this._val = val;
         this._hashCode = uuidV4();
     }
 
-    protected _weight: number;
+    private _val: T | undefined;
+
+    get val(): T | undefined {
+        return this._val;
+    }
+
+    set val(value: T | undefined) {
+        this._val = value;
+    }
+
+    private _weight: number;
 
     get weight(): number {
         return this._weight;
@@ -54,40 +80,61 @@ export abstract class AbstractEdge {
         return this._hashCode;
     }
 
+    // /**
+    //  * In TypeScript, a subclass inherits the interface implementation of its parent class, without needing to implement the same interface again in the subclass. This behavior differs from Java's approach. In Java, if a parent class implements an interface, the subclass needs to explicitly implement the same interface, even if the parent class has already implemented it.
+    //  * This means that using abstract methods in the parent class cannot constrain the grandchild classes. Defining methods within an interface also cannot constrain the descendant classes. When inheriting from this class, developers need to be aware that this method needs to be overridden.
+    //  * @param srcOrV1
+    //  * @param destOrV2
+    //  * @param weight
+    //  * @param val
+    //  */
+    // abstract _createEdge(srcOrV1: VertexId | string, destOrV2: VertexId | string, weight?: number, val?: E): E;
+
     protected _setHashCode(v: string) {
         this._hashCode = v;
     }
 }
 
 // Connected Component === Largest Connected Sub-Graph
-export abstract class AbstractGraph<V extends AbstractVertex, E extends AbstractEdge> implements IGraph<V, E> {
+export abstract class AbstractGraph<V extends AbstractVertex<any>, E extends AbstractEdge<any>> implements IGraph<V, E> {
+    private _vertices: Map<VertexId, V> = new Map<VertexId, V>();
 
-    protected _vertices: Map<VertexId, V> = new Map<VertexId, V>();
+    get vertices(): Map<VertexId, V> {
+        return this._vertices;
+    }
+
+    /**
+     * In TypeScript, a subclass inherits the interface implementation of its parent class, without needing to implement the same interface again in the subclass. This behavior differs from Java's approach. In Java, if a parent class implements an interface, the subclass needs to explicitly implement the same interface, even if the parent class has already implemented it.
+     * This means that using abstract methods in the parent class cannot constrain the grandchild classes. Defining methods within an interface also cannot constrain the descendant classes. When inheriting from this class, developers need to be aware that this method needs to be overridden.
+     * @param id
+     * @param val
+     */
+    abstract _createVertex(id: VertexId, val?: V): V;
+
+    /**
+     * In TypeScript, a subclass inherits the interface implementation of its parent class, without needing to implement the same interface again in the subclass. This behavior differs from Java's approach. In Java, if a parent class implements an interface, the subclass needs to explicitly implement the same interface, even if the parent class has already implemented it.
+     * This means that using abstract methods in the parent class cannot constrain the grandchild classes. Defining methods within an interface also cannot constrain the descendant classes. When inheriting from this class, developers need to be aware that this method needs to be overridden.
+     * @param srcOrV1
+     * @param destOrV2
+     * @param weight
+     * @param val
+     */
+    abstract _createEdge(srcOrV1: VertexId | string, destOrV2: VertexId | string, weight?: number, val?: E): E;
 
     abstract removeEdgeBetween(srcOrId: V | VertexId, destOrId: V | VertexId): E | null;
 
     abstract removeEdge(edge: E): E | null;
 
-    /**
-     * The function `getVertex` returns the vertex object associated with a given vertex ID or vertex object, or null if it
-     * does not exist.
-     * @param {VertexId | V} vertexOrId - The parameter `vertexOrId` can be either a `VertexId` or a `V`.
-     * @returns The function `getVertex` returns the vertex object (`V`) corresponding to the given `vertexOrId` parameter.
-     * If the vertex is found in the `_vertices` map, it is returned. Otherwise, `null` is returned.
-     */
-    getVertex(vertexOrId: VertexId | V): V | null {
-        const vertexId = this.getVertexId(vertexOrId);
+    _getVertex(vertexOrId: VertexId | V): V | null {
+        const vertexId = this._getVertexId(vertexOrId);
         return this._vertices.get(vertexId) || null;
     }
 
-    /**
-     * The function `getVertexId` returns the id of a vertex, whether it is passed as an instance of `AbstractVertex` or as
-     * a `VertexId`.
-     * @param {V | VertexId} vertexOrId - The parameter `vertexOrId` can be either a vertex object (`V`) or a vertex ID
-     * (`VertexId`).
-     * @returns the id of the vertex.
-     */
-    getVertexId(vertexOrId: V | VertexId): VertexId {
+    getVertex(vertexId: VertexId): V | null {
+        return this._vertices.get(vertexId) || null;
+    }
+
+    _getVertexId(vertexOrId: V | VertexId): VertexId {
         return vertexOrId instanceof AbstractVertex ? vertexOrId.id : vertexOrId;
     }
 
@@ -98,28 +145,20 @@ export abstract class AbstractGraph<V extends AbstractVertex, E extends Abstract
      * @returns The method `hasVertex` returns a boolean value.
      */
     hasVertex(vertexOrId: V | VertexId): boolean {
-        return this._vertices.has(this.getVertexId(vertexOrId));
+        return this._vertices.has(this._getVertexId(vertexOrId));
     }
 
-    /**
-     * The function `vertexSet()` returns a map of vertices.
-     * @returns The method `vertexSet()` returns a map of vertex IDs to vertex objects.
-     */
-    vertexSet(): Map<VertexId, V> {
-        return this._vertices;
+    abstract getEdge(srcOrId: V | VertexId, destOrId: V | VertexId): E | null;
+
+    createAddVertex(id: VertexId, val?: V['val']): boolean {
+        const newVertex = this._createVertex(id, val);
+        return this.addVertex(newVertex);
     }
 
-    abstract getEdge(srcOrId: V | null | VertexId, destOrId: V | null | VertexId): E | null;
-
-    /**
-     * The addVertex function adds a new vertex to a graph if it does not already exist.
-     * @param {V} newVertex - The parameter "newVertex" is of type V, which represents a vertex in a graph.
-     * @returns The method is returning a boolean value. If the newVertex is already contained in the graph, it will return
-     * false. Otherwise, it will add the newVertex to the graph and return true.
-     */
     addVertex(newVertex: V): boolean {
         if (this.hasVertex(newVertex)) {
             return false;
+            // throw (new Error('Duplicated vertex id is not allowed'));
         }
         this._vertices.set(newVertex.id, newVertex);
         return true;
@@ -132,7 +171,7 @@ export abstract class AbstractGraph<V extends AbstractVertex, E extends Abstract
      * @returns The method `removeVertex` returns a boolean value.
      */
     removeVertex(vertexOrId: V | VertexId): boolean {
-        const vertexId = this.getVertexId(vertexOrId);
+        const vertexId = this._getVertexId(vertexOrId);
         return this._vertices.delete(vertexId);
     }
 
@@ -171,6 +210,13 @@ export abstract class AbstractGraph<V extends AbstractVertex, E extends Abstract
         return !!edge;
     }
 
+    createAddEdge(src: V | VertexId, dest: V | VertexId, weight: number, val: E['val']): boolean {
+        if (src instanceof AbstractVertex) src = src.id;
+        if (dest instanceof AbstractVertex) dest = dest.id;
+        const newEdge = this._createEdge(src, dest, weight, val);
+        return this.addEdge(newEdge);
+    }
+
     abstract addEdge(edge: E): boolean;
 
     /**
@@ -207,8 +253,8 @@ export abstract class AbstractGraph<V extends AbstractVertex, E extends Abstract
      */
     getAllPathsBetween(v1: V | VertexId, v2: V | VertexId): V[][] {
         const paths: V[][] = [];
-        const vertex1 = this.getVertex(v1);
-        const vertex2 = this.getVertex(v2);
+        const vertex1 = this._getVertex(v1);
+        const vertex2 = this._getVertex(v2);
         if (!(vertex1 && vertex2)) {
             return [];
         }
@@ -225,7 +271,7 @@ export abstract class AbstractGraph<V extends AbstractVertex, E extends Abstract
                 if (!visiting.get(neighbor)) {
                     path.push(neighbor);
                     dfs(neighbor, dest, visiting, path);
-                    arrayRemove(path, (vertex: AbstractVertex) => vertex === neighbor);
+                    arrayRemove(path, (vertex: V) => vertex === neighbor);
                 }
             }
 
@@ -275,8 +321,8 @@ export abstract class AbstractGraph<V extends AbstractVertex, E extends Abstract
             return min;
         } else {
             // BFS
-            const vertex2 = this.getVertex(v2);
-            const vertex1 = this.getVertex(v1);
+            const vertex2 = this._getVertex(v2);
+            const vertex1 = this._getVertex(v1);
             if (!(vertex1 && vertex2)) {
                 return null;
             }
@@ -340,8 +386,8 @@ export abstract class AbstractGraph<V extends AbstractVertex, E extends Abstract
         } else {
             // BFS
             let minPath: V[] = [];
-            const vertex1 = this.getVertex(v1);
-            const vertex2 = this.getVertex(v2);
+            const vertex1 = this._getVertex(v1);
+            const vertex2 = this._getVertex(v2);
             if (!(vertex1 && vertex2)) {
                 return [];
             }
@@ -359,7 +405,7 @@ export abstract class AbstractGraph<V extends AbstractVertex, E extends Abstract
                     if (!visiting.get(neighbor)) {
                         path.push(neighbor);
                         dfs(neighbor, dest, visiting, path);
-                        arrayRemove(path, (vertex: AbstractVertex) => vertex === neighbor);
+                        arrayRemove(path, (vertex: V) => vertex === neighbor);
                     }
                 }
 
@@ -389,7 +435,7 @@ export abstract class AbstractGraph<V extends AbstractVertex, E extends Abstract
      * @returns The function `dijkstraWithoutHeap` returns an object of type `DijkstraResult<V>`.
      */
     dijkstraWithoutHeap(src: V | VertexId, dest?: V | VertexId | null, getMinDist?: boolean, genPaths?: boolean): DijkstraResult<V> {
-        if (getMinDist === undefined) getMinDist = false ;
+        if (getMinDist === undefined) getMinDist = false;
         if (genPaths === undefined) genPaths = false;
 
         if (dest === undefined) dest = null;
@@ -402,9 +448,9 @@ export abstract class AbstractGraph<V extends AbstractVertex, E extends Abstract
         const distMap: Map<V, number> = new Map();
         const seen: Set<V> = new Set();
         const preMap: Map<V, V | null> = new Map(); // predecessor
-        const srcVertex = this.getVertex(src);
+        const srcVertex = this._getVertex(src);
 
-        const destVertex = dest ? this.getVertex(dest) : null;
+        const destVertex = dest ? this._getVertex(dest) : null;
 
         if (!srcVertex) {
             return null;
@@ -498,17 +544,6 @@ export abstract class AbstractGraph<V extends AbstractVertex, E extends Abstract
     }
 
     /**
-     * Dijkstra's algorithm only solves the single-source shortest path problem, while the Bellman-Ford algorithm and Floyd-Warshall algorithm can address shortest paths between all pairs of nodes.
-     * Dijkstra's algorithm is suitable for graphs with non-negative edge weights, whereas the Bellman-Ford algorithm and Floyd-Warshall algorithm can handle negative-weight edges.
-     * The time complexity of Dijkstra's algorithm and the Bellman-Ford algorithm depends on the size of the graph, while the time complexity of the Floyd-Warshall algorithm is O(V^3), where V is the number of nodes. For dense graphs, Floyd-Warshall might become slower.
-     */
-
-    /**
-     * Dijkstra algorithm time: O(logVE) space: O(V + E)
-     * Dijkstra's algorithm is used to find the shortest paths from a source node to all other nodes in a graph. Its basic idea is to repeatedly choose the node closest to the source node and update the distances of other nodes using this node as an intermediary. Dijkstra's algorithm requires that the edge weights in the graph are non-negative.
-     */
-
-    /**
      * Dijkstra algorithm time: O(logVE) space: O(V + E)
      * Dijkstra's algorithm is used to find the shortest paths from a source node to all other nodes in a graph. Its basic idea is to repeatedly choose the node closest to the source node and update the distances of other nodes using this node as an intermediary. Dijkstra's algorithm requires that the edge weights in the graph are non-negative.
      * The `dijkstra` function implements Dijkstra's algorithm to find the shortest path between a source vertex and an
@@ -540,8 +575,8 @@ export abstract class AbstractGraph<V extends AbstractVertex, E extends Abstract
         const seen: Set<V> = new Set();
         const preMap: Map<V, V | null> = new Map(); // predecessor
 
-        const srcVertex = this.getVertex(src);
-        const destVertex = dest ? this.getVertex(dest) : null;
+        const srcVertex = this._getVertex(src);
+        const destVertex = dest ? this._getVertex(dest) : null;
 
         if (!srcVertex) {
             return null;
@@ -633,14 +668,18 @@ export abstract class AbstractGraph<V extends AbstractVertex, E extends Abstract
         return {distMap, preMap, seen, paths, minDist, minPath};
     }
 
-    abstract getEndsOfEdge(edge: E): [V, V] | null;
+    /**
+     * Dijkstra's algorithm only solves the single-source shortest path problem, while the Bellman-Ford algorithm and Floyd-Warshall algorithm can address shortest paths between all pairs of nodes.
+     * Dijkstra's algorithm is suitable for graphs with non-negative edge weights, whereas the Bellman-Ford algorithm and Floyd-Warshall algorithm can handle negative-weight edges.
+     * The time complexity of Dijkstra's algorithm and the Bellman-Ford algorithm depends on the size of the graph, while the time complexity of the Floyd-Warshall algorithm is O(V^3), where V is the number of nodes. For dense graphs, Floyd-Warshall might become slower.
+     */
 
     /**
-     * BellmanFord time:O(VE) space:O(V)
-     * one to rest pairs
-     * The Bellman-Ford algorithm is also used to find the shortest paths from a source node to all other nodes in a graph. Unlike Dijkstra's algorithm, it can handle edge weights that are negative. Its basic idea involves iterative relaxation of all edges for several rounds to gradually approximate the shortest paths. Due to its ability to handle negative-weight edges, the Bellman-Ford algorithm is more flexible in some scenarios.
-     * The `bellmanFord` function implements the Bellman-Ford algorithm to find the shortest path from a source vertex to
+     * Dijkstra algorithm time: O(logVE) space: O(V + E)
+     * Dijkstra's algorithm is used to find the shortest paths from a source node to all other nodes in a graph. Its basic idea is to repeatedly choose the node closest to the source node and update the distances of other nodes using this node as an intermediary. Dijkstra's algorithm requires that the edge weights in the graph are non-negative.
      */
+
+    abstract getEndsOfEdge(edge: E): [V, V] | null;
 
     /**
      * BellmanFord time:O(VE) space:O(V)
@@ -662,7 +701,7 @@ export abstract class AbstractGraph<V extends AbstractVertex, E extends Abstract
         if (getMin === undefined) getMin = false;
         if (genPath === undefined) genPath = false;
 
-        const srcVertex = this.getVertex(src);
+        const srcVertex = this._getVertex(src);
         const paths: V[][] = [];
         const distMap: Map<V, number> = new Map();
         const preMap: Map<V, V> = new Map(); // predecessor
@@ -747,9 +786,10 @@ export abstract class AbstractGraph<V extends AbstractVertex, E extends Abstract
     }
 
     /**
-     * Floyd algorithm time: O(V^3) space: O(V^2), not support graph with negative weight cycle
-     * all pairs
-     * The Floyd-Warshall algorithm is used to find the shortest paths between all pairs of nodes in a graph. It employs dynamic programming to compute the shortest paths from any node to any other node. The Floyd-Warshall algorithm's advantage lies in its ability to handle graphs with negative-weight edges, and it can simultaneously compute shortest paths between any two nodes.
+     * BellmanFord time:O(VE) space:O(V)
+     * one to rest pairs
+     * The Bellman-Ford algorithm is also used to find the shortest paths from a source node to all other nodes in a graph. Unlike Dijkstra's algorithm, it can handle edge weights that are negative. Its basic idea involves iterative relaxation of all edges for several rounds to gradually approximate the shortest paths. Due to its ability to handle negative-weight edges, the Bellman-Ford algorithm is more flexible in some scenarios.
+     * The `bellmanFord` function implements the Bellman-Ford algorithm to find the shortest path from a source vertex to
      */
 
     /**
@@ -799,8 +839,11 @@ export abstract class AbstractGraph<V extends AbstractVertex, E extends Abstract
 
     }
 
-
-    /**--- start find cycles --- */
+    /**
+     * Floyd algorithm time: O(V^3) space: O(V^2), not support graph with negative weight cycle
+     * all pairs
+     * The Floyd-Warshall algorithm is used to find the shortest paths between all pairs of nodes in a graph. It employs dynamic programming to compute the shortest paths from any node to any other node. The Floyd-Warshall algorithm's advantage lies in its ability to handle graphs with negative-weight edges, and it can simultaneously compute shortest paths between any two nodes.
+     */
 
     /**
      * Tarjan is an algorithm based on DFS,which is used to solve the connectivity problem of graphs.
@@ -924,6 +967,13 @@ export abstract class AbstractGraph<V extends AbstractVertex, E extends Abstract
         }
 
         return {dfnMap, lowMap, bridges, articulationPoints, SCCs, cycles};
+    }
+
+
+    /**--- start find cycles --- */
+
+    protected _setVertices(value: Map<VertexId, V>) {
+        this._vertices = value;
     }
 
 
