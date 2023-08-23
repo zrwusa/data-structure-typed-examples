@@ -5,17 +5,10 @@
  * @copyright Copyright (c) 2022 Tyler Zeng <zrwusa@gmail.com>
  * @license MIT License
  */
-import type {
-    BinaryTreeNodeId,
-    BinaryTreeNodePropertyName,
-    BSTComparator,
-    BSTDeletedResult,
-    RecursiveBSTNode
-} from '../types';
-import {BinaryTree, BinaryTreeNode, FamilyPosition, LoopType,} from './binary-tree';
+import type {BinaryTreeNodeId, BinaryTreeNodePropertyName, BSTComparator, RecursiveBSTNode} from '../types';
+import {BinaryTreeDeletedResult, BSTOptions, CP, FamilyPosition, LoopType} from '../types';
+import {BinaryTree, BinaryTreeNode} from './binary-tree';
 import {IBinaryTree, IBinaryTreeNode} from '../interfaces';
-
-export enum CP {lt = -1, eq = 0, gt = 1}
 
 export class BSTNode<T, FAMILY extends BSTNode<T, FAMILY> = RecursiveBSTNode<T>> extends BinaryTreeNode<T, FAMILY> implements IBinaryTreeNode<T, FAMILY> {
 
@@ -26,10 +19,7 @@ export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends Binar
      * The constructor function accepts an optional options object and sets the comparator property if provided.
      * @param [options] - An optional object that can contain the following properties:
      */
-    constructor(options?: {
-        comparator?: BSTComparator,
-        loopType?: LoopType
-    }) {
+    constructor(options?: BSTOptions) {
         super(options);
         if (options !== undefined) {
             const {comparator} = options;
@@ -83,7 +73,7 @@ export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends Binar
                         if (cur.left === undefined) {
                             if (newNode) {
                                 newNode.parent = cur;
-                                newNode.familyPosition = FamilyPosition.left;
+                                newNode.familyPosition = FamilyPosition.LEFT;
                             }
                             //Add to the left of the current node
                             cur.left = newNode;
@@ -100,7 +90,7 @@ export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends Binar
                         if (cur.right === undefined) {
                             if (newNode) {
                                 newNode.parent = cur;
-                                newNode.familyPosition = FamilyPosition.right;
+                                newNode.familyPosition = FamilyPosition.RIGHT;
                             }
                             //Add to the right of the current node
                             cur.right = newNode;
@@ -159,8 +149,8 @@ export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends Binar
      * set to false or not provided, the count of the node will be taken into account and the
      * @returns an array of `BSTDeletedResult<N>` objects.
      */
-    override remove(id: BinaryTreeNodeId, ignoreCount?: boolean): BSTDeletedResult<N>[] {
-        const bstDeletedResult: BSTDeletedResult<N>[] = [];
+    override remove(id: BinaryTreeNodeId, ignoreCount?: boolean): BinaryTreeDeletedResult<N>[] {
+        const bstDeletedResult: BinaryTreeDeletedResult<N>[] = [];
         if (!this.root) return bstDeletedResult;
 
         const curr: N | null = this.get(id);
@@ -178,10 +168,10 @@ export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends Binar
                     if (curr.right !== undefined) this._setRoot(curr.right);
                 } else {
                     switch (curr.familyPosition) {
-                        case FamilyPosition.left:
+                        case FamilyPosition.LEFT:
                             parent.left = curr.right;
                             break;
-                        case FamilyPosition.right:
+                        case FamilyPosition.RIGHT:
                             parent.right = curr.right;
                             break;
                     }
@@ -225,7 +215,7 @@ export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends Binar
         if (!this.root) return [];
         const result: N[] = [];
 
-        if (this.loopType === LoopType.recursive) {
+        if (this.loopType === LoopType.RECURSIVE) {
             const _traverse = (cur: N) => {
                 if (this._pushByPropertyNameStopOrNot(cur, result, nodeProperty, propertyName, onlyOne)) return;
 
@@ -293,7 +283,7 @@ export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends Binar
 
         let sum = 0;
 
-        if (this.loopType === LoopType.recursive) {
+        if (this.loopType === LoopType.RECURSIVE) {
             const _traverse = (cur: N): void => {
                 const compared = this._compare(cur.id, id);
                 if (compared === CP.eq) {
@@ -366,7 +356,7 @@ export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends Binar
             }
         }
 
-        if (this.loopType === LoopType.recursive) {
+        if (this.loopType === LoopType.RECURSIVE) {
             const _traverse = (cur: N) => {
                 const compared = this._compare(cur.id, node.id);
                 _sumByPropertyName(cur);
@@ -404,7 +394,7 @@ export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends Binar
         this.clear();
 
         if (sorted.length < 1) return false;
-        if (this.loopType === LoopType.recursive) {
+        if (this.loopType === LoopType.RECURSIVE) {
             const buildBalanceBST = (l: number, r: number) => {
                 if (l > r) return;
                 const m = l + Math.floor((r - l) / 2);
@@ -445,7 +435,7 @@ export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends Binar
 
         let balanced = true;
 
-        if (this.loopType === LoopType.recursive) {
+        if (this.loopType === LoopType.RECURSIVE) {
             const _height = (cur: N | null | undefined): number => {
                 if (!cur) return 0;
                 const leftHeight = _height(cur.left), rightHeight = _height(cur.right);

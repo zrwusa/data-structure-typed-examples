@@ -71,7 +71,7 @@ export function maxSlidingWindowHeap(nums: number[], k: number): number[] {
 export function maxSlidingWindowBST(nums: number[], k: number): number[] {
     const n = nums.length, ans: number[] = [], bst: BST = new BST({
         comparator: (a, b) => b - a,
-        loopType: LoopType.iterative
+        loopType: LoopType.ITERATIVE
     });
 
     let j = 0;
@@ -89,7 +89,7 @@ export function maxSlidingWindowBST(nums: number[], k: number): number[] {
 export function maxSlidingWindowBST2(nums: number[], k: number): number[] {
     const n = nums.length, ans: number[] = [], bst: BST = new BST({
         comparator: (a, b) => b - a,
-        loopType: LoopType.recursive
+        loopType: LoopType.RECURSIVE
     });
 
     let j = 0;
@@ -107,7 +107,7 @@ export function maxSlidingWindowBST2(nums: number[], k: number): number[] {
 export function maxSlidingWindowBST3(nums: number[], k: number): number[] {
     const n = nums.length, ans: number[] = [], bst: BST = new BST({
         comparator: (a, b) => b - a,
-        loopType: LoopType.iterative
+        loopType: LoopType.ITERATIVE
     });
 
     const removeElement = (x: number) => {
@@ -129,7 +129,7 @@ export function maxSlidingWindowBST3(nums: number[], k: number): number[] {
 export function maxSlidingWindowBST4(nums: number[], k: number): number[] {
     const n = nums.length, ans: number[] = [], bst: BST = new BST({
         comparator: (a, b) => b - a,
-        loopType: LoopType.recursive
+        loopType: LoopType.RECURSIVE
     });
 
     const removeElement = (x: number) => {

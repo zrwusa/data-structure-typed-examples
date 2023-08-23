@@ -465,8 +465,7 @@ export const VividAlgorithm = function (props: VividAlgorithmProps) {
                 <circle style={{cursor: 'pointer'}} stroke={circleStrokeColor} r={treeNodeR} cx={offsetX} cy={offsetY}
                         fill={isActive ? circleFillActiveColor : circleFillColor}
                         onClick={(e) => {
-                            const {id, val, count} = node;
-                            console.info({id, val, count});
+                            console.info(node);
                         }}
                 />
                 {
@@ -480,8 +479,8 @@ export const VividAlgorithm = function (props: VividAlgorithmProps) {
                             y={offsetY + fontOffsetY}
                             textAnchor="middle"
                             onClick={(e) => {
-                                const {id, val, count} = node;
-                                console.info({id, val, count});
+                                console.info(node);
+
                             }}
                         >
                             {/*<tspan x={offsetX} y={offsetY + fontOffsetY}>{node.id}</tspan>*/}
