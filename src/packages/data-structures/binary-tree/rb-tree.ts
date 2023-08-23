@@ -1,12 +1,22 @@
-import {BinaryTree, BinaryTreeNode} from './binary-tree';
-import {IBinaryTree, IBinaryTreeNode} from '../interfaces';
-import {RBColor, RBTreeOptions} from '../types';
+import {BinaryTreeNodeId, RBColor, RBTreeOptions} from '../types';
+import {IRBTree, IRBTreeNode} from '../interfaces/rb-tree';
+import {BST, BSTNode} from './bst';
 
 
-class RBNode<T, FAMILY extends RBNode<T, FAMILY>> extends BinaryTreeNode<T, FAMILY> implements IBinaryTreeNode<T, FAMILY> {
-    // override createNode(id: BinaryTreeNodeId, val: T | null, count?: number): RBNode<T> | null {
-    //     return val !== null ? new RBNode<T>(id, val, count) : null;
-    // }
+export class RBTreeNode<T, FAMILY extends RBTreeNode<T, FAMILY>> extends BSTNode<T, FAMILY> implements IRBTreeNode<T, FAMILY> {
+    /**
+     * The function creates a new RBTreeNode with the given id, value, and count and returns it as a FAMILY object.
+     * @param {BinaryTreeNodeId} id - The `id` parameter is the identifier for the binary tree node. It is used to uniquely
+     * identify each node in the tree.
+     * @param {T | null} [val] - The "val" parameter represents the value to be stored in the node. It can be of type T
+     * (generic type) or null.
+     * @param {number} [count] - The `count` parameter represents the number of occurrences of the value in the binary tree
+     * node.
+     * @returns The method is returning a new instance of the RBTreeNode class, casted as a FAMILY type.
+     */
+    override createNode(id: BinaryTreeNodeId, val?: T | null, count?: number): FAMILY {
+        return new RBTreeNode(id, val, count) as FAMILY;
+    }
 
     constructor(id: number, val: T, count?: number) {
         super(id, val, count);
@@ -58,14 +68,14 @@ class RBNode<T, FAMILY extends RBNode<T, FAMILY>> extends BinaryTreeNode<T, FAMI
     // }
 }
 
-class RBTree<N extends RBNode<N['val'], N>> extends BinaryTree<N> implements IBinaryTree<N> {
+export class RBTree<N extends RBTreeNode<N['val'], N>> extends BST<N> implements IRBTree<N> {
     constructor(options?: RBTreeOptions) {
         super(options);
     }
 
-    // override _createNode(id: BinaryTreeNodeId, val: N | null, count?: number): RBNode<N> | null {
-    //     return val !== null ? new RBNode<N>(id, val, count) : null;
-    // }
+    override createNode(id: BinaryTreeNodeId, val?: N['val'], count?: number): N {
+        return new RBTreeNode(id, val, count) as N;
+    }
 
     // private override _root: BinaryTreeNode<N> | null = null;
     //

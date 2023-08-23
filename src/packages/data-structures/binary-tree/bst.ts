@@ -8,13 +8,25 @@
 import type {BinaryTreeNodeId, BinaryTreeNodePropertyName, BSTComparator, RecursiveBSTNode} from '../types';
 import {BinaryTreeDeletedResult, BSTOptions, CP, FamilyPosition, LoopType} from '../types';
 import {BinaryTree, BinaryTreeNode} from './binary-tree';
-import {IBinaryTree, IBinaryTreeNode} from '../interfaces';
+import {IAbstractBinaryTree, IAbstractBinaryTreeNode, IBST, IBSTNode} from '../interfaces';
 
-export class BSTNode<T, FAMILY extends BSTNode<T, FAMILY> = RecursiveBSTNode<T>> extends BinaryTreeNode<T, FAMILY> implements IBinaryTreeNode<T, FAMILY> {
-
+export class BSTNode<T, FAMILY extends BSTNode<T, FAMILY> = RecursiveBSTNode<T>> extends BinaryTreeNode<T, FAMILY> implements IBSTNode<T, FAMILY> {
+    /**
+     * The function creates a new binary search tree node with the specified id, value, and count.
+     * @param {BinaryTreeNodeId} id - The id parameter is the identifier for the binary tree node. It is used to uniquely
+     * identify each node in the tree.
+     * @param {T} [val] - The "val" parameter represents the value that will be stored in the binary tree node. It is an
+     * optional parameter, meaning it can be omitted when calling the "createNode" function.
+     * @param {number} [count] - The `count` parameter represents the number of occurrences of the value in the binary
+     * search tree node. It is an optional parameter, so it can be omitted when calling the `createNode` method.
+     * @returns The method is returning a new instance of the BSTNode class, casted as the FAMILY type.
+     */
+    override createNode(id: BinaryTreeNodeId, val?: T , count?: number): FAMILY  {
+        return new BSTNode<T, FAMILY>(id, (val === undefined ? id : val) as T, count) as FAMILY;
+    }
 }
 
-export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends BinaryTree<N> implements IBinaryTree<N> {
+export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends BinaryTree<N> implements IBST<N> {
     /**
      * The constructor function accepts an optional options object and sets the comparator property if provided.
      * @param [options] - An optional object that can contain the following properties:
@@ -29,9 +41,18 @@ export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends Binar
         }
     }
 
-    override _createNode(id: BinaryTreeNodeId, val: N['val'] | null, count?: number): N | null {
-        const node = val !== null ? new BSTNode<N['val'], N>(id, val, count) : null;
-        return node as N;
+    /**
+     * The function creates a new binary search tree node with the given id, value, and count.
+     * @param {BinaryTreeNodeId} id - The `id` parameter is the identifier for the binary tree node. It is of type
+     * `BinaryTreeNodeId`.
+     * @param {N['val'] | null} [val] - The `val` parameter is the value that will be stored in the node. It can be of any
+     * type `N['val']` or `null`.
+     * @param {number} [count] - The `count` parameter is an optional parameter that represents the number of occurrences
+     * of a particular value in the binary search tree node.
+     * @returns a new instance of the BSTNode class, casted as type N.
+     */
+    override createNode(id: BinaryTreeNodeId, val?: N['val'], count?: number): N {
+        return  new BSTNode<N['val'], N>(id, val === undefined ? id : val, count) as N;
     }
 
     /**
@@ -48,7 +69,7 @@ export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends Binar
      */
     override add(id: BinaryTreeNodeId, val: N['val'] | null, count: number = 1): N | null {
         let inserted: N | null = null;
-        const newNode = this._createNode(id, val, count);
+        const newNode = this.createNode(id, val, count);
         if (this.root === null) {
             this._setRoot(newNode);
             this._setSize(this.size + 1);
@@ -133,7 +154,7 @@ export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends Binar
      * greater than, it returns the ID of the leftmost node. Otherwise, it also returns the ID of the rightmost node. If
      * there are no nodes in
      */
-    lastKey() {
+    lastKey(): BinaryTreeNodeId {
         if (this._compare(0, 1) === CP.lt) return this.getRightMost()?.id ?? 0;
         else if (this._compare(0, 1) === CP.gt) return this.getLeftMost()?.id ?? 0;
         else return this.getRightMost()?.id ?? 0;

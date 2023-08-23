@@ -93,7 +93,7 @@ export const testGraphs = async (proxyHandler: TProxyHandler) => {
     await wait(waitMan.time3);
     console.log(JSON.stringify(vars.myGraph.edgeSet()), vars.myGraph.vertices);
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.removeEdgeBetween(1,2)`, vars.myGraph.removeEdgeBetween(1, 2));
+    console.log(`vars.myGraph.removeEdgeBetween(1,2)`, vars.myGraph.removeEdgeSrcToDest(1, 2));
     await wait(waitMan.time3);
     console.log(`vars.myGraph.getEdge(1, 2)`, vars.myGraph.getEdge(1, 2));
     await wait(waitMan.time3);
@@ -152,6 +152,22 @@ export const testGraphs = async (proxyHandler: TProxyHandler) => {
 
     await wait(waitMan.time3);
     console.log(vars.myGraph.dijkstraWithoutHeap(1, null, true, true));
+
+    await wait(waitMan.time3);
+    console.log(vars.myGraph.removeEdgesBetween(1, 2));
+
+    await wait(waitMan.time3);
+    console.log(vars.myGraph.removeEdgesBetween(1, 3));
+
+    await wait(waitMan.time3);
+    console.log(vars.myGraph.removeEdgeSrcToDest(1, 9));
+
+    await wait(waitMan.time3);
+    console.log(vars.myGraph.removeEdgeSrcToDest(9, 7));
+    console.log(vars.myGraph.removeEdgeSrcToDest(7, 9));
+
+    console.log(vars.myGraph.outEdgeMap.size === 6, vars.myGraph.outEdgeMap);
+    console.log(vars.myGraph.inEdgeMap.size === 6, vars.myGraph.inEdgeMap);
 };
 
 

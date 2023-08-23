@@ -135,7 +135,7 @@ export function recoverTree(root: BSTNode<number> | null | undefined): void {
         }
 
         if (prev) {
-            if (prev.val !== null && cur.val !== null && prev.val > cur.val) {
+            if (prev.val && cur.val && prev?.val > cur?.val) {
                 if (!firstBad) {
                     firstBad = prev;
                     secondBad = cur;

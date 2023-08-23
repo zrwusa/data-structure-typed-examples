@@ -313,13 +313,16 @@ export function maxPathSum(root: BinaryTreeNode<number> | null): number {
 
     let maxSum = Number.MIN_SAFE_INTEGER;
 
-    const asPortionMax = (curr?: BinaryTreeNode<number> | null): number => {
+    const asPortionMax = (curr?: BinaryTreeNode | null): number => {
         if (!curr) return 0;
 
         const lPMax = asPortionMax(curr.left);
         const rPMax = asPortionMax(curr.right);
-        maxSum = Math.max(maxSum, curr.val + Math.max(0, lPMax, rPMax, lPMax + rPMax));
-        return curr.val + Math.max(0, lPMax, rPMax);
+        if (typeof curr.val === 'number') {
+            maxSum = Math.max(maxSum, curr.val + Math.max(0, lPMax, rPMax, lPMax + rPMax));
+            return curr.val + Math.max(0, lPMax, rPMax);
+        }
+        return 0;
     }
 
     asPortionMax(root);

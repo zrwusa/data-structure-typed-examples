@@ -35,6 +35,7 @@ module.exports = {
 //         "react-hooks/rules-of-hooks": "error",                        // part of the eslint-plugin-react-hooks package, ensures that hooks are used according to the rules defined by React. It helps catch common mistakes such as using hooks conditionally, not calling hooks in the top-level of the component, or using hooks inside loops or conditions where their order could change.
 //         "react-hooks/exhaustive-deps": "warn",                        //  part of the eslint-plugin-react-hooks ,ensure that the dependency array passed to the useEffect and useCallback hooks includes all the dependencies required for proper functionality. When using these hooks, it's important to specify all the variables or values that the effect or callback function depends on. This rule warns if any dependencies are missing from the array or if unnecessary dependencies are included, which can lead to bugs or performance issues.
 //         "react/prop-types": "off"                                     // part of the eslint-plugin-react package and checks whether you have defined PropTypes for your React components. PropTypes are a way to declare the expected types of the component's props, providing type checking and documentation for the component's API. This rule encourages you to define PropTypes for your components to improve code quality, maintainability, and catch potential prop-related bugs.
+        '@typescript-eslint/no-this-alias': 'off'
     },
     settings: {
         react: {
