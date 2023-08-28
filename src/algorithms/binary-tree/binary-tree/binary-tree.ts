@@ -1,5 +1,5 @@
 import {DeepProxy, TProxyHandler} from '@qiwi/deep-proxy';
-import {BinaryTree, BinaryTreeNode} from 'data-structure-typed';
+import {BinaryTree, BinaryTreeNode, LoopType} from 'data-structure-typed';
 import {wait, WaitManager} from '../../../utils';
 import {runAlgorithm} from '../../helpers';
 import {deleteLeavesCase1, pathSumIIICase3, testBSTCase1, testSymmetricTreeCase1} from '../bst';
@@ -12,7 +12,7 @@ export async function testBinaryTree(arr: number[], proxyHandler?: TProxyHandler
     const clonedData = [...arr];
 
     const proxy: { tree: BinaryTree } = new DeepProxy({
-        tree: new BinaryTree({})
+        tree: new BinaryTree({loopType: LoopType.RECURSIVE})
     }, proxyHandler);
     proxy.tree.fill(clonedData)
 
@@ -22,9 +22,8 @@ export async function testBinaryTree(arr: number[], proxyHandler?: TProxyHandler
 
 export async function showBinaryTree(arr: number[], proxyHandler?: TProxyHandler) {
     const clonedData = [...arr];
-
     const proxy: { tree: BinaryTree } = new DeepProxy({
-        tree: new BinaryTree({autoIncrementId: true})
+        tree: new BinaryTree({autoIncrementId: false})
     }, proxyHandler);
     proxy.tree.fill(clonedData)
 

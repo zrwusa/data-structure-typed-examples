@@ -37,8 +37,6 @@ export interface IAbstractBinaryTreeNode<T, FAMILY extends IAbstractBinaryTreeNo
 
     get familyPosition(): FamilyPosition
 
-    set familyPosition(v: FamilyPosition)
-
     get count(): number
 
     set count(v: number)
@@ -53,7 +51,7 @@ export interface IAbstractBinaryTreeNode<T, FAMILY extends IAbstractBinaryTreeNo
 }
 
 export interface IAbstractBinaryTree<N extends AbstractBinaryTreeNode<N['val'], N>> {
-    createNode(id: BinaryTreeNodeId, val: N['val'] | null, count?: number): N | null
+    createNode(id: BinaryTreeNodeId, val?: N['val'], count?: number): N | null
 
     get loopType(): LoopType
 
@@ -71,7 +69,7 @@ export interface IAbstractBinaryTree<N extends AbstractBinaryTreeNode<N['val'], 
 
     get maxId(): number
 
-    get isDuplicatedVal(): boolean
+    get isMergeDuplicatedVal(): boolean
 
     get root(): N | null
 

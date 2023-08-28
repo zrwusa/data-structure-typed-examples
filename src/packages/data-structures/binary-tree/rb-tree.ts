@@ -1,24 +1,10 @@
-import {BinaryTreeNodeId, RBColor, RBTreeOptions} from '../types';
+import {BinaryTreeNodeId, RBColor, RBTreeNodeNested, RBTreeOptions} from '../types';
 import {IRBTree, IRBTreeNode} from '../interfaces/rb-tree';
 import {BST, BSTNode} from './bst';
 
 
-export class RBTreeNode<T, FAMILY extends RBTreeNode<T, FAMILY>> extends BSTNode<T, FAMILY> implements IRBTreeNode<T, FAMILY> {
-    /**
-     * The function creates a new RBTreeNode with the given id, value, and count and returns it as a FAMILY object.
-     * @param {BinaryTreeNodeId} id - The `id` parameter is the identifier for the binary tree node. It is used to uniquely
-     * identify each node in the tree.
-     * @param {T | null} [val] - The "val" parameter represents the value to be stored in the node. It can be of type T
-     * (generic type) or null.
-     * @param {number} [count] - The `count` parameter represents the number of occurrences of the value in the binary tree
-     * node.
-     * @returns The method is returning a new instance of the RBTreeNode class, casted as a FAMILY type.
-     */
-    override createNode(id: BinaryTreeNodeId, val?: T | null, count?: number): FAMILY {
-        return new RBTreeNode(id, val, count) as FAMILY;
-    }
-
-    constructor(id: number, val: T, count?: number) {
+export class RBTreeNode<T = any, FAMILY extends RBTreeNode<T, FAMILY> = RBTreeNodeNested<T>> extends BSTNode<T, FAMILY> implements IRBTreeNode<T, FAMILY> {
+    constructor(id: BinaryTreeNodeId, val?: T, count?: number) {
         super(id, val, count);
     }
 
@@ -30,6 +16,20 @@ export class RBTreeNode<T, FAMILY extends RBTreeNode<T, FAMILY>> extends BSTNode
 
     set color(value: RBColor) {
         this._color = value;
+    }
+
+    /**
+     * The function creates a new RBTreeNode with the given id, value, and count and returns it as a FAMILY object.
+     * @param {BinaryTreeNodeId} id - The `id` parameter is the identifier for the binary tree node. It is used to uniquely
+     * identify each node in the tree.
+     * @param {T | null} [val] - The "val" parameter represents the value to be stored in the node. It can be of type T
+     * (generic type) or null.
+     * @param {number} [count] - The `count` parameter represents the number of occurrences of the value in the binary tree
+     * node.
+     * @returns The method is returning a new instance of the RBTreeNode class, casted as a FAMILY type.
+     */
+    override createNode(id: BinaryTreeNodeId, val?: T, count?: number): FAMILY {
+        return new RBTreeNode(id, val, count) as FAMILY;
     }
 
     // private override _parent: RBNode<T> | null;
@@ -48,7 +48,6 @@ export class RBTreeNode<T, FAMILY extends RBTreeNode<T, FAMILY>> extends BSTNode
     // override set left(v: RBNode<T> | null | undefined) {
     //     if (v) {
     //         v.parent = this;
-    //         v.familyPosition = FamilyPosition.LEFT;
     //     }
     //     this._left = v;
     // }
@@ -62,13 +61,12 @@ export class RBTreeNode<T, FAMILY extends RBTreeNode<T, FAMILY>> extends BSTNode
     // override set right(v: RBNode<T> | null | undefined) {
     //     if (v) {
     //         v.parent = this;
-    //         v.familyPosition = FamilyPosition.RIGHT;
     //     }
     //     this._right = v;
     // }
 }
 
-export class RBTree<N extends RBTreeNode<N['val'], N>> extends BST<N> implements IRBTree<N> {
+export class RBTree<N extends RBTreeNode<N['val'], N> = RBTreeNode> extends BST<N> implements IRBTree<N> {
     constructor(options?: RBTreeOptions) {
         super(options);
     }
@@ -83,7 +81,7 @@ export class RBTree<N extends RBTreeNode<N['val'], N>> extends BST<N> implements
     //     return this._root;
     // }
 
-    insert(id: number, val: N | null) {
+    insert(id: number, val?: N | null) {
 
     }
 

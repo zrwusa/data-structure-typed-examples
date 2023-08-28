@@ -360,7 +360,7 @@ export function generateParenthesis(n: number): string[] {
 
 export function ladderLengthDFS(beginWord: string, endWord: string, wordList: string[], proxyHandler: TProxyHandler): number {
 
-    const proxyVariables = new DeepProxy<{ tree: TreeNode<string> }>({tree: new TreeNode(beginWord, beginWord, beginWord)}, proxyHandler);
+    const proxyVariables = new DeepProxy<{ tree: TreeNode<string> }>({tree: new TreeNode(beginWord, beginWord)}, proxyHandler);
 
     const wordListLength = wordList.length;
     // corner case
@@ -393,7 +393,7 @@ export function ladderLengthDFS(beginWord: string, endWord: string, wordList: st
         for (let i = 0, len = rest.length; i < len; i++) {
             if (isOneDiffOrdered(rest[i], accumulated[accumulated.length - 1])) {
                 accumulated.push(rest[i]);
-                const newNode = new TreeNode(accumulated.join(), accumulated.join(), accumulated.join());
+                const newNode = new TreeNode(accumulated.join(), accumulated.join());
                 parentNode.addChildren(newNode);
                 const backTrackRest = [...rest];
                 rest.splice(i, 1);

@@ -37,8 +37,8 @@ export const TreeScreen = () => {
     const binaryTree = new BinaryTree({});
     binaryTree.fill([1, 2, 3]);
 
-    const [binaryTreeDataInput, setBinaryTreeDataInput] = useState('[-10,9,20,null,null,15,7]');
-    const [binaryTreeData, setBinaryTreeData] = useState('[-10,9,20,null,null,15,7]')
+    const [binaryTreeDataInput, setBinaryTreeDataInput] = useState('[-10,-10,-10,9,9,20,null,null,15,7,8,null,2,null,6,null,null,8,8,8]');
+    const [binaryTreeData, setBinaryTreeData] = useState('[-10,-10,-10,9,9,20,null,null,15,7,8,null,2,null,6,null,null,8,8,8]')
     useEffect(() => {
         try {
             JSON.parse(binaryTreeDataInput);
@@ -50,25 +50,15 @@ export const TreeScreen = () => {
 
 
     return <>
-        <AlgorithmPanel algorithm={DFS} testCase={[treeData, 'PreOrder']} buttonLabel={'DFS PreOrder'}
-                        referenceData={treeData}
-                        relatedNodeKey="nodeNeedPrint"/>
-        <AlgorithmPanel algorithm={DFS} testCase={[treeData, 'InOrder']} buttonLabel={'DFS InOrder'}
-                        referenceData={treeData}
-                        relatedNodeKey="nodeNeedPrint"/>
-        <AlgorithmPanel algorithm={DFS} testCase={[treeData, 'PostOrder']} buttonLabel={'DFS PostOrder'}
-                        referenceData={treeData}
-                        relatedNodeKey="nodeNeedPrint"/>
-        <AlgorithmPanel algorithm={BFS} testCase={[treeData]} buttonLabel={'BFS'} referenceData={treeData}
-                        relatedNodeKey="node"/>
+        <AlgorithmPanel algorithm={testBinaryTree} testCase={testBinaryTreeCase2} buttonLabel={'Test BinaryTree'}/>
+        <AlgorithmPanel algorithm={testBST} testCase={testBSTCase1} buttonLabel={'Test BST'}/>
+        <AlgorithmPanel algorithm={testAVLTree} testCase={testBSTCase1} buttonLabel={'Test AVL'}/>
+
+        <AlgorithmPanel algorithm={testBST2} testCase={[[3, 4, 2, 1, 2, 3, 4]]} buttonLabel={'Test BST II'}/>
         <AlgorithmPanel algorithm={binaryTreeInorderTraversal} testCase={[binaryTree.root]}
                         buttonLabel={'Binary Tree Inorder Traversal'}
                         referenceData={binaryTree.root} relatedNodeKey="node"/>
 
-        <AlgorithmPanel algorithm={testBST} testCase={testBSTCase1} buttonLabel={'Test BST'}/>
-        <AlgorithmPanel algorithm={testBST2} testCase={[[3, 4, 2, 1, 2, 3, 4]]} buttonLabel={'Test BST II'}/>
-        <AlgorithmPanel algorithm={testAVLTree} testCase={testBSTCase1} buttonLabel={'Test AVL'}/>
-        <AlgorithmPanel algorithm={testBinaryTree} testCase={testBinaryTreeCase2} buttonLabel={'Test BinaryTree'}/>
 
         <AlgorithmPanel algorithm={showBinaryTree} testCase={[binaryTreeData ? JSON.parse(binaryTreeData) : []]}
                         buttonLabel={'Show BinaryTree'}><TextField fullWidth label="Array of Node Values"
@@ -83,6 +73,18 @@ export const TreeScreen = () => {
 
         <AlgorithmPanel algorithm={countSmallerBST} testCase={countSmallerCase1}
                         buttonLabel={'Count Smaller BST'}/>
+        <AlgorithmPanel algorithm={DFS} testCase={[treeData, 'PreOrder']} buttonLabel={'DFS PreOrder'}
+                        referenceData={treeData}
+                        relatedNodeKey="nodeNeedPrint"/>
+        <AlgorithmPanel algorithm={DFS} testCase={[treeData, 'InOrder']} buttonLabel={'DFS InOrder'}
+                        referenceData={treeData}
+                        relatedNodeKey="nodeNeedPrint"/>
+        <AlgorithmPanel algorithm={DFS} testCase={[treeData, 'PostOrder']} buttonLabel={'DFS PostOrder'}
+                        referenceData={treeData}
+                        relatedNodeKey="nodeNeedPrint"/>
+        <AlgorithmPanel algorithm={BFS} testCase={[treeData]} buttonLabel={'BFS'} referenceData={treeData}
+                        relatedNodeKey="node"/>
+
 
         <AlgorithmPanel algorithm={deleteLeaves} testCase={deleteLeavesCase1}
                         buttonLabel={'Delete Leaves With a Given Value'}/>

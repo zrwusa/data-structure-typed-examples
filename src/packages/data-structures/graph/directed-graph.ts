@@ -8,7 +8,7 @@
 import {arrayRemove} from '../../utils';
 import {AbstractEdge, AbstractGraph, AbstractVertex} from './abstract-graph';
 import type {TopologicalStatus, VertexId} from '../types';
-import {IDirectedGraph, IAbstractGraph} from '../interfaces';
+import {IDirectedGraph} from '../interfaces';
 
 export class DirectedVertex<T = number> extends AbstractVertex<T> {
     /**
@@ -138,42 +138,6 @@ export class DirectedGraph<V extends DirectedVertex<any> = DirectedVertex, E ext
         }
 
         return edges[0] || null;
-    }
-
-    /**
-     * The `addEdge` function adds a directed edge to a graph if the source and destination vertices exist.
-     * @param edge - The parameter `edge` is of type `E`, which represents a directed edge in a graph. It
-     * contains two properties:
-     * @returns The method `addEdge` returns a boolean value. It returns `true` if the edge was successfully added to the
-     * graph, and `false` if either the source or destination vertex of the edge is not present in the graph.
-     */
-    addEdge(edge: E): boolean {
-        if (!(this.hasVertex(edge.src) && this.hasVertex(edge.dest))) {
-            return false;
-        }
-
-        const srcVertex = this._getVertex(edge.src);
-        const destVertex = this._getVertex(edge.dest);
-
-        // TODO after no-non-null-assertion not ensure the logic
-        if (srcVertex && destVertex) {
-            const srcOutEdges = this._outEdgeMap.get(srcVertex);
-            if (srcOutEdges) {
-                srcOutEdges.push(edge);
-            } else {
-                this._outEdgeMap.set(srcVertex, [edge]);
-            }
-
-            const destInEdges = this._inEdgeMap.get(destVertex);
-            if (destInEdges) {
-                destInEdges.push(edge);
-            } else {
-                this._inEdgeMap.set(destVertex, [edge]);
-            }
-            return true;
-        } else {
-            return false;
-        }
     }
 
     /**
@@ -366,13 +330,17 @@ export class DirectedGraph<V extends DirectedVertex<any> = DirectedVertex, E ext
         return destinations;
     }
 
+
     /**
-     * The `topologicalSort` function performs a topological sort on a directed graph and returns the sorted vertices in
-     * reverse order, or null if the graph contains a cycle.
-     * @returns The function `topologicalSort()` returns an array of `V` or `VertexId` objects in
-     * topological order, or `null` if there is a cycle in the graph.
+     * The `topologicalSort` function performs a topological sort on a graph and returns an array of vertices or vertex IDs
+     * in the sorted order, or null if the graph contains a cycle.
+     * @param {'vertex' | 'id'} [propertyName] - The `propertyName` parameter is an optional parameter that specifies the
+     * property to use for sorting the vertices. It can have two possible values: 'vertex' or 'id'. If 'vertex' is
+     * specified, the vertices themselves will be used for sorting. If 'id' is specified, the ids of
+     * @returns an array of vertices or vertex IDs in topological order, or null if there is a cycle in the graph.
      */
-    topologicalSort(): Array<V | VertexId> | null {
+    topologicalSort(propertyName?: 'vertex' | 'id'): Array<V | VertexId> | null {
+        propertyName = propertyName ?? 'id';
         // When judging whether there is a cycle in the undirected graph, all nodes with degree of **<= 1** are enqueued
         // When judging whether there is a cycle in the directed graph, all nodes with **in degree = 0** are enqueued
         const statusMap: Map<V | VertexId, TopologicalStatus> = new Map<V | VertexId, TopologicalStatus>();
@@ -380,7 +348,7 @@ export class DirectedGraph<V extends DirectedVertex<any> = DirectedVertex, E ext
             statusMap.set(entry[1], 0);
         }
 
-        const sorted: (V | VertexId)[] = [];
+        let sorted: (V | VertexId)[] = [];
         let hasCycle = false;
         const dfs = (cur: V | VertexId) => {
             statusMap.set(cur, 1);
@@ -405,6 +373,7 @@ export class DirectedGraph<V extends DirectedVertex<any> = DirectedVertex, E ext
 
         if (hasCycle) return null;
 
+        if (propertyName === 'id') sorted = sorted.map(vertex => vertex instanceof DirectedVertex ? vertex.id : vertex);
         return sorted.reverse();
     }
 
@@ -419,8 +388,6 @@ export class DirectedGraph<V extends DirectedVertex<any> = DirectedVertex, E ext
         });
         return edges;
     }
-
-    /**--- start find cycles --- */
 
     /**
      * The function `getNeighbors` returns an array of neighboring vertices of a given vertex in a directed graph.
@@ -444,7 +411,7 @@ export class DirectedGraph<V extends DirectedVertex<any> = DirectedVertex, E ext
         return neighbors;
     }
 
-    /**--- end find cycles --- */
+    /**--- start find cycles --- */
 
     /**
      * The function "getEndsOfEdge" returns the source and destination vertices of a directed edge if it exists in the
@@ -463,6 +430,44 @@ export class DirectedGraph<V extends DirectedVertex<any> = DirectedVertex, E ext
             return [v1, v2];
         } else {
             return null;
+        }
+    }
+
+    /**--- end find cycles --- */
+
+    /**
+     * The `_addEdgeOnly` function adds a directed edge to a graph if the source and destination vertices exist.
+     * @param edge - The parameter `edge` is of type `E`, which represents a directed edge in a graph. It
+     * contains two properties:
+     * @returns The method `_addEdgeOnly` returns a boolean value. It returns `true` if the edge was successfully added to the
+     * graph, and `false` if either the source or destination vertex of the edge is not present in the graph.
+     */
+    protected _addEdgeOnly(edge: E): boolean {
+        if (!(this.hasVertex(edge.src) && this.hasVertex(edge.dest))) {
+            return false;
+        }
+
+        const srcVertex = this._getVertex(edge.src);
+        const destVertex = this._getVertex(edge.dest);
+
+        // TODO after no-non-null-assertion not ensure the logic
+        if (srcVertex && destVertex) {
+            const srcOutEdges = this._outEdgeMap.get(srcVertex);
+            if (srcOutEdges) {
+                srcOutEdges.push(edge);
+            } else {
+                this._outEdgeMap.set(srcVertex, [edge]);
+            }
+
+            const destInEdges = this._inEdgeMap.get(destVertex);
+            if (destInEdges) {
+                destInEdges.push(edge);
+            } else {
+                this._inEdgeMap.set(destVertex, [edge]);
+            }
+            return true;
+        } else {
+            return false;
         }
     }
 

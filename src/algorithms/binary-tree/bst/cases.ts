@@ -147,4 +147,7 @@ export const testBSTCase6 = async (proxy: { tree: BST }) => {
     await wait(time1);
     const lastBFSNodes = proxy.tree.BFS('node');
     console.log(lastBFSNodes[0].id === 2 && lastBFSNodes[1].id === 12 && lastBFSNodes[2].id === 16, 'BFS, node');
+
+    await wait(time1);
+    console.log(proxy.tree.count === 5, 'tree.count === 5')
 }

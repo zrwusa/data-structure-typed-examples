@@ -221,9 +221,9 @@ export const testBinaryTreeCase6 = async (proxy: { tree: BinaryTree }) => {
     await wait(time1);
     proxy.tree.remove(2);
     proxy.tree.remove(5, true);
-    console.log(proxy.tree.count === 36, 'tree.count === 36');
+    console.log(proxy.tree.count === 47, 'tree.count === 47');
 
     await wait(time1);
-    console.log(!proxy.tree.isBST(), 'tree.isBST()');
+    console.log(!proxy.tree.isBST(), '!tree.isBST()');
 };
 

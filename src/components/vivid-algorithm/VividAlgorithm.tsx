@@ -397,7 +397,7 @@ export const VividAlgorithm = function (props: VividAlgorithmProps) {
                     x={offsetX}
                     y={offsetY + fontOffsetY}
                     textAnchor="middle"
-                >{node.name || node.id}</text>
+                >{node.value || node.id}</text>
             </g>
         );
     };

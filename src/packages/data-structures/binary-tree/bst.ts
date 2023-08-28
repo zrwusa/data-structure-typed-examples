@@ -5,12 +5,12 @@
  * @copyright Copyright (c) 2022 Tyler Zeng <zrwusa@gmail.com>
  * @license MIT License
  */
-import type {BinaryTreeNodeId, BinaryTreeNodePropertyName, BSTComparator, RecursiveBSTNode} from '../types';
-import {BinaryTreeDeletedResult, BSTOptions, CP, FamilyPosition, LoopType} from '../types';
+import type {BinaryTreeNodeId, BinaryTreeNodePropertyName, BSTComparator, BSTNodeNested} from '../types';
+import {BSTOptions, CP, LoopType} from '../types';
 import {BinaryTree, BinaryTreeNode} from './binary-tree';
-import {IAbstractBinaryTree, IAbstractBinaryTreeNode, IBST, IBSTNode} from '../interfaces';
+import {IBST, IBSTNode} from '../interfaces';
 
-export class BSTNode<T, FAMILY extends BSTNode<T, FAMILY> = RecursiveBSTNode<T>> extends BinaryTreeNode<T, FAMILY> implements IBSTNode<T, FAMILY> {
+export class BSTNode<T = any, FAMILY extends BSTNode<T, FAMILY> = BSTNodeNested<T>> extends BinaryTreeNode<T, FAMILY> implements IBSTNode<T, FAMILY> {
     /**
      * The function creates a new binary search tree node with the specified id, value, and count.
      * @param {BinaryTreeNodeId} id - The id parameter is the identifier for the binary tree node. It is used to uniquely
@@ -21,12 +21,12 @@ export class BSTNode<T, FAMILY extends BSTNode<T, FAMILY> = RecursiveBSTNode<T>>
      * search tree node. It is an optional parameter, so it can be omitted when calling the `createNode` method.
      * @returns The method is returning a new instance of the BSTNode class, casted as the FAMILY type.
      */
-    override createNode(id: BinaryTreeNodeId, val?: T , count?: number): FAMILY  {
-        return new BSTNode<T, FAMILY>(id, (val === undefined ? id : val) as T, count) as FAMILY;
+    override createNode(id: BinaryTreeNodeId, val?: T, count?: number): FAMILY {
+        return new BSTNode<T, FAMILY>(id, val, count) as FAMILY;
     }
 }
 
-export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends BinaryTree<N> implements IBST<N> {
+export class BST<N extends BSTNode<N['val'], N> = BSTNode> extends BinaryTree<N> implements IBST<N> {
     /**
      * The constructor function accepts an optional options object and sets the comparator property if provided.
      * @param [options] - An optional object that can contain the following properties:
@@ -52,7 +52,7 @@ export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends Binar
      * @returns a new instance of the BSTNode class, casted as type N.
      */
     override createNode(id: BinaryTreeNodeId, val?: N['val'], count?: number): N {
-        return  new BSTNode<N['val'], N>(id, val === undefined ? id : val, count) as N;
+        return new BSTNode<N['val'], N>(id, val, count) as N;
     }
 
     /**
@@ -67,7 +67,7 @@ export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends Binar
      * inserted once.
      * @returns The method `add` returns a `N` object or `null`.
      */
-    override add(id: BinaryTreeNodeId, val: N['val'] | null, count: number = 1): N | null {
+    override add(id: BinaryTreeNodeId, val?: N['val'], count: number = 1): N | null {
         let inserted: N | null = null;
         const newNode = this.createNode(id, val, count);
         if (this.root === null) {
@@ -94,7 +94,6 @@ export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends Binar
                         if (cur.left === undefined) {
                             if (newNode) {
                                 newNode.parent = cur;
-                                newNode.familyPosition = FamilyPosition.LEFT;
                             }
                             //Add to the left of the current node
                             cur.left = newNode;
@@ -111,7 +110,6 @@ export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends Binar
                         if (cur.right === undefined) {
                             if (newNode) {
                                 newNode.parent = cur;
-                                newNode.familyPosition = FamilyPosition.RIGHT;
                             }
                             //Add to the right of the current node
                             cur.right = newNode;
@@ -158,64 +156,6 @@ export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends Binar
         if (this._compare(0, 1) === CP.lt) return this.getRightMost()?.id ?? 0;
         else if (this._compare(0, 1) === CP.gt) return this.getLeftMost()?.id ?? 0;
         else return this.getRightMost()?.id ?? 0;
-    }
-
-    /**
-     * The `remove` function in this TypeScript code removes a node from a binary search tree and returns information about
-     * the deleted node and any nodes that need to be balanced.
-     * @param {BinaryTreeNodeId} id - The `id` parameter is the identifier of the binary tree node that needs to be removed
-     * from the binary search tree.
-     * @param {boolean} [ignoreCount] - A boolean flag indicating whether to ignore the count of the node being removed. If
-     * set to true, the count of the node will not be considered and the node will be removed regardless of its count. If
-     * set to false or not provided, the count of the node will be taken into account and the
-     * @returns an array of `BSTDeletedResult<N>` objects.
-     */
-    override remove(id: BinaryTreeNodeId, ignoreCount?: boolean): BinaryTreeDeletedResult<N>[] {
-        const bstDeletedResult: BinaryTreeDeletedResult<N>[] = [];
-        if (!this.root) return bstDeletedResult;
-
-        const curr: N | null = this.get(id);
-        if (!curr) return bstDeletedResult;
-
-        const parent: N | null = curr?.parent ? curr.parent : null;
-        let needBalanced: N | null = null, orgCurrent = curr;
-
-        if (curr.count > 1 && !ignoreCount) {
-            curr.count--;
-            this._setCount(this.count - 1);
-        } else {
-            if (!curr.left) {
-                if (!parent) {
-                    if (curr.right !== undefined) this._setRoot(curr.right);
-                } else {
-                    switch (curr.familyPosition) {
-                        case FamilyPosition.LEFT:
-                            parent.left = curr.right;
-                            break;
-                        case FamilyPosition.RIGHT:
-                            parent.right = curr.right;
-                            break;
-                    }
-                    needBalanced = parent;
-                }
-            } else {
-                const leftSubTreeMax = curr.left ? this.getRightMost(curr.left) : null;
-                if (leftSubTreeMax) {
-                    const parentOfLeftSubTreeMax = leftSubTreeMax.parent;
-                    orgCurrent = curr.swapLocation(leftSubTreeMax);
-                    if (parentOfLeftSubTreeMax) {
-                        if (parentOfLeftSubTreeMax.right === leftSubTreeMax) parentOfLeftSubTreeMax.right = leftSubTreeMax.left;
-                        else parentOfLeftSubTreeMax.left = leftSubTreeMax.left;
-                        needBalanced = parentOfLeftSubTreeMax;
-                    }
-                }
-            }
-            this._setSize(this.size - 1);
-            this._setCount(this.count - curr.count);
-        }
-
-        bstDeletedResult.push({deleted: orgCurrent, needBalanced});
-        return bstDeletedResult;
     }
 
     /**
@@ -273,19 +213,20 @@ export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends Binar
 
     // --- start additional functions
     /**
-     * The `lesserSum` function calculates the sum of a specified property in all nodes with an ID less than a given ID in
-     * a binary search tree.
-     * @param {BinaryTreeNodeId} id - The `id` parameter is the identifier of the binary tree node for which you want to
-     * calculate the lesser sum.
+     * The `lesserSum` function calculates the sum of property values in a binary tree for nodes that have a lesser value
+     * than a given node.
+     * @param {N | BinaryTreeNodeId | null} beginNode - The `beginNode` parameter can be one of the following:
      * @param {BinaryTreeNodePropertyName} [propertyName] - The `propertyName` parameter is an optional parameter that
-     * specifies the property of the binary tree node to use for calculating the sum. If not provided, it defaults to 'id'.
-     * @returns The function `lesserSum` returns a number, which represents the sum of the values of the nodes in the
-     * binary search tree that have a property value lesser than the given `id`.
+     * specifies the property name to use for calculating the sum. If not provided, it defaults to `'id'`.
+     * @returns The function `lesserSum` returns a number, which represents the sum of the values of the nodes in a binary
+     * tree that have a lesser value than the specified `beginNode` based on the specified `propertyName`.
      */
-    lesserSum(id: BinaryTreeNodeId, propertyName ?: BinaryTreeNodePropertyName): number {
+    lesserSum(beginNode: N | BinaryTreeNodeId | null, propertyName ?: BinaryTreeNodePropertyName): number {
         propertyName = propertyName ?? 'id';
+        if (typeof beginNode === 'number') beginNode = this.get(beginNode, 'id');
+        if (!beginNode) return 0;
         if (!this.root) return 0;
-
+        const id = beginNode.id;
         const getSumByPropertyName = (cur: N) => {
             let needSum: number;
             switch (propertyName) {
@@ -359,8 +300,11 @@ export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends Binar
      * defaults to 'id'.
      * @returns a boolean value.
      */
-    allGreaterNodesAdd(node: N, delta: number, propertyName ?: BinaryTreeNodePropertyName): boolean {
+    allGreaterNodesAdd(node: N | BinaryTreeNodeId | null, delta: number, propertyName ?: BinaryTreeNodePropertyName): boolean {
         propertyName = propertyName ?? 'id';
+        if (typeof node === 'number') node = this.get(node, 'id');
+        if (!node) return false;
+        const id = node.id;
         if (!this.root) return false;
 
         const _sumByPropertyName = (cur: N) => {
@@ -379,7 +323,7 @@ export class BST<N extends BSTNode<N['val'], N> = BSTNode<number>> extends Binar
 
         if (this.loopType === LoopType.RECURSIVE) {
             const _traverse = (cur: N) => {
-                const compared = this._compare(cur.id, node.id);
+                const compared = this._compare(cur.id, id);
                 _sumByPropertyName(cur);
 
                 if (!cur.left && !cur.right) return;

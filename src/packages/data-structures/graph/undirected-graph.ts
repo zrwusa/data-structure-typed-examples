@@ -50,7 +50,7 @@ export class UndirectedEdge<T = number> extends AbstractEdge<T> {
     }
 }
 
-export class UndirectedGraph<V extends UndirectedVertex<any> = UndirectedVertex, E extends UndirectedEdge<any> = UndirectedEdge> extends AbstractGraph<V, E> implements IUNDirectedGraph<V, E>{
+export class UndirectedGraph<V extends UndirectedVertex<any> = UndirectedVertex, E extends UndirectedEdge<any> = UndirectedEdge> extends AbstractGraph<V, E> implements IUNDirectedGraph<V, E> {
 
     constructor() {
         super();
@@ -112,28 +112,6 @@ export class UndirectedGraph<V extends UndirectedVertex<any> = UndirectedVertex,
         }
 
         return edges ? edges[0] || null : null;
-    }
-
-    /**
-     * The function adds an undirected edge to a graph by updating the adjacency list.
-     * @param edge - An object representing an undirected edge in a graph. It has a property called "vertices" which is an
-     * array of two vertices connected by the edge.
-     * @returns a boolean value.
-     */
-    addEdge(edge: E): boolean {
-        for (const end of edge.vertices) {
-            const endVertex = this._getVertex(end);
-            if (endVertex === null) return false;
-            if (endVertex) {
-                const edges = this._edges.get(endVertex);
-                if (edges) {
-                    edges.push(edge);
-                } else {
-                    this._edges.set(endVertex, [edge]);
-                }
-            }
-        }
-        return true;
     }
 
     /**
@@ -222,7 +200,6 @@ export class UndirectedGraph<V extends UndirectedVertex<any> = UndirectedVertex,
         return [...edgeSet];
     }
 
-
     /**
      * The function `getNeighbors` returns an array of neighboring vertices of a given vertex in an undirected graph.
      * @param {V | VertexId} vertexOrId - The `vertexOrId` parameter can be either an
@@ -263,6 +240,28 @@ export class UndirectedGraph<V extends UndirectedVertex<any> = UndirectedVertex,
         } else {
             return null;
         }
+    }
+
+    /**
+     * The function adds an undirected edge to a graph by updating the adjacency list.
+     * @param edge - An object representing an undirected edge in a graph. It has a property called "vertices" which is an
+     * array of two vertices connected by the edge.
+     * @returns a boolean value.
+     */
+    protected _addEdgeOnly(edge: E): boolean {
+        for (const end of edge.vertices) {
+            const endVertex = this._getVertex(end);
+            if (endVertex === null) return false;
+            if (endVertex) {
+                const edges = this._edges.get(endVertex);
+                if (edges) {
+                    edges.push(edge);
+                } else {
+                    this._edges.set(endVertex, [edge]);
+                }
+            }
+        }
+        return true;
     }
 
     protected _setEdges(v: Map<V, E[]>) {

@@ -6,22 +6,22 @@
  * @license MIT License
  */
 import {BST, BSTNode} from './bst';
-import type {AVLTreeOptions, BinaryTreeDeletedResult, BinaryTreeNodeId, RecursiveAVLTreeNode} from '../types';
+import type {AVLTreeNodeNested, AVLTreeOptions, BinaryTreeDeletedResult, BinaryTreeNodeId} from '../types';
 import {IAVLTree, IAVLTreeNode} from '../interfaces';
 
-export class AVLTreeNode<T, FAMILY extends AVLTreeNode<T, FAMILY> = RecursiveAVLTreeNode<T>> extends BSTNode<T, FAMILY> implements IAVLTreeNode<T, FAMILY> {
-    override createNode(id: BinaryTreeNodeId, val?: T , count?: number): FAMILY {
-        return new AVLTreeNode(id, (val === undefined ? id : val) as T, count) as FAMILY;
+export class AVLTreeNode<T = any, FAMILY extends AVLTreeNode<T, FAMILY> = AVLTreeNodeNested<T>> extends BSTNode<T, FAMILY> implements IAVLTreeNode<T, FAMILY> {
+    override createNode(id: BinaryTreeNodeId, val?: T, count?: number): FAMILY {
+        return new AVLTreeNode(id, val, count) as FAMILY;
     }
 }
 
-export class AVLTree<N extends AVLTreeNode<N['val'], N> = AVLTreeNode<number>> extends BST<N> implements IAVLTree<N> {
+export class AVLTree<N extends AVLTreeNode<N['val'], N> = AVLTreeNode> extends BST<N> implements IAVLTree<N> {
     constructor(options?: AVLTreeOptions) {
         super(options);
     }
 
     override createNode(id: BinaryTreeNodeId, val?: N['val'], count?: number): N {
-        return new AVLTreeNode<N['val'], N>(id, (val === undefined ? id : val), count) as N;
+        return new AVLTreeNode<N['val'], N>(id, val, count) as N;
     }
 
     /**
@@ -36,7 +36,7 @@ export class AVLTree<N extends AVLTreeNode<N['val'], N> = AVLTreeNode<number>> e
      * to `1`, indicating that the value should be inserted once.
      * @returns The method is returning either an N object or null.
      */
-    override add(id: BinaryTreeNodeId, val: N['val'] | null, count?: number): N | null {
+    override add(id: BinaryTreeNodeId, val?: N['val'], count?: number): N | null {
         const inserted = super.add(id, val, count);
         if (inserted) this.balancePath(inserted);
         return inserted;
