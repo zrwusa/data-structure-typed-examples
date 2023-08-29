@@ -31,16 +31,8 @@ export const testBinaryTreeCase6 = async (proxy: { tree: BinaryTree }) => {
     const getNodeById = proxy.tree.get(10, 'id');
     console.log(getNodeById === null, 'getNode, 10, id'); // null
 
-    await wait(time1);
-    proxy.tree.subTreeAdd(proxy.tree.get(2)!, 10, 'count');
-    console.log(proxy.tree.count === 59, 'tree.getCount() === 59');
 
-    await wait(time2);
-    const nodesByCount = proxy.tree.getNodes(1, 'count');
-    console.log(nodesByCount[0]?.id === 1
-        && nodesByCount[1]?.id === 3
-        && nodesByCount[2]?.id === 6
-        && nodesByCount[3]?.id === 7, 'getNodes, 1, count'); // 1 3 6 7
+
 
     await wait(time2);
     const node3 = proxy.tree.get(3);
@@ -111,14 +103,6 @@ export const testBinaryTreeCase6 = async (proxy: { tree: BinaryTree }) => {
         && lvIteVals[4] === 5
         && lvIteVals[5] === 6, 'levelIterative, val'); // [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
-    await wait(time1);
-    const lvIteCounts = proxy.tree.levelIterative(null, 'count');
-    console.log(lvIteCounts[0] === 1
-        && lvIteCounts[1] === 11
-        && lvIteCounts[2] === 1
-        && lvIteCounts[3] === 11
-        && lvIteCounts[4] === 11
-        && lvIteCounts[5] === 1, 'levelIterative, count'); // [1, 11, 1, 11, 11, 1, 1, 11, 11]
 
     await wait(time1);
     const lvNodes = proxy.tree.listLevels(null, 'node');
@@ -140,12 +124,6 @@ export const testBinaryTreeCase6 = async (proxy: { tree: BinaryTree }) => {
         && lvValues[2][1] === 5
         && lvValues[2][2] === 6, 'listLevels, val'); // 0:1 1:2 2:4 3:2  [4, 5, 6, 7]
 
-    await wait(time1);
-    const lvCounts = proxy.tree.listLevels(null, 'count');
-    console.log(lvCounts[2][0] === 11
-        && lvCounts[2][1] === 11
-        && lvCounts[2][2] === 1
-        && lvCounts[2][3] === 1, 'listLevels, count'); // 0:1 1:2 2:4 3:2  [11, 11, 1, 1]
 
     await wait(time1);
     const mInNodes = proxy.tree.morris('in', 'node');
@@ -221,7 +199,7 @@ export const testBinaryTreeCase6 = async (proxy: { tree: BinaryTree }) => {
     await wait(time1);
     proxy.tree.remove(2);
     proxy.tree.remove(5, true);
-    console.log(proxy.tree.count === 47, 'tree.count === 47');
+
 
     await wait(time1);
     console.log(!proxy.tree.isBST(), '!tree.isBST()');

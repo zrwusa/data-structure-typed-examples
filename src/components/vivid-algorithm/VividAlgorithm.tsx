@@ -216,7 +216,7 @@ export const VividAlgorithm = function (props: VividAlgorithmProps) {
         return (<svg width={svgWidth} height={svgHeight}>
 
                 <VividTreeRecursive node={data} level={1} index={0} familyLength={1} parentX={0} parentY={0}
-                                    maxHeight={data.getHeight()}/>
+                                    maxHeight={data.getHeight() - 1}/>
             </svg>
         );
     };

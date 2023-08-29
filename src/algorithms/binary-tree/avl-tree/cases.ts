@@ -13,9 +13,7 @@ export const testAVLCase6 = async (proxy: { tree: AVLTree }) => {
     const getNodeById = proxy.tree.get(10, 'id');
     console.log(getNodeById?.id === 10, 'getNode, 10, id', getNodeById);
 
-    await wait(time2);
-    const getNodesByCount = proxy.tree.getNodes(1, 'count');
-    console.log(getNodesByCount.length === 16, 'getNodes, 1, count');
+
 
     await wait(time2);
     const getMinNodeByRoot = proxy.tree.getLeftMost();
@@ -34,28 +32,20 @@ export const testAVLCase6 = async (proxy: { tree: AVLTree }) => {
     const lesserSum = proxy.tree.lesserSum(10);
     console.log(lesserSum === 45, 'lesserSum, 10');
 
-    await wait(time2);
-    if (node15) {
-        const subTreeAdd = proxy.tree.subTreeAdd(node15, 1, 'count');
-        console.log(subTreeAdd, 'subTreeAdd');
-    }
-    console.log(node15, 'getNode(15)');
+
 
     await wait(time3);
     const node11 = proxy.tree.get(11);
-    if (node11) {
-        const allGreaterNodesAdd = proxy.tree.allGreaterNodesAdd(node11, 2, 'count');
-        console.log(allGreaterNodesAdd, 'allGreaterNodesAdd, getNode(11), 2, count');
-    }
+
 
 
     await wait(time3);
     const dfs = proxy.tree.DFS('in', 'node');
     console.log(dfs[0].id === 1 && dfs[dfs.length - 1].id === 16, 'DFS ,in, node', dfs);
     await wait(time3);
-    proxy.tree.balance();
+    proxy.tree.perfectlyBalance();
     const bfs = proxy.tree.BFS('node');
-    console.log(proxy.tree.isBalanced() && bfs[0].id === 8 && bfs[bfs.length - 1].id === 16, 'balanced BFS, node');
+    console.log(proxy.tree.isPerfectlyBalanced() && bfs[0].id === 8 && bfs[bfs.length - 1].id === 16, 'balanced BFS, node');
 
     await wait(time3);
     console.log(proxy.tree.remove(11, true)[0].deleted?.id === 11, 'remove, 11');

@@ -1,12 +1,12 @@
-import {TreeMultiSetNode} from '../binary-tree';
+import {TreeMultisetNode} from '../binary-tree';
 import {IBSTNode} from './bst';
 import {IAVLTree} from './avl-tree';
 
-export interface ITreeMultiSetNode<T, FAMILY extends ITreeMultiSetNode<T, FAMILY>> extends IBSTNode<T, FAMILY> {
+export interface ITreeMultisetNode<T, NEIGHBOR extends ITreeMultisetNode<T, NEIGHBOR>> extends IBSTNode<T, NEIGHBOR> {
 
 }
 
-export interface ITreeMultiSet<N extends TreeMultiSetNode<N['val'], N>> extends IAVLTree<N> {
+export interface ITreeMultiset<N extends TreeMultisetNode<N['val'], N>> extends IAVLTree<N> {
 
 
 }

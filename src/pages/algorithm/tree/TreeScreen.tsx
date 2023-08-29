@@ -23,7 +23,7 @@ import {
     testBST2,
     testBSTCase1,
     testSymmetricTree,
-    testSymmetricTreeCase2,
+    testSymmetricTreeCase2, testTreeMultiset,
     treeData,
     treeMaxDepth,
     trimABST,
@@ -53,6 +53,7 @@ export const TreeScreen = () => {
         <AlgorithmPanel algorithm={testBinaryTree} testCase={testBinaryTreeCase2} buttonLabel={'Test BinaryTree'}/>
         <AlgorithmPanel algorithm={testBST} testCase={testBSTCase1} buttonLabel={'Test BST'}/>
         <AlgorithmPanel algorithm={testAVLTree} testCase={testBSTCase1} buttonLabel={'Test AVL'}/>
+        <AlgorithmPanel algorithm={testTreeMultiset} testCase={testBSTCase1} buttonLabel={'Test TreeMultiset'}/>
 
         <AlgorithmPanel algorithm={testBST2} testCase={[[3, 4, 2, 1, 2, 3, 4]]} buttonLabel={'Test BST II'}/>
         <AlgorithmPanel algorithm={binaryTreeInorderTraversal} testCase={[binaryTree.root]}

@@ -2,13 +2,13 @@ import {AVLTreeNode} from '../binary-tree';
 import {IBST, IBSTNode} from './bst';
 import {BinaryTreeDeletedResult, BinaryTreeNodeId} from '../types';
 
-export interface IAVLTreeNode<T, FAMILY extends IAVLTreeNode<T, FAMILY>> extends IBSTNode<T, FAMILY> {
+export interface IAVLTreeNode<T, NEIGHBOR extends IAVLTreeNode<T, NEIGHBOR>> extends IBSTNode<T, NEIGHBOR> {
 
 }
 
 export interface IAVLTree<N extends AVLTreeNode<N['val'], N>> extends IBST<N> {
 
-    add(id: BinaryTreeNodeId, val?: N['val'] | null, count?: number): N | null
+    add(id: BinaryTreeNodeId, val?: N['val'] | null): N | null | undefined
 
     remove(id: BinaryTreeNodeId, isUpdateAllLeftSum?: boolean): BinaryTreeDeletedResult<N>[]
 

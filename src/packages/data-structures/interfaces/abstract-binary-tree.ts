@@ -11,9 +11,7 @@ import {
 } from '../types';
 import {AbstractBinaryTreeNode} from '../binary-tree';
 
-export interface IAbstractBinaryTreeNode<T, FAMILY extends IAbstractBinaryTreeNode<T, FAMILY>> {
-
-    createNode(id: BinaryTreeNodeId, val?: T, count?: number): FAMILY;
+export interface IAbstractBinaryTreeNode<T, NEIGHBOR extends IAbstractBinaryTreeNode<T, NEIGHBOR>> {
 
     get id(): BinaryTreeNodeId
 
@@ -23,31 +21,23 @@ export interface IAbstractBinaryTreeNode<T, FAMILY extends IAbstractBinaryTreeNo
 
     set val(v: T | undefined)
 
-    get left(): FAMILY | null | undefined
+    get left(): NEIGHBOR | null | undefined
 
-    set left(v: FAMILY | null | undefined)
+    set left(v: NEIGHBOR | null | undefined)
 
-    get right(): FAMILY | null | undefined
+    get right(): NEIGHBOR | null | undefined
 
-    set right(v: FAMILY | null | undefined)
+    set right(v: NEIGHBOR | null | undefined)
 
-    get parent(): FAMILY | null | undefined
+    get parent(): NEIGHBOR | null | undefined
 
-    set parent(v: FAMILY | null | undefined)
+    set parent(v: NEIGHBOR | null | undefined)
 
     get familyPosition(): FamilyPosition
-
-    get count(): number
-
-    set count(v: number)
 
     get height(): number
 
     set height(v: number)
-
-    swapLocation(swapNode: FAMILY): FAMILY
-
-    clone(): FAMILY | null;
 }
 
 export interface IAbstractBinaryTree<N extends AbstractBinaryTreeNode<N['val'], N>> {
@@ -75,7 +65,7 @@ export interface IAbstractBinaryTree<N extends AbstractBinaryTreeNode<N['val'], 
 
     get size(): number
 
-    get count(): number
+    swapLocation(srcNode: N, destNode: N): N
 
     clear(): void
 
@@ -97,7 +87,7 @@ export interface IAbstractBinaryTree<N extends AbstractBinaryTreeNode<N['val'], 
 
     getMinHeight(beginRoot?: N | null): number
 
-    isBalanced(beginRoot?: N | null): boolean
+    isPerfectlyBalanced(beginRoot?: N | null): boolean
 
     getNodes(nodeProperty: BinaryTreeNodeId | N, propertyName ?: BinaryTreeNodePropertyName, onlyOne ?: boolean): N[]
 
@@ -123,7 +113,7 @@ export interface IAbstractBinaryTree<N extends AbstractBinaryTreeNode<N['val'], 
 
     isBST(node?: N | null): boolean
 
-    getSubTreeSizeAndCount(subTreeRoot: N | null | undefined): [number, number]
+    getSubTreeSize(subTreeRoot: N | null | undefined): number
 
     // --- start additional methods ---
 
