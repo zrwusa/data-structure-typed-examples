@@ -12,15 +12,9 @@ import {
     reorganizeStringCase1,
     topKFrequentCase1
 } from './cases';
-import {
-    DoublyLinkedListNode,
-    MaxPriorityQueue,
-    MinPriorityQueue,
-    PriorityQueue,
-    SinglyLinkedListNode
-} from 'data-structure-typed';
-import {sortCase3, sortCase4} from '../sorting/cases';
+import {DoublyLinkedListNode, MaxPriorityQueue, MinPriorityQueue, PriorityQueue} from 'data-structure-typed';
 import {getRandomInt} from '../../utils';
+import _ from 'lodash';
 
 export function findKthLargestMinHeap(nums: number[], k: number): number {
     const heap = new PriorityQueue<number>({nodes: [], comparator: (a, b) => a - b});
@@ -389,48 +383,57 @@ export const runAllKthLargest = async () => {
 
 const testPriorityQueue1 = () => {
     const minPriorityQueue = new PriorityQueue<number>({nodes: [5, 2, 3, 4, 6, 1], comparator: (a, b) => a - b});
-    console.log(minPriorityQueue.toArray());
+    console.log(_.isEqual(minPriorityQueue.toArray(), [1, 2, 3, 4, 6, 5]));
     minPriorityQueue.poll();
     minPriorityQueue.poll();
     minPriorityQueue.poll();
-    console.log(minPriorityQueue.toArray());
-    console.log(minPriorityQueue.peek());
-    console.log(PriorityQueue.heapify({nodes: [3, 2, 1, 5, 6, 7, 8, 9, 10], comparator: (a, b) => a - b}).toArray());
+    console.log(_.isEqual(minPriorityQueue.toArray(), [4, 5, 6]));
+    console.log(minPriorityQueue.peek() === 4);
+    console.log(_.isEqual(PriorityQueue.heapify({
+        nodes: [3, 2, 1, 5, 6, 7, 8, 9, 10],
+        comparator: (a, b) => a - b
+    }).toArray(), [1, 2, 3, 5, 6, 7, 8, 9, 10]));
     return;
 };
 
 const testPriorityQueue2 = () => {
     const maxPriorityQueue = new PriorityQueue<number>({nodes: [5, 2, 3, 4, 6, 1], comparator: (a, b) => b - a});
-    console.log(maxPriorityQueue.toArray());
+    console.log(_.isEqual(maxPriorityQueue.toArray(), [6, 5, 3, 4, 2, 1]));
     maxPriorityQueue.poll();
     maxPriorityQueue.poll();
     maxPriorityQueue.poll();
-    console.log(maxPriorityQueue.toArray());
-    console.log(maxPriorityQueue.peek());
-    console.log(PriorityQueue.heapify({nodes: [3, 2, 1, 5, 6, 7, 8, 9, 10], comparator: (a, b) => a - b}).toArray());
+    console.log(_.isEqual(maxPriorityQueue.toArray(), [3, 2, 1]));
+    console.log(maxPriorityQueue.peek() === 3);
+    console.log(_.isEqual(PriorityQueue.heapify({
+        nodes: [3, 2, 1, 5, 6, 7, 8, 9, 10],
+        comparator: (a, b) => a - b
+    }).toArray(), [1, 2, 3, 5, 6, 7, 8, 9, 10]));
 };
 
 
 const testPriorityQueue3 = () => {
     const heap = new PriorityQueue<number>({nodes: [2, 5, 8, 3, 1, 6, 7, 4], comparator: (a, b) => a - b});
     const clonedPriorityQueue = heap.clone();
-    console.log('clonedPriorityQueue', clonedPriorityQueue, 'original heap', heap);
-    console.log('clonedPriorityQueue.sort()', clonedPriorityQueue.sort())
-    console.log('DFS inOrder', heap.DFS('in'));
-    console.log('DFS post Order', heap.DFS('post'));
-    console.log('DFS pre Order', heap.DFS('pre'));
+    console.log(_.isEqual(clonedPriorityQueue.getNodes(), heap.getNodes()));
+    console.log(_.isEqual(clonedPriorityQueue.sort(), [1, 2, 3, 4, 5, 6, 7, 8]))
+    console.log(_.isEqual(heap.DFS('in'), [4, 3, 2, 5, 1, 8, 6, 7]));
+    console.log(_.isEqual(heap.DFS('post'), [4, 3, 5, 2, 8, 7, 6, 1]));
+    console.log(_.isEqual(heap.DFS('pre'), [1, 2, 3, 4, 5, 6, 8, 7]));
 };
 
 
 const heapSort = async () => {
-    const minPriorityQueue = new PriorityQueue<number>({nodes: Array.from(new Array(10000), () => getRandomInt(1, 10000)), comparator: (a, b) => a - b});
+    const values = Array.from(new Array(10000), () => getRandomInt(1, 10000000));
+    const minPriorityQueue = new PriorityQueue<number>({nodes: values, comparator: (a, b) => a - b});
     const sorted = minPriorityQueue.sort()
-    console.log('sorted by PriorityQueue', sorted);
+    console.log(_.isEqual(sorted, values.sort((a, b) => a - b)));
+    console.log('heap sorted')
 };
 
 
 const nativeSort = () => {
-    sortCase4.sort((a, b) => a - b);
+    const values = Array.from(new Array(10000), () => getRandomInt(1, 10000000));
+    values.sort((a, b) => a - b);
     console.log('sorted native');
 }
 

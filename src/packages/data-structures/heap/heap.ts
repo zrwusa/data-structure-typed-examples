@@ -10,6 +10,13 @@ import type {HeapOptions} from '../types';
 
 export class HeapItem<T = number> {
 
+    /**
+     * The constructor function initializes an instance of a class with a priority and a value.
+     * @param {number} priority - The `priority` parameter is a number that represents the priority of the value. It is
+     * optional and has a default value of `NaN`.
+     * @param {T | null} [val=null] - The `val` parameter is of type `T | null`, which means it can accept a value of type
+     * `T` or `null`.
+     */
     constructor(priority: number = NaN, val: T | null = null) {
         this._val = val;
         this._priority = priority;
@@ -44,13 +51,13 @@ export abstract class Heap<T = number> {
      */
     protected constructor(options?: HeapOptions<T>) {
         if (options) {
-            const {priority} = options;
-            if (priority !== undefined && typeof priority !== 'function') {
+            const {priorityExtractor} = options;
+            if (priorityExtractor !== undefined && typeof priorityExtractor !== 'function') {
                 throw new Error('.constructor expects a valid priority function');
             }
-            this._priorityCb = priority || ((el) => +el);
+            this._priorityExtractor = priorityExtractor || ((el) => +el);
         } else {
-            this._priorityCb = (el) => +el;
+            this._priorityExtractor = (el) => +el;
         }
     }
 
@@ -60,9 +67,9 @@ export abstract class Heap<T = number> {
         return this._pq;
     }
 
-    protected _priorityCb: (val: T) => number;
-    get priorityCb() {
-        return this._priorityCb;
+    protected _priorityExtractor: (val: T) => number;
+    get priorityExtractor() {
+        return this._priorityExtractor;
     }
 
     /**
@@ -81,20 +88,30 @@ export abstract class Heap<T = number> {
         return this._pq.size < 1;
     }
 
+    peek(isItem?: undefined): T | undefined;
+    peek(isItem: false): T | undefined;
+    peek(isItem: true): HeapItem<T> | null;
     /**
      * The `peek` function returns the top item in the priority queue without removing it.
      * @returns The `peek()` method is returning either a `HeapItem<T>` object or `null`.Returns an val with the highest priority in the queue
      */
-    peek(): HeapItem<T> | null {
-        return this._pq.peek();
+    peek(isItem?: boolean): HeapItem<T> | null | T | undefined {
+        isItem = isItem ?? false;
+        const peeked = this._pq.peek();
+        return isItem ? peeked : peeked?.val;
     }
 
+    peekLast(isItem?: undefined): T | undefined;
+    peekLast(isItem: false): T | undefined;
+    peekLast(isItem: true): HeapItem<T> | null;
     /**
      * The `peekLast` function returns the last item in the heap.
      * @returns The method `peekLast()` returns either a `HeapItem<T>` object or `null`.Returns an val with the lowest priority in the queue
      */
-    peekLast(): HeapItem<T> | null {
-        return this._pq.leaf();
+    peekLast(isItem?: boolean): HeapItem<T> | null | T | undefined {
+        isItem = isItem ?? false;
+        const leafItem = this._pq.leaf();
+        return isItem ? leafItem : leafItem?.val;
     }
 
     /**
@@ -107,41 +124,26 @@ export abstract class Heap<T = number> {
      * @returns The `add` method returns the instance of the `Heap` class.
      * @throws {Error} if priority is not a valid number
      */
-    add(val: T, priority?: number): Heap<T> {
-        if (typeof val === 'number') {
-            priority = val;
-        } else {
-            if (priority === undefined) {
-                throw new Error('.add expects a numeric priority');
-            }
-        }
-
-        if (priority && Number.isNaN(+priority)) {
-            throw new Error('.add expects a numeric priority');
-        }
-
-        if (Number.isNaN(+priority) && Number.isNaN(this._priorityCb(val))) {
-            throw new Error(
-                '.add expects a numeric priority '
-                + 'or a constructor callback that returns a number'
-            );
-        }
-
-        const _priority = !Number.isNaN(+priority) ? priority : this._priorityCb(val);
-        this._pq.add(new HeapItem<T>(_priority, val));
+    add(priority: number, val?: T, ): Heap<T> {
+        val = (val === undefined) ? priority as T : val;
+        this._pq.add(new HeapItem<T>(priority, val));
         return this;
     }
 
+    poll(isItem?: undefined): T | undefined;
+    poll(isItem: false): T | undefined;
+    poll(isItem: true): HeapItem<T> | null;
     /**
      * The `poll` function returns the top item from a priority queue or null if the queue is empty.Removes and returns an val with the highest priority in the queue
      * @returns either a HeapItem<T> object or null.
      */
-    poll(): HeapItem<T> | null {
+    poll(isItem?: boolean): HeapItem<T> | null | T | undefined {
+        isItem = isItem ?? false;
         const top = this._pq.poll();
         if (!top) {
             return null;
         }
-        return top;
+        return isItem ? top : top.val;
     }
 
     /**
@@ -159,12 +161,17 @@ export abstract class Heap<T = number> {
         }
     }
 
+    toArray(isItem?: undefined): (T | undefined)[];
+    toArray(isItem: false): (T | undefined)[];
+    toArray(isItem: true): (HeapItem<T> | null)[];
     /**
      * The `toArray` function returns an array of `HeapItem<T>` objects.
      * @returns An array of HeapItem<T> objects.Returns a sorted list of vals
      */
-    toArray(): HeapItem<T>[] {
-        return this._pq.toArray();
+    toArray(isItem?: boolean): (HeapItem<T> | null | T | undefined)[]{
+        isItem = isItem ?? false;
+        const itemArray = this._pq.toArray();
+        return isItem ? itemArray : itemArray.map(item => item.val);
     }
 
     /**
