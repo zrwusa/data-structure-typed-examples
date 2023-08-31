@@ -5,8 +5,8 @@ import {runAlgorithm} from '../../helpers';
 import {deleteLeavesCase1, pathSumIIICase3, testBSTCase1, testSymmetricTreeCase1} from '../bst';
 import {testBinaryTreeCase6} from './cases';
 
-const waitManager = new WaitManager(100);
-const {time1} = waitManager;
+const waitManager = new WaitManager(10);
+const {time1, time5, time10} = waitManager;
 
 export async function testBinaryTree(arr: number[], proxyHandler?: TProxyHandler) {
     const clonedData = [...arr];
@@ -14,16 +14,23 @@ export async function testBinaryTree(arr: number[], proxyHandler?: TProxyHandler
     const proxy: { tree: BinaryTree } = new DeepProxy({
         tree: new BinaryTree({loopType: LoopType.RECURSIVE})
     }, proxyHandler);
-    proxy.tree.fill(clonedData)
+    proxy.tree.fill(clonedData, clonedData);
+    await wait(time10);
+    proxy.tree.clear();
+    await wait(time5);
+    proxy.tree.addMany(clonedData, clonedData);
+    await wait(time10);
 
     await testBinaryTreeCase6(proxy);
+    // proxy.tree.addMany(clonedData, clonedData);
+
     return proxy.tree;
 }
 
 export async function showBinaryTree(arr: number[], proxyHandler?: TProxyHandler) {
     const clonedData = [...arr];
     const proxy: { tree: BinaryTree } = new DeepProxy({
-        tree: new BinaryTree({autoIncrementId: false})
+        tree: new BinaryTree()
     }, proxyHandler);
     proxy.tree.fill(clonedData)
 

@@ -484,7 +484,7 @@ export const VividAlgorithm = function (props: VividAlgorithmProps) {
                             }}
                         >
                             {/*<tspan x={offsetX} y={offsetY + fontOffsetY}>{node.id}</tspan>*/}
-                            <tspan x={offsetX} y={offsetY + fontOffsetY}>{node.val}</tspan>
+                            <tspan x={offsetX} y={offsetY + fontOffsetY}>{node.id}</tspan>
                             {/*<tspan x={offsetX} y={offsetY + fontOffsetY + fontSize + 2}>{node.val !== null ? node.val : 'null'}</tspan>*/}
                             {/*<tspan x={offsetX} y={offsetY + fontOffsetY + 2 * fontSize + 4}>{'q: ' + node.count}</tspan>*/}
                             {/*<tspan x={offsetX}*/}

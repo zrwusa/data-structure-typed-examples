@@ -124,7 +124,7 @@ export abstract class Heap<T = number> {
      * @returns The `add` method returns the instance of the `Heap` class.
      * @throws {Error} if priority is not a valid number
      */
-    add(priority: number, val?: T, ): Heap<T> {
+    add(priority: number, val?: T,): Heap<T> {
         val = (val === undefined) ? priority as T : val;
         this._pq.add(new HeapItem<T>(priority, val));
         return this;
@@ -168,7 +168,7 @@ export abstract class Heap<T = number> {
      * The `toArray` function returns an array of `HeapItem<T>` objects.
      * @returns An array of HeapItem<T> objects.Returns a sorted list of vals
      */
-    toArray(isItem?: boolean): (HeapItem<T> | null | T | undefined)[]{
+    toArray(isItem?: boolean): (HeapItem<T> | null | T | undefined)[] {
         isItem = isItem ?? false;
         const itemArray = this._pq.toArray();
         return isItem ? itemArray : itemArray.map(item => item.val);

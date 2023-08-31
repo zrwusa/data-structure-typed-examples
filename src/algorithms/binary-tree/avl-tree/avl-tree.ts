@@ -51,15 +51,37 @@ export const testTreeMultiset = async (arr: number[], proxyHandler?: TProxyHandl
 
     console.log(vars.treeMultiset instanceof TreeMultiset);
     vars.treeMultiset.add(11);
+    await wait(time5);
     vars.treeMultiset.add(3);
-    vars.treeMultiset.addMany([11, 3, 15, 1, 8, 13, 16, 2, 6, 9, 12, 14, 4, 7, 10, 5]);
+    await wait(time5);
+    vars.treeMultiset.add(15);
+    await wait(time5);
+    vars.treeMultiset.add(1);
+    await wait(time5);
+    vars.treeMultiset.add(8);
+    await wait(time5);
+    vars.treeMultiset.add(13);
+    await wait(time5);
+    vars.treeMultiset.add(16);
+    await wait(time5);
+    vars.treeMultiset.add(2);
+    await wait(time5);
+    vars.treeMultiset.add(6);
+    await wait(time5);
+    vars.treeMultiset.add(9);
+    await wait(time5);
+    vars.treeMultiset.add(12, undefined, 9);
+    await wait(time5);
+    vars.treeMultiset.add(14);
+    await wait(time5);
+    vars.treeMultiset.addMany([11, 3, 4, 7, 10, 5]);
     await wait(time5);
     console.log(vars.treeMultiset.root instanceof TreeMultisetNode);
 
     if (vars.treeMultiset.root) console.log(vars.treeMultiset.root.id == 11);
 
     console.log(vars.treeMultiset.size === 16);
-    console.log(vars.treeMultiset.count === 18);
+    console.log(vars.treeMultiset.count === 26);
     console.log(vars.treeMultiset.BFS('id'))
     await wait(time5);
 
@@ -72,10 +94,10 @@ export const testTreeMultiset = async (arr: number[], proxyHandler?: TProxyHandl
     console.log(nodeId10?.id === 10);
 
     const nodeVal9 = vars.treeMultiset.get(9, 'val');
-    console.log(nodeVal9?.id === 9);
+    console.log(nodeVal9?.id === undefined);
 
     const nodesByCount1 = vars.treeMultiset.getNodesByCount(1);
-    console.log(nodesByCount1.length === 14);
+    console.log(nodesByCount1.length === 13);
 
     const nodesByCount2 = vars.treeMultiset.getNodesByCount(2);
     console.log(nodesByCount2.length === 2);
@@ -277,7 +299,7 @@ export const testTreeMultiset = async (arr: number[], proxyHandler?: TProxyHandl
     console.log(bfsNodes[2].id === 16);
     await wait(time5);
 
-    console.log(vars.treeMultiset.count === 3);
+    console.log(vars.treeMultiset.count === 17);
 
     return vars.treeMultiset;
 };
