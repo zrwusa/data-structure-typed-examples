@@ -27,7 +27,7 @@
     "incremental": true,
     "baseUrl": "./src",
     "paths": {
-      "data-structure-typed": ["packages/data-structures"],
+//      "data-structure-typed": ["packages/data-structures"],
 //      "utils": ["packages/utils"]
     }
   },
