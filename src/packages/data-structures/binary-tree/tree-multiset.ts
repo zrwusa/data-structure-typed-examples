@@ -80,27 +80,24 @@ export class TreeMultiset<N extends TreeMultisetNode<N['val'], N> = TreeMultiset
      * @returns the `destNode` after swapping its values with the `srcNode`.
      */
     override swapLocation(srcNode: N, destNode: N): N {
-        const {val, count, height, id} = destNode;
+        const {id, val, count, height} = destNode;
         const tempNode = this.createNode(id, val, count);
         if (tempNode) {
             tempNode.height = height;
 
-            if (tempNode instanceof TreeMultisetNode) {
-                destNode.id = srcNode.id;
-                destNode.val = srcNode.val;
-                destNode.count = srcNode.count;
-                destNode.height = srcNode.height;
+            destNode.id = srcNode.id;
+            destNode.val = srcNode.val;
+            destNode.count = srcNode.count;
+            destNode.height = srcNode.height;
 
-                srcNode.id = tempNode.id;
-                srcNode.val = tempNode.val;
-                srcNode.count = tempNode.count;
-                srcNode.height = tempNode.height;
-            }
+            srcNode.id = tempNode.id;
+            srcNode.val = tempNode.val;
+            srcNode.count = tempNode.count;
+            srcNode.height = tempNode.height;
         }
 
         return destNode;
     }
-
 
     /**
      * The `add` function adds a new node to a binary search tree, maintaining the tree's properties and balancing if
@@ -114,9 +111,7 @@ export class TreeMultiset<N extends TreeMultisetNode<N['val'], N> = TreeMultiset
      */
     override add(idOrNode: BinaryTreeNodeId | N | null, val?: N['val'], count?: number): N | null | undefined {
         count = count ?? 1;
-        let inserted: N | null | undefined = undefined;
-        let newNode;
-        let id;
+        let inserted: N | null | undefined = undefined, newNode: N | null;
         if (idOrNode instanceof TreeMultisetNode) {
             newNode = this.createNode(idOrNode.id, idOrNode.val, idOrNode.count);
         } else if (idOrNode === null) {
@@ -194,7 +189,6 @@ export class TreeMultiset<N extends TreeMultisetNode<N['val'], N> = TreeMultiset
     override addTo(newNode: N | null, parent: N): N | null | undefined {
         if (parent) {
             if (parent.left === undefined) {
-
                 parent.left = newNode;
                 if (newNode !== null) {
                     this._setSize(this.size + 1);
@@ -268,9 +262,10 @@ export class TreeMultiset<N extends TreeMultisetNode<N['val'], N> = TreeMultiset
      */
     override perfectlyBalance(): boolean {
         const sorted = this.DFS('in', 'node'), n = sorted.length;
+        if (sorted.length < 1) return false;
+
         this.clear();
 
-        if (sorted.length < 1) return false;
         if (this.loopType === LoopType.RECURSIVE) {
             const buildBalanceBST = (l: number, r: number) => {
                 if (l > r) return;

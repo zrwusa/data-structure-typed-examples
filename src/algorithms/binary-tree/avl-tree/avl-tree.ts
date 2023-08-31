@@ -4,6 +4,7 @@ import {DeepProxy, TProxyHandler} from '@qiwi/deep-proxy';
 import {wait, WaitManager} from '../../../utils/utils';
 import {testBSTCase1} from '../bst';
 import {testAVLCase6} from './cases';
+import _ from 'lodash';
 
 const avlTree = new AVLTree();
 
@@ -82,7 +83,7 @@ export const testTreeMultiset = async (arr: number[], proxyHandler?: TProxyHandl
 
     console.log(vars.treeMultiset.size === 16);
     console.log(vars.treeMultiset.count === 26);
-    console.log(vars.treeMultiset.BFS('id'))
+    console.log(_.isEqual(vars.treeMultiset.BFS('id'), [11, 6, 15, 3, 8, 13, 16, 1, 4, 7, 9, 12, 14, 2, 5, 10]))
     await wait(time5);
 
     console.log(vars.treeMultiset.has(6));
