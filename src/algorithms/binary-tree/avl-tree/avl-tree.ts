@@ -1,4 +1,4 @@
-import {AVLTree, TreeMultiset, TreeMultisetNode} from 'data-structure-typed';
+import {AVLTree, AVLTreeNode, TreeMultiset, TreeMultisetNode} from 'data-structure-typed';
 import {runAlgorithm} from '../../helpers';
 import {DeepProxy, TProxyHandler} from '@qiwi/deep-proxy';
 import {wait, WaitManager} from '../../../utils/utils';
@@ -24,21 +24,10 @@ const {time1, time5} = waitManager;
 export const testAVLTree = async (arr: number[], proxyHandler?: TProxyHandler) => {
     const clonedData = [...arr];
     const proxyVariables = new DeepProxy({
-        tree: new AVLTree({
-            // nodeOrData: {
-            //     id: clonedData[0],
-            //     val: clonedData[0]
-            // },
-            // loopType: LoopType.recursive,
-            // comparator: (a, b) => b - a
-        })
+        tree: new AVLTree<AVLTreeNode<number>>()
     }, proxyHandler);
 
-
-    for (const i of clonedData) {
-        proxyVariables.tree.add(i, i);
-        await wait(time1);
-    }
+    proxyVariables.tree.addMany(clonedData, clonedData);
 
     await testAVLCase6(proxyVariables);
 

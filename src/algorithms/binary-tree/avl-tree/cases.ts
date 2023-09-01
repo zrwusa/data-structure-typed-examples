@@ -13,8 +13,6 @@ export const testAVLCase6 = async (proxy: { tree: AVLTree }) => {
     const getNodeById = proxy.tree.get(10, 'id');
     console.log(getNodeById?.id === 10, 'getNode, 10, id', getNodeById);
 
-
-
     await wait(time2);
     const getMinNodeByRoot = proxy.tree.getLeftMost();
     console.log(getMinNodeByRoot?.id === 1, 'getLeftMost');
@@ -32,12 +30,9 @@ export const testAVLCase6 = async (proxy: { tree: AVLTree }) => {
     const lesserSum = proxy.tree.lesserSum(10);
     console.log(lesserSum === 45, 'lesserSum, 10');
 
-
-
     await wait(time3);
     const node11 = proxy.tree.get(11);
-
-
+    console.log(node11?.id === 11);
 
     await wait(time3);
     const dfs = proxy.tree.DFS('in', 'node');

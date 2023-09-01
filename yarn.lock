@@ -3048,10 +3048,10 @@ dashdash@^1.12.0:
   dependencies:
     assert-plus "^1.0.0"
 
-data-structure-typed@^1.19.9:
-  version "1.19.9"
-  resolved "https://registry.yarnpkg.com/data-structure-typed/-/data-structure-typed-1.19.9.tgz#959559a449b54c61a14e32bb48b3a88287136d94"
-  integrity sha512-HiAE7UEDuRWRflZuvL93juVZ7o5IARYcHfkXcif4GPFd5gqjJkFGOnu2H3zISbTBYoWo/BEBBv9ciP2dhFtJaA==
+data-structure-typed@^1.20.0:
+  version "1.20.0"
+  resolved "https://registry.yarnpkg.com/data-structure-typed/-/data-structure-typed-1.20.0.tgz#2a6d90c522ccafa069bdb8e9815ba703ea9664a3"
+  integrity sha512-3QBYmsggDqEIV6GcMd+Isz6sOp/gtGFTTZbymkcomPPUFnz/ckR4fFoudwd3HSoyRKbfY5h71r9/015MCkvnrA==
   dependencies:
     zod "^3.22.2"
 
