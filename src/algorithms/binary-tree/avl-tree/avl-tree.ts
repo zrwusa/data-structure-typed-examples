@@ -18,8 +18,8 @@ export const performanceAVLTreeIsBST = () => {
     return avlTree.isBST();
 };
 
-const waitManager = new WaitManager(10);
-const {time1, time5} = waitManager;
+const waitManager = new WaitManager(100);
+const {time5} = waitManager;
 
 export const testAVLTree = async (arr: number[], proxyHandler?: TProxyHandler) => {
     const clonedData = [...arr];
