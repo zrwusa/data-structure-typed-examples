@@ -5,7 +5,7 @@ import {Coordinate, runAlgorithm} from '../helpers';
 import {
     DirectedEdge,
     DirectedGraph,
-    DirectedVertex,
+    DirectedVertex, MapEdge, MapGraph, MapVertex,
     TopologicalStatus,
     UndirectedEdge,
     UndirectedGraph,
@@ -164,10 +164,54 @@ export const testGraphs = async (proxyHandler: TProxyHandler) => {
 
     await wait(waitMan.time3);
     console.log(vars.myGraph.removeEdgeSrcToDest(9, 7));
+    await wait(waitMan.time3);
+
     console.log(vars.myGraph.removeEdgeSrcToDest(7, 9));
+    await wait(waitMan.time3);
 
     console.log(vars.myGraph.outEdgeMap.size === 6, vars.myGraph.outEdgeMap);
     console.log(vars.myGraph.inEdgeMap.size === 6, vars.myGraph.inEdgeMap);
+};
+
+export const testGraphAsMap = async (proxyHandler: TProxyHandler) => {
+    // 5.528073, 100.134913
+    // 5.211458, 100.515407
+    const vars: { graph: MapGraph<MapVertex, MapEdge> } = new DeepProxy({graph: new MapGraph<MapVertex, MapEdge>([5.500338826635057, 100.17366595261569], [5.211458, 100.515407])}, proxyHandler);
+    await wait(waitMan.time3);
+    const {graph} = vars;
+
+    graph.addVertex(new MapVertex('Home', 5.466724136191213, 100.27480538701893));
+    graph.addVertex(new MapVertex('Batu Feringgi Beach', 5.475141052597724, 100.27667029001113));
+    graph.addVertex(new MapVertex('Lotus', 5.4590440004999605, 100.30876778483604));
+    graph.addVertex(new MapVertex('The Breeza', 5.454197137912398, 100.307859253614));
+    graph.addVertex(new MapVertex('Hard Rock Hotel', 5.4678504056696235, 100.24187615943912));
+    graph.addVertex(new MapVertex('Mira', 5.45674960567374, 100.28665074523022));
+    graph.addVertex(new MapVertex('Penang Bible Church', 5.428683405260796, 100.31482546710885));
+    graph.addVertex(new MapVertex('Queensbay', 5.332760781225292, 100.3066513112831));
+    graph.addVertex(new MapVertex('Saanen Goat Farm', 5.405738390478683, 100.20769907079837));
+    graph.addVertex(new MapVertex('Trinity Auto', 5.4011265174739, 100.30373905872294));
+    graph.addVertex(new MapVertex('Penang Airport', 5.293185856392578, 100.26577201128295));
+    graph.addEdge('Home', 'Lotus', 4.7);
+    graph.addEdge('Lotus', 'The Breeza', 1);
+    graph.addEdge('Batu Feringgi Beach', 'Hard Rock Hotel', 5.2);
+    graph.addEdge('Home', 'Mira', 2.8);
+    graph.addEdge('Mira', 'Penang Bible Church', 7.0);
+    graph.addEdge('Lotus', 'Penang Bible Church', 5.7);
+    graph.addEdge('Penang Bible Church', 'Queensbay', 13.9);
+    graph.addEdge('Hard Rock Hotel', 'Saanen Goat Farm', 18.5);
+    graph.addEdge('The Breeza', 'Trinity Auto', 9.1);
+    graph.addEdge('Trinity Auto', 'Saanen Goat Farm', 26.3);
+    graph.addEdge('The Breeza', 'Penang Airport', 24.8);
+    graph.addEdge('Penang Airport', 'Saanen Goat Farm', 21.2);
+    const minPathBetween = graph.getMinPathBetween('Home', 'Saanen Goat Farm');
+    console.log(minPathBetween);
+    const homeToSaanenGoatFarm = graph.dijkstra('Home', 'Saanen Goat Farm');
+    console.log(homeToSaanenGoatFarm);
+    graph.addEdge('Home', 'Batu Feringgi Beach', 1.5);
+    const minPathBetweenViaBFB = graph.getMinPathBetween('Home', 'Saanen Goat Farm', true);
+    console.log(minPathBetweenViaBFB);
+    const homeToSaanenGoatFarmViaBFB = graph.dijkstra('Home', 'Saanen Goat Farm', true);
+    console.log(homeToSaanenGoatFarmViaBFB);
 };
 
 

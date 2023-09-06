@@ -6,14 +6,14 @@ import {
     BinaryTree,
     BinaryTreeNode,
     DirectedEdge,
-    DirectedGraph,
+    DirectedGraph, MapEdge, MapGraph, MapVertex,
     SinglyLinkedListNode,
     Stack, TreeNode,
     UndirectedEdge
 } from 'data-structure-typed';
 import {Coordinate, getDirectionVector} from '../../algorithms';
 import {uuidV4} from '../../utils';
-import {UIEvent, useRef, useState} from 'react';
+import Tooltip from '@mui/material/Tooltip';
 
 
 
@@ -239,6 +239,16 @@ export const VividAlgorithm = function (props: VividAlgorithmProps) {
                 {
                     data
                         ? <VividGraphIllustrator graph={data}/>
+                        : null
+                }
+            </svg>
+        );
+    };
+    const VividMapGraph: React.FC<{ data: MapGraph<MapVertex, MapEdge> }> = ({data}) => {
+        return (<svg width={svgWidth} height={svgHeight}>
+                {
+                    data
+                        ? <VividMapGraphIllustrator graph={data}/>
                         : null
                 }
             </svg>
@@ -588,6 +598,94 @@ export const VividAlgorithm = function (props: VividAlgorithmProps) {
         );
     };
 
+    const VividMapGraphIllustrator: React.FC<{ graph: MapGraph<MapVertex, MapEdge> }> = ({graph}) => {
+        const vertices = graph.vertices;
+        const edges = graph.edgeSet();
+        const coordsMap: Map<MapVertex, Coordinate> = new Map<MapVertex, Coordinate>();
+        let i = 0;
+        const vertexR = 20;
+        vertices.forEach((vertex: MapVertex) => {
+            const y = (graph.topLeft[0] - vertex.lat) * 5000;
+            const x = (vertex.long - graph.topLeft[1]) * 5000;
+            coordsMap.set(vertex, new Coordinate(y, x));
+            i++;
+        });
+        return (
+            <g>
+                {
+                    [...vertices].map(([index, vertex]) => {
+                        const coordinate = coordsMap.get(vertex);
+                        const {id} = vertex;
+                        return (
+                            coordinate
+                                ? <g key={id}>
+                                    <Tooltip title={id}>
+                                    <circle
+                                        onClick={() => _handleVertexClick(vertex)}
+                                        style={{cursor: 'pointer'}}
+                                        key={id}
+                                        r={vertexR}
+                                        cx={coordinate.x}
+                                        cy={coordinate.y}
+                                        fill={circleFillActiveColor}/>
+                                    </Tooltip>
+                                    <text key={id + 'id'}
+                                          fill="none"
+                                          stroke={textFillActiveColor}
+                                          fontSize={fontSize}
+                                          fontWeight={1}
+                                          x={coordinate.x}
+                                          y={coordinate.y + fontOffsetY}
+                                          textAnchor="middle"
+                                    >
+                                        <tspan x={coordinate.x} y={coordinate.y + fontOffsetY} onClick={() => _handleVertexClick(vertex)}>{typeof id === 'string' && id.length > 5? id.substr(0,1).toUpperCase(): id}</tspan>
+                                    </text>
+                                </g>
+                                : null
+                        );
+                    })}
+                {
+                    edges.map((edge) => {
+                        if (edge instanceof UndirectedEdge) {
+                            const ends = graph.getEndsOfEdge(edge);
+                            if (ends && ends.length > 1) {
+                                const v1Coordinate = coordsMap.get(ends[0]);
+                                const v2Coordinate = coordsMap.get(ends[1]);
+                                if (v1Coordinate && v2Coordinate) {
+                                    const {src, dest} = getPointsByDelta(v1Coordinate, v2Coordinate, vertexR);
+                                    return <g key={edge.hashCode}>
+                                        <line
+                                            onClick={() => _handleEdgeClick(edge)}
+                                            x1={src.x} y1={src.y} x2={dest.x}
+                                            y2={dest.y} stroke={lineStrokeColor}
+                                            strokeWidth={lineStrokeWidth}/>
+                                    </g>;
+                                }
+                            }
+                        } else if (graph instanceof MapGraph && edge instanceof MapEdge) {
+                            const src = graph.getEdgeSrc(edge);
+                            const dest = graph.getEdgeDest(edge);
+                            if (src && dest) {
+                                const srcCod = coordsMap.get(src);
+                                const destCod = coordsMap.get(dest);
+                                const edge = graph.getEdge(src, dest);
+                                if (edge && srcCod && destCod) {
+                                    return <LineWithArrow
+                                        onClick={() => _handleEdgeClick(edge)}
+                                        key={edge.hashCode}
+                                        fromV={srcCod} toV={destCod}
+                                        weight={edge!.weight!}
+                                        delta={vertexR}
+                                    />;
+                                }
+                            }
+                        }
+                    })
+                }
+            </g>
+        );
+    };
+
     const VividArray: React.FC<{ data: any[] }> = ({data}) => {
         return (
             <div>
@@ -684,7 +782,9 @@ export const VividAlgorithm = function (props: VividAlgorithmProps) {
             case 'object':
                 if (item instanceof TreeNode) {
                     return <VividTree data={item}/>;
-                } else if (item instanceof AbstractGraph) {
+                } else if (item instanceof MapGraph) {
+                    return <VividMapGraph data={item}/>;
+                }  else if (item instanceof AbstractGraph) {
                     return <VividGraph data={item}/>;
                 } else if (item instanceof BinaryTreeNode) {
                     return <VividBinaryTreeNode data={item}/>;
