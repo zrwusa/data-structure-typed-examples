@@ -33,8 +33,8 @@ const VividMapGraphIllustrator: React.FC<{
     const vertexR = 12;
 
     vertices.forEach((vertex: MapVertex) => {
-        const y = (graph.topLeft[0] - vertex.lat) * 3300 * scaleY + offsetY;
-        const x = (vertex.long - graph.topLeft[1]) * 3300 * scaleX + offsetX;
+        const y = (graph.origin[0] - vertex.lat) * 3300 * scaleY + offsetY;
+        const x = (vertex.long - graph.origin[1]) * 3300 * scaleX + offsetX;
         coordsMap.set(vertex, new Coordinate(y, x));
         i++;
     });

@@ -176,29 +176,29 @@ export const testGraphs = async (proxyHandler: TProxyHandler) => {
 
 export const testMapGraph = async (proxyHandler: TProxyHandler) => {
 
-    const proxy: { graph: MapGraph } = new DeepProxy({graph: new MapGraph([5.500338826635057, 100.17366595261569], [5.211458, 100.515407])}, proxyHandler);
+    const proxy: { graph: MapGraph } = new DeepProxy({graph: new MapGraph([5.500338, 100.173665], [5.211458, 100.515407])}, proxyHandler);
 
-    proxy.graph.addVertex(new MapVertex('Surin', 5.466724136191213, 100.27480538701893));
+    proxy.graph.addVertex(new MapVertex('Surin', 5.466724, 100.274805));
     await wait(waitMan.time3);
-    proxy.graph.addVertex(new MapVertex('Batu Feringgi Beach', 5.475141052597724, 100.27667029001113));
+    proxy.graph.addVertex(new MapVertex('Batu Feringgi Beach', 5.475141, 100.276670));
     await wait(waitMan.time3);
-    proxy.graph.addVertex(new MapVertex('Lotus', 5.4590440004999605, 100.30876778483604));
+    proxy.graph.addVertex(new MapVertex('Lotus', 5.459044, 100.308767));
     await wait(waitMan.time3);
-    proxy.graph.addVertex(new MapVertex('The Breeza', 5.454197137912398, 100.307859253614));
+    proxy.graph.addVertex(new MapVertex('The Breeza', 5.454197, 100.307859));
     await wait(waitMan.time3);
-    proxy.graph.addVertex(new MapVertex('Hard Rock Hotel', 5.4678504056696235, 100.24187615943912));
+    proxy.graph.addVertex(new MapVertex('Hard Rock Hotel', 5.467850, 100.241876));
     await wait(waitMan.time3);
-    proxy.graph.addVertex(new MapVertex('Mira', 5.45674960567374, 100.28665074523022));
+    proxy.graph.addVertex(new MapVertex('Mira', 5.456749, 100.286650));
     await wait(waitMan.time3);
-    proxy.graph.addVertex(new MapVertex('Penang Bible Church', 5.428683405260796, 100.31482546710885));
+    proxy.graph.addVertex(new MapVertex('Penang Bible Church', 5.428683, 100.314825));
     await wait(waitMan.time3);
-    proxy.graph.addVertex(new MapVertex('Queensbay', 5.332760781225292, 100.3066513112831));
+    proxy.graph.addVertex(new MapVertex('Queensbay', 5.332760, 100.306651));
     await wait(waitMan.time3);
-    proxy.graph.addVertex(new MapVertex('Saanen Goat Farm', 5.405738390478683, 100.20769907079837));
+    proxy.graph.addVertex(new MapVertex('Saanen Goat Farm', 5.405738, 100.207699));
     await wait(waitMan.time3);
-    proxy.graph.addVertex(new MapVertex('Trinity Auto', 5.4011265174739, 100.30373905872294));
+    proxy.graph.addVertex(new MapVertex('Trinity Auto', 5.401126, 100.303739));
     await wait(waitMan.time3);
-    proxy.graph.addVertex(new MapVertex('Penang Airport', 5.293185856392578, 100.26577201128295));
+    proxy.graph.addVertex(new MapVertex('Penang Airport', 5.293185, 100.265772));
     await wait(waitMan.time3);
     proxy.graph.addEdge('Surin', 'Lotus', 4.7);
     await wait(waitMan.time3);
