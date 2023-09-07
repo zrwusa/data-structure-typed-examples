@@ -1,6 +1,7 @@
 import {MapGraphCoordinate, VertexId } from '../types';
 import {DirectedEdge, DirectedGraph, DirectedVertex} from './directed-graph';
-export class MapVertex<T = number> extends DirectedVertex<T> {
+
+export class MapVertex<T = any> extends DirectedVertex<T> {
 
     constructor(id: VertexId, lat: number, long: number, val?: T) {
         super(id, val);
@@ -9,17 +10,16 @@ export class MapVertex<T = number> extends DirectedVertex<T> {
     }
     lat: number;
     long: number;
-
 }
 
-export class MapEdge<T = number> extends DirectedEdge<T> {
+export class MapEdge<T = any> extends DirectedEdge<T> {
     constructor(src: VertexId, dest: VertexId, weight?: number, val?: T) {
         super(src, dest, weight, val);
     }
 }
 
 
-export class MapGraph<V extends MapVertex<V['val']>, E extends MapEdge<any> = MapEdge<any>> extends DirectedGraph<V, E> {
+export class MapGraph<V extends MapVertex<V['val']> = MapVertex, E extends MapEdge = MapEdge> extends DirectedGraph<V, E> {
     constructor(topLeft: MapGraphCoordinate, bottomRight: MapGraphCoordinate) {
         super();
         this.topLeft = topLeft;
@@ -29,7 +29,7 @@ export class MapGraph<V extends MapVertex<V['val']>, E extends MapEdge<any> = Ma
     topLeft: MapGraphCoordinate;
     bottomRight: MapGraphCoordinate;
 
-    override createVertex(id: VertexId, val?: V['val'], lat: number = 0, long: number = 0): V {
+    override createVertex(id: VertexId, val?: V['val'], lat: number = this.topLeft[0], long: number = this.topLeft[1]): V {
         return new MapVertex(id, lat, long, val) as V;
     }
 

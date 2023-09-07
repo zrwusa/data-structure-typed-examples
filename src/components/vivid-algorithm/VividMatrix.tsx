@@ -10,7 +10,7 @@ export const VividMatrix: React.FC<{
     svgWidth?: SVGWidth,
     relatedMatrixCell?: Coordinate, relatedMatrixRoutes?: Coordinate[][]
 }> = ({data, svgHeight, svgWidth, relatedMatrixCell, relatedMatrixRoutes}) => {
-    const rowCount = data?.length;
+    // const rowCount = data?.length;
     const colCount = data?.[0]?.length;
     if (colCount < 1) {
         return null;
@@ -27,7 +27,7 @@ export const VividMatrix: React.FC<{
 
     } = styles;
     const rectSize = (matrixPanelWidth - (colCount + 1) * matrixRectStrokeWidth) / colCount;
-    const matrixHeight = rectSize * rowCount;
+    // const matrixHeight = rectSize * rowCount;
 
     return (
         <svg width={svgWidth ?? '100%'} height={svgHeight ?? 480}>
@@ -50,8 +50,6 @@ export const VividMatrix: React.FC<{
                     });
                 })}
                 {data.map((row, i) => {
-                    const rowKey = i.toString();
-
                     return row.map((col, j) => {
                         const colKey = 'text-' + i + '-' + j.toString();
                         const isActive = (relatedMatrixCell?.y === i && relatedMatrixCell?.x === j);
@@ -75,9 +73,7 @@ export const VividMatrix: React.FC<{
                                 const to = relatedMatrixRoutes?.[routeIndex]?.[cellIndex + 1];
                                 const deviationVector = getDirectionVector(from, to);
                                 if (from && to) {
-                                    // eslint-disable-next-line react/prop-types
                                     const src = new Coordinate((from.y + 0.5 + deviationVector.y * arrowCut) * rectSize, (from.x + 0.5 + deviationVector.x * arrowCut) * rectSize);
-                                    // eslint-disable-next-line react/prop-types
                                     const dest = new Coordinate((to.y + 0.5 - deviationVector.y * arrowCut) * rectSize, (to.x + 0.5 - deviationVector.x * arrowCut) * rectSize);
 
                                     return <LineWithArrow key={src.y + ',' + src.x + dest.y + dest.x}
@@ -94,6 +90,5 @@ export const VividMatrix: React.FC<{
                 }
             </g>
         </svg>
-
     );
 };

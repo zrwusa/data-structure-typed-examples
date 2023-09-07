@@ -8,7 +8,7 @@ import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import {TextField} from '@mui/material';
-import {MapGraphViewControl, SVGHeight, SVGOptions, SVGWidth} from '../../types';
+import {ViewControl, SVGHeight, SVGOptions, SVGWidth} from '../../types';
 
 export interface AlgorithmPanelProps extends SVGOptions {
     algorithm: (...args: any[]) => any;
@@ -19,7 +19,7 @@ export interface AlgorithmPanelProps extends SVGOptions {
     relatedRouteKey?: string | undefined;
     isDebug?: boolean;
     children?: React.ReactNode,
-    viewControl?: MapGraphViewControl,
+    viewControl?: ViewControl,
 }
 
 export const AlgorithmPanel: React.FC<AlgorithmPanelProps> = ({

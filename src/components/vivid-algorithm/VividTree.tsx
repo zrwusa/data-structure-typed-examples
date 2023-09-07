@@ -1,10 +1,10 @@
 import * as React from 'react';
-import {AbstractEdge, AbstractVertex, TreeNode} from 'data-structure-typed';
+import {TreeNode} from 'data-structure-typed';
 import styles from './styles';
-import {SVGHeight, SVGWidth} from '../../types';
+import {SVGOptions, ViewControl} from '../../types';
 
 const VividTreeRecursive: React.FC<{
-    node: TreeNode<any>,
+    node: TreeNode,
     level: number,
     index: number,
     familyLength: number,
@@ -13,68 +13,35 @@ const VividTreeRecursive: React.FC<{
     maxHeight?: number,
     relatedNode?: TreeNode
 }> = ({
-          node,
-          level = 1,
-          index = 0,
-          familyLength = 1,
-          parentX,
-          parentY,
-          maxHeight,
-          relatedNode
+          node, level = 1, index = 0, familyLength = 1, parentX, parentY, maxHeight, relatedNode
       }) => {
     if (!node) {
         return null;
     }
-    // const firstRender = useMemo(
-    //     () =>console.log('!!!first Render'),
-    //     []
-    // );
+
     let space = 0;
     let offsetX = 0;
     let offsetY = 0;
-    const handleEdgeClick = (edge: AbstractEdge) => {
-        console.log(edge);
-    }
-
-    const handleVertexClick = (vertex: AbstractVertex) => {
-        console.log(vertex);
-    }
 
     const handleNodeClick = (node: TreeNode) => {
         console.log(node);
     }
+
     const {
-        textFillColor,
-        textFillActiveColor,
-        circleFillColor,
-        circleFillActiveColor,
-        rectStrokeColor,
-        arrowColor,
-        lineStrokeColor,
-        circleStrokeColor,
-        matrixPanelWidth,
-        matrixRectStrokeWidth,
-        arrowCut,
-        treePanelWidth,
-        lineStrokeWidth,
-        strokeWidth,
-        levelOffset,
-        treeNodeR,
-        vertexDistance,
-        nodeSpace,
-        fontSize,
-        fontOffsetY,
-        vertexR,
+        textFillColor, textFillActiveColor, circleFillColor, circleFillActiveColor,
+        lineStrokeColor, circleStrokeColor, treePanelWidth, lineStrokeWidth,
+        strokeWidth, levelOffset, treeNodeR, nodeSpace, fontSize, fontOffsetY,
     } = styles;
+
     const levelNodeSpace = nodeSpace * Math.pow(2, (maxHeight || 5) - level);
     if (level === 1) {
         space = treePanelWidth / 2;
         offsetX = space - treeNodeR;
-        offsetY = (level - 1) * levelOffset + treeNodeR + strokeWidth;
+        offsetY = (level) * levelOffset + treeNodeR + strokeWidth;
     } else {
         if (parentX !== undefined) {
             offsetX = parentX - (familyLength / 2) * levelNodeSpace + (index + 0.5) * levelNodeSpace;
-            offsetY = (level - 1) * levelOffset + treeNodeR + strokeWidth;
+            offsetY = (level) * levelOffset + treeNodeR + strokeWidth;
         }
     }
     const isActive = node.id === relatedNode?.id;
@@ -118,15 +85,19 @@ const VividTreeRecursive: React.FC<{
 
 
 export const VividTree: React.FC<{
-    data: TreeNode<any>,
-    svgHeight?: SVGHeight,
-    svgWidth?: SVGWidth,
-    relatedNode?: TreeNode
-}> = ({data, svgHeight, svgWidth, relatedNode}) => {
-    return (<svg width={svgWidth ?? '100%'} height={svgHeight ?? 480}>
-
+    data: TreeNode,
+    maxHeight?: number,
+    relatedNode?: TreeNode,
+    viewControl?: ViewControl,
+} & SVGOptions> = ({data, maxHeight, relatedNode, svgHeight, svgWidth, svgBg}) => {
+    return (<svg width={svgWidth ?? '100%'} height={svgHeight ?? 480} style={{
+            backgroundImage: `url('${svgBg}')`,
+            backgroundPosition: 'top left',
+            
+            backgroundRepeat: 'no-repeat'
+        }}>
             <VividTreeRecursive node={data} level={1} index={0} familyLength={1} parentX={0} parentY={0}
-                                maxHeight={data.getHeight()} relatedNode={relatedNode}/>
+                                maxHeight={maxHeight} relatedNode={relatedNode}/>
         </svg>
     );
 };

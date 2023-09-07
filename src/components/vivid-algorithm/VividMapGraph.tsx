@@ -1,16 +1,18 @@
 import * as React from 'react';
-import {AbstractEdge, AbstractVertex, MapEdge, MapGraph, MapVertex, UndirectedEdge} from 'data-structure-typed';
-import {Coordinate, getPointsByDelta} from '../../algorithms';
-import Tooltip from '@mui/material/Tooltip';
+import {AbstractEdge, AbstractVertex, MapEdge, MapGraph, MapVertex} from 'data-structure-typed';
+import {Coordinate} from '../../algorithms';
+import Tooltip from '@mui/joy/Tooltip';
 import styles from './styles';
 import {LineWithArrow} from './LineWithArrow';
-import {MapGraphViewControl, SVGHeight, SVGOptions, SVGWidth} from '../../types';
+import {ViewControl, SVGOptions} from '../../types';
 
-const VividMapGraphIllustrator: React.FC<{ graph: MapGraph<MapVertex, MapEdge>,
-    viewControl?: MapGraphViewControl }> = ({graph, viewControl}) => {
+const VividMapGraphIllustrator: React.FC<{
+    graph: MapGraph<MapVertex, MapEdge>,
+    viewControl?: ViewControl
+}> = ({graph, viewControl}) => {
     const {
-        scale: { y: scaleY = 1, x: scaleX = 1 } = {},
-        offset: { y: offsetY = 0, x: offsetX = 0 } = {}
+        scale: {y: scaleY = 1, x: scaleX = 1} = {},
+        offset: {y: offsetY = 0, x: offsetX = 0} = {}
     } = viewControl ?? {};
     const vertices = graph.vertices;
     const edges = graph.edgeSet();
@@ -26,7 +28,7 @@ const VividMapGraphIllustrator: React.FC<{ graph: MapGraph<MapVertex, MapEdge>,
     }
 
     const {
-        textFillActiveColor, circleFillActiveColor, lineStrokeColor, lineStrokeWidth, fontSize, fontOffsetY
+        textFillActiveColor, circleFillActiveColor, fontSize, fontOffsetY
     } = styles;
     const vertexR = 12;
 
@@ -55,6 +57,7 @@ const VividMapGraphIllustrator: React.FC<{ graph: MapGraph<MapVertex, MapEdge>,
                                         cy={coordinate.y}
                                         fill={circleFillActiveColor}/>
                                 </Tooltip>
+                                <Tooltip title={id}>
                                 <text key={id + 'id'}
                                       fill="none"
                                       stroke={textFillActiveColor}
@@ -65,64 +68,52 @@ const VividMapGraphIllustrator: React.FC<{ graph: MapGraph<MapVertex, MapEdge>,
                                       textAnchor="middle"
                                 >
                                     <tspan x={coordinate.x} y={coordinate.y + fontOffsetY}
-                                           onClick={() => handleVertexClick(vertex)}>{typeof id === 'string' && id.length > 5 ? id.substr(0, 1).toUpperCase() : id}</tspan>
+                                           onClick={() => handleVertexClick(vertex)}>{typeof id === 'string' && id.length > 1 ? id.substr(0, 1).toUpperCase() : id}</tspan>
                                 </text>
+                                </Tooltip>
                             </g>
                             : null
                     );
                 })}
             {
                 edges.map((edge) => {
-                    if (edge instanceof UndirectedEdge) {
-                        const ends = graph.getEndsOfEdge(edge);
-                        if (ends && ends.length > 1) {
-                            const v1Coordinate = coordsMap.get(ends[0]);
-                            const v2Coordinate = coordsMap.get(ends[1]);
-                            if (v1Coordinate && v2Coordinate) {
-                                const {src, dest} = getPointsByDelta(v1Coordinate, v2Coordinate, vertexR);
-                                return <g key={edge.hashCode}>
-                                    <line
-                                        onClick={() => handleEdgeClick(edge)}
-                                        x1={src.x} y1={src.y} x2={dest.x}
-                                        y2={dest.y} stroke={lineStrokeColor}
-                                        strokeWidth={lineStrokeWidth}/>
-                                </g>;
-                            }
-                        }
-                    } else if (graph instanceof MapGraph && edge instanceof MapEdge) {
-                        const src = graph.getEdgeSrc(edge);
-                        const dest = graph.getEdgeDest(edge);
-                        if (src && dest) {
-                            const srcCod = coordsMap.get(src);
-                            const destCod = coordsMap.get(dest);
-                            const edge = graph.getEdge(src, dest);
-                            if (edge && srcCod && destCod) {
-                                return <LineWithArrow
-                                    onClick={() => handleEdgeClick(edge)}
-                                    key={edge.hashCode}
-                                    fromV={srcCod} toV={destCod}
-                                    weight={edge!.weight!}
-                                    delta={vertexR}
-                                />;
-                            }
+                    const src = graph.getEdgeSrc(edge);
+                    const dest = graph.getEdgeDest(edge);
+                    if (src && dest) {
+                        const srcCod = coordsMap.get(src);
+                        const destCod = coordsMap.get(dest);
+                        const edge = graph.getEdge(src, dest);
+                        if (edge && srcCod && destCod) {
+                            return <LineWithArrow
+                                onClick={() => handleEdgeClick(edge)}
+                                key={edge.hashCode}
+                                fromV={srcCod} toV={destCod}
+                                weight={edge!.weight!}
+                                delta={vertexR}
+                            />;
                         }
                     }
+
                 })
             }
         </g>
     );
 };
 export const VividMapGraph: React.FC<{
-    data: MapGraph<MapVertex, MapEdge>,
-    viewControl?: MapGraphViewControl
+    data: MapGraph,
+    viewControl?: ViewControl
 } & SVGOptions> = ({data, svgHeight, svgWidth, svgBg, viewControl}) => {
 
 
+    return (<svg width={svgWidth ?? '100%'} height={svgHeight ?? 480} style={{
+            backgroundImage: `url('${svgBg}')`,
+            backgroundPosition: 'top left',
 
-    return (<svg width={svgWidth ?? '100%'} height={svgHeight ?? 480} style={{backgroundImage: `url('${svgBg}')`, backgroundPosition:'top left', backgroundSize:'contain', backgroundRepeat:'no-repeat'}}>
+            backgroundRepeat: 'no-repeat'
+        }}>
             {
                 data
-                    ? <VividMapGraphIllustrator graph={data} viewControl={viewControl} />
+                    ? <VividMapGraphIllustrator graph={data} viewControl={viewControl}/>
                     : null
             }
         </svg>

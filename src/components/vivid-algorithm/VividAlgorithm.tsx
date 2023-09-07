@@ -1,8 +1,6 @@
 import * as React from 'react';
 import {
-    AbstractEdge,
     AbstractGraph,
-    AbstractVertex,
     BinaryTree,
     BinaryTreeNode,
     MapGraph,
@@ -21,14 +19,14 @@ import {VividString} from './VividString';
 import {VividArray} from './VividArray';
 import {VividObject} from './VividObject';
 import {VividLinkedList} from './VividLinkedList';
-import {MapGraphViewControl, SVGHeight, SVGOptions, SVGWidth} from '../../types';
+import {ViewControl, SVGOptions} from '../../types';
 
-export interface VividAlgorithmProps extends SVGOptions{
+export interface VividAlgorithmProps extends SVGOptions {
     data?: { [key in string]: any },
     referenceData?: any,
     relatedNodeKey?: string | undefined,
     relatedRouteKey?: string | undefined,
-    viewControl?: MapGraphViewControl,
+    viewControl?: ViewControl,
     isDebug?: boolean,
 }
 
@@ -45,11 +43,11 @@ export const VividAlgorithm = function (props: VividAlgorithmProps) {
         viewControl
     } = props;
 
-    let relatedNode: TreeNode<any> | undefined;
+    let relatedNode: TreeNode | undefined;
     let relatedBinaryNode: BinaryTreeNode | undefined;
     let relatedMatrixCell: Coordinate | undefined;
     if (relatedNodeKey) {
-        relatedNode = data?.[relatedNodeKey] as TreeNode<any> | undefined;
+        relatedNode = data?.[relatedNodeKey] as TreeNode | undefined;
         relatedBinaryNode = data?.[relatedNodeKey] as BinaryTreeNode | undefined;
         relatedMatrixCell = data?.[relatedNodeKey] as Coordinate | undefined;
     }
@@ -69,7 +67,7 @@ export const VividAlgorithm = function (props: VividAlgorithmProps) {
                 return <VividString data={item}/>;
             case 'object':
                 if (item instanceof TreeNode) {
-                    return <VividTree data={item} relatedNode={relatedNode} svgHeight={svgHeight} svgWidth={svgWidth}/>;
+                    return <VividTree data={item} maxHeight={item.getHeight()} relatedNode={relatedNode}  svgHeight={svgHeight} svgWidth={svgWidth} svgBg={svgBg} viewControl={viewControl}/>;
                 } else if (item instanceof MapGraph) {
                     return <VividMapGraph data={item} svgHeight={svgHeight} svgWidth={svgWidth} svgBg={svgBg} viewControl={viewControl}/>;
                 } else if (item instanceof AbstractGraph) {
@@ -77,7 +75,7 @@ export const VividAlgorithm = function (props: VividAlgorithmProps) {
                 } else if (item instanceof BinaryTreeNode) {
                     return <VividBinaryTreeNode data={item}/>;
                 } else if (item instanceof BinaryTree) {
-                    return <VividBinaryTree node={item.root} maxHeight={item.getHeight() + 1}
+                    return <VividBinaryTree node={item.root} maxHeight={item.getHeight()}
                                             relatedBinaryNode={relatedBinaryNode} svgHeight={svgHeight}
                                             svgWidth={svgWidth}/>;
                 } else if (item instanceof SinglyLinkedListNode) {
@@ -96,7 +94,7 @@ export const VividAlgorithm = function (props: VividAlgorithmProps) {
         }
     };
 
-    return <div  style={{width: '100%'}} className={'bn-algorithm-panel'}>
+    return <div style={{width: '100%'}} className={'bn-algorithm-panel'}>
         {
             referenceData
                 ? renderVariable(referenceData)

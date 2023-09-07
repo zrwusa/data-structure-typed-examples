@@ -1,8 +1,13 @@
 import * as React from 'react';
 import {BinaryTreeNode} from 'data-structure-typed';
 import styles from './styles';
-import {SVGHeight, SVGWidth} from '../../types';
-
+import {SVGHeight, SVGOptions, SVGWidth} from '../../types';
+import {useEffect, useRef, useState} from 'react';
+const {
+    textFillColor, textFillActiveColor, circleFillColor, circleFillActiveColor,
+    lineStrokeColor, circleStrokeColor, treePanelWidth, lineStrokeWidth, strokeWidth,
+    levelOffset, treeNodeR, nodeSpace, fontSize, fontOffsetY,
+} = styles;
 const VividBinaryTreeRecursive: React.FC<{
     node: BinaryTreeNode,
     level: number,
@@ -11,36 +16,34 @@ const VividBinaryTreeRecursive: React.FC<{
     parentX?: number,
     parentY?: number,
     maxHeight?: number,
+    containerWidth?: number,
     relatedBinaryNode?: BinaryTreeNode
-}> = ({
+} > = ({
           node,
           level = 1,
           index = 0,
           familyLength = 1,
           parentX,
           parentY,
-          maxHeight, relatedBinaryNode
+          maxHeight, relatedBinaryNode,
+                                           containerWidth,
       }) => {
     if (!node) {
         return null;
     }
-    const {
-        textFillColor, textFillActiveColor, circleFillColor, circleFillActiveColor,
-        lineStrokeColor, circleStrokeColor, treePanelWidth, lineStrokeWidth, strokeWidth,
-        levelOffset, treeNodeR, nodeSpace, fontSize, fontOffsetY,
-    } = styles;
+
     let space = 0;
     let offsetX;
     let offsetY;
     const levelNodeSpace = nodeSpace * Math.pow(2, (maxHeight || 5) - level);
     if (level === 1) {
-        space = treePanelWidth / 2;
+        space = containerWidth ? containerWidth/2 : treePanelWidth / 2;
         offsetX = space - treeNodeR;
-        offsetY = (level - 1) * levelOffset + treeNodeR + strokeWidth;
+        offsetY = (level) * levelOffset + treeNodeR + strokeWidth;
     } else {
         if (parentX !== undefined) {
             offsetX = parentX - ((index < 1) ? levelNodeSpace : -levelNodeSpace);
-            offsetY = (level - 1) * levelOffset + treeNodeR + strokeWidth;
+            offsetY = (level) * levelOffset + treeNodeR + strokeWidth;
         }
     }
 
@@ -105,16 +108,24 @@ const VividBinaryTreeRecursive: React.FC<{
 };
 
 export const VividBinaryTree: React.FC<{
-    node: BinaryTreeNode | null, maxHeight?: number,
-    svgHeight?: SVGHeight,
-    svgWidth?: SVGWidth,
+    node: BinaryTreeNode | null,
+    maxHeight?: number,
     relatedBinaryNode?: BinaryTreeNode
-}> = ({node, maxHeight, svgHeight, svgWidth, relatedBinaryNode}) => {
+} & SVGOptions> = ({node, maxHeight, svgHeight, svgWidth, relatedBinaryNode}) => {
+    const svgRef = useRef<SVGSVGElement | null>(null);
+    const [containerWidth, setContainerWidth] = useState(treePanelWidth);
+
+    useEffect(() => {
+        if (svgRef.current) {
+            const curWidth = svgRef.current.getBoundingClientRect().width;
+            setContainerWidth(curWidth);
+        }
+    }, []);
     return (
-        <svg width={svgWidth ?? '100%'} height={svgHeight ?? 480}>
+        <svg ref={svgRef} width={svgWidth ?? '100%'} height={svgHeight ?? 480}>
             {node
                 ? <VividBinaryTreeRecursive node={node} level={1} index={0} familyLength={1}
-                                            maxHeight={maxHeight} relatedBinaryNode={relatedBinaryNode}/>
+                                            maxHeight={maxHeight} containerWidth={containerWidth} relatedBinaryNode={relatedBinaryNode}/>
                 : null
             }
         </svg>

@@ -15,6 +15,7 @@ import {
 import {timeEnd, timeStart, wait, WaitManager} from '../../utils';
 import {DeepProxy, TProxyHandler} from '@qiwi/deep-proxy';
 import {canFinishCase1, canFinishCase3, criticalConnectionsCase1} from './cases';
+import _ from 'lodash';
 
 
 class MyVertex<V extends string> extends DirectedVertex<V> {
@@ -61,156 +62,188 @@ const waitMan = new WaitManager(10);
 
 export const testGraphs = async (proxyHandler: TProxyHandler) => {
 
-    const vars: { myGraph: MyDirectedGraph<MyVertex<string>, MyEdge<string>> } = new DeepProxy({myGraph: new MyDirectedGraph<MyVertex<string>, MyEdge<string>>()}, proxyHandler);
+    const proxy: { myGraph: MyDirectedGraph<MyVertex<string>, MyEdge<string>> } = new DeepProxy({myGraph: new MyDirectedGraph<MyVertex<string>, MyEdge<string>>()}, proxyHandler);
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.addVertex(new MyVertex(1, 'data1'))`, vars.myGraph.addVertex(new MyVertex(1, 'data1')));
+    console.log(`proxy.myGraph.addVertex(new MyVertex(1, 'data1'))`, proxy.myGraph.addVertex(new MyVertex(1, 'data1')));
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.addVertex(new MyVertex(2, 'data2'))`, vars.myGraph.addVertex(new MyVertex(2, 'data2')));
+    console.log(`proxy.myGraph.addVertex(new MyVertex(2, 'data2'))`, proxy.myGraph.addVertex(new MyVertex(2, 'data2')));
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.addVertex(new MyVertex(3, 'data3'))`, vars.myGraph.addVertex(new MyVertex(3, 'data3')));
+    console.log(`proxy.myGraph.addVertex(new MyVertex(3, 'data3'))`, proxy.myGraph.addVertex(new MyVertex(3, 'data3')));
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.addVertex(new MyVertex(4, 'data4'))`, vars.myGraph.addVertex(new MyVertex(4, 'data4')));
+    console.log(`proxy.myGraph.addVertex(new MyVertex(4, 'data4'))`, proxy.myGraph.addVertex(new MyVertex(4, 'data4')));
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.addVertex(new MyVertex(5, 'data5'))`, vars.myGraph.addVertex(new MyVertex(5, 'data5')));
+    console.log(`proxy.myGraph.addVertex(new MyVertex(5, 'data5'))`, proxy.myGraph.addVertex(new MyVertex(5, 'data5')));
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.addVertex(new MyVertex(6, 'data6'))`, vars.myGraph.addVertex(new MyVertex(6, 'data6')));
+    console.log(`proxy.myGraph.addVertex(new MyVertex(6, 'data6'))`, proxy.myGraph.addVertex(new MyVertex(6, 'data6')));
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.addVertex(new MyVertex(7, 'data7'))`, vars.myGraph.addVertex(new MyVertex(7, 'data7')));
+    console.log(`proxy.myGraph.addVertex(new MyVertex(7, 'data7'))`, proxy.myGraph.addVertex(new MyVertex(7, 'data7')));
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.addVertex(new MyVertex(8, 'data8'))`, vars.myGraph.addVertex(new MyVertex(8, 'data8')));
+    console.log(`proxy.myGraph.addVertex(new MyVertex(8, 'data8'))`, proxy.myGraph.addVertex(new MyVertex(8, 'data8')));
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.addVertex(new MyVertex(9, 'data9'))`, vars.myGraph.addVertex(new MyVertex(9, 'data9')));
+    console.log(`proxy.myGraph.addVertex(new MyVertex(9, 'data9'))`, proxy.myGraph.addVertex(new MyVertex(9, 'data9')));
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.addEdge(new MyEdge(1, 2, 10, 'edge-data1-2'))`, vars.myGraph.addEdge(new MyEdge(1, 2, 10, 'edge-data1-2')));
+    console.log(`proxy.myGraph.addEdge(new MyEdge(1, 2, 10, 'edge-data1-2'))`, proxy.myGraph.addEdge(new MyEdge(1, 2, 10, 'edge-data1-2')));
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.addEdge(new MyEdge(2, 1, 20, 'edge-data2-1'))`, vars.myGraph.addEdge(new MyEdge(2, 1, 20, 'edge-data2-1')));
+    console.log(`proxy.myGraph.addEdge(new MyEdge(2, 1, 20, 'edge-data2-1'))`, proxy.myGraph.addEdge(new MyEdge(2, 1, 20, 'edge-data2-1')));
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.getEdge(1, 2)`, vars.myGraph.getEdge(1, 2));
+    console.log(`proxy.myGraph.getEdge(1, 2)`, proxy.myGraph.getEdge(1, 2));
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.getEdge(vars.myGraph.getVertex(1), vars.myGraph.getVertex(2))`, vars.myGraph.getEdge(vars.myGraph.getVertex(1), vars.myGraph.getVertex(2)));
+    console.log(`proxy.myGraph.getEdge(proxy.myGraph.getVertex(1), proxy.myGraph.getVertex(2))`, proxy.myGraph.getEdge(proxy.myGraph.getVertex(1), proxy.myGraph.getVertex(2)));
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.getEdge(1,'100')`, vars.myGraph.getEdge(1, '100'));
+    console.log(`proxy.myGraph.getEdge(1,'100')`, proxy.myGraph.getEdge(1, '100'));
     await wait(waitMan.time3);
-    console.log(JSON.stringify(vars.myGraph.edgeSet()), vars.myGraph.vertices);
+    console.log(JSON.stringify(proxy.myGraph.edgeSet()), proxy.myGraph.vertices);
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.removeEdgeBetween(1,2)`, vars.myGraph.removeEdgeSrcToDest(1, 2));
+    console.log(`proxy.myGraph.removeEdgeBetween(1,2)`, proxy.myGraph.removeEdgeSrcToDest(1, 2));
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.getEdge(1, 2)`, vars.myGraph.getEdge(1, 2));
+    console.log(`proxy.myGraph.getEdge(1, 2)`, proxy.myGraph.getEdge(1, 2));
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.addEdge(new MyEdge(3, 1, 3, 'edge-data-3-1'))`, vars.myGraph.addEdge(new MyEdge(3, 1, 3, 'edge-data-3-1')));
+    console.log(`proxy.myGraph.addEdge(new MyEdge(3, 1, 3, 'edge-data-3-1'))`, proxy.myGraph.addEdge(new MyEdge(3, 1, 3, 'edge-data-3-1')));
 
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.addEdge(new MyEdge(1, 9, 19, 'edge-data1-9'))`, vars.myGraph.addEdge(new MyEdge(1, 9, 19, 'edge-data1-9')));
+    console.log(`proxy.myGraph.addEdge(new MyEdge(1, 9, 19, 'edge-data1-9'))`, proxy.myGraph.addEdge(new MyEdge(1, 9, 19, 'edge-data1-9')));
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.addEdge(new MyEdge(9, 7, 97, 'edge-data9-7'))`, vars.myGraph.addEdge(new MyEdge(9, 7, 97, 'edge-data9-7')));
+    console.log(`proxy.myGraph.addEdge(new MyEdge(9, 7, 97, 'edge-data9-7'))`, proxy.myGraph.addEdge(new MyEdge(9, 7, 97, 'edge-data9-7')));
 
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.addEdge(new MyEdge(7, 9, 79, 'edge-data7-9'))`, vars.myGraph.addEdge(new MyEdge(7, 9, 79, 'edge-data7-9')));
+    console.log(`proxy.myGraph.addEdge(new MyEdge(7, 9, 79, 'edge-data7-9'))`, proxy.myGraph.addEdge(new MyEdge(7, 9, 79, 'edge-data7-9')));
 
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.addEdge(new MyEdge(1, 4, 14, 'edge-data1-4'))`, vars.myGraph.addEdge(new MyEdge(1, 4, 14, 'edge-data1-4')));
+    console.log(`proxy.myGraph.addEdge(new MyEdge(1, 4, 14, 'edge-data1-4'))`, proxy.myGraph.addEdge(new MyEdge(1, 4, 14, 'edge-data1-4')));
 
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.addEdge(new MyEdge(4, 7, 47, 'edge-data4-7'))`, vars.myGraph.addEdge(new MyEdge(4, 7, 47, 'edge-data4-7')));
+    console.log(`proxy.myGraph.addEdge(new MyEdge(4, 7, 47, 'edge-data4-7'))`, proxy.myGraph.addEdge(new MyEdge(4, 7, 47, 'edge-data4-7')));
 
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.addEdge(new MyEdge(1, 2, 12, 'edge-data1-2'))`, vars.myGraph.addEdge(new MyEdge(1, 2, 12, 'edge-data1-2')));
+    console.log(`proxy.myGraph.addEdge(new MyEdge(1, 2, 12, 'edge-data1-2'))`, proxy.myGraph.addEdge(new MyEdge(1, 2, 12, 'edge-data1-2')));
 
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.addEdge(new MyEdge(2, 3, 23, 'edge-data2-3'))`, vars.myGraph.addEdge(new MyEdge(2, 3, 23, 'edge-data2-3')));
+    console.log(`proxy.myGraph.addEdge(new MyEdge(2, 3, 23, 'edge-data2-3'))`, proxy.myGraph.addEdge(new MyEdge(2, 3, 23, 'edge-data2-3')));
 
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.addEdge(new MyEdge(3, 5, 35, 'edge-data3-5'))`, vars.myGraph.addEdge(new MyEdge(3, 5, 35, 'edge-data3-5')));
+    console.log(`proxy.myGraph.addEdge(new MyEdge(3, 5, 35, 'edge-data3-5'))`, proxy.myGraph.addEdge(new MyEdge(3, 5, 35, 'edge-data3-5')));
 
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.addEdge(new MyEdge(5, 7, 57, 'edge-data5-7'))`, vars.myGraph.addEdge(new MyEdge(5, 7, 57, 'edge-data5-7')));
+    console.log(`proxy.myGraph.addEdge(new MyEdge(5, 7, 57, 'edge-data5-7'))`, proxy.myGraph.addEdge(new MyEdge(5, 7, 57, 'edge-data5-7')));
 
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.addEdge(new MyEdge(7, 3, 73, 'edge-data7-3'))`, vars.myGraph.addEdge(new MyEdge(7, 3, 73, 'edge-data7-3')));
+    console.log(`proxy.myGraph.addEdge(new MyEdge(7, 3, 73, 'edge-data7-3'))`, proxy.myGraph.addEdge(new MyEdge(7, 3, 73, 'edge-data7-3')));
 
     await wait(waitMan.time3);
-    console.log('topologicalSort', vars.myGraph.topologicalSort());
+    console.log('topologicalSort', proxy.myGraph.topologicalSort());
 
     await wait(waitMan.time3);
-    console.log('vars.myGraph.getMinPathBetween(1, 7)', vars.myGraph.getMinPathBetween(1, 7));
+    console.log('proxy.myGraph.getMinPathBetween(1, 7)', proxy.myGraph.getMinPathBetween(1, 7));
 
     await wait(waitMan.time3);
-    console.log(`vars.myGraph.getAllPaths(1, 7)`, vars.myGraph.getAllPathsBetween(1, 7));
+    console.log(`proxy.myGraph.getAllPaths(1, 7)`, proxy.myGraph.getAllPathsBetween(1, 7));
 
     await wait(waitMan.time3);
-    console.log(vars.myGraph.bellmanFord(1));
+    console.log(proxy.myGraph.bellmanFord(1));
 
     await wait(waitMan.time3);
-    const floydResult = vars.myGraph.floyd();
+    const floydResult = proxy.myGraph.floyd();
     console.log(floydResult);
 
     await wait(waitMan.time3);
-    console.log(vars.myGraph.dijkstra(1, 2, true, true));
+    console.log(proxy.myGraph.dijkstra(1, 2, true, true));
 
     await wait(waitMan.time3);
-    console.log(vars.myGraph.dijkstra(1, null, true, true));
+    console.log(proxy.myGraph.dijkstra(1, null, true, true));
 
     await wait(waitMan.time3);
-    console.log(vars.myGraph.dijkstraWithoutHeap(1, null, true, true));
+    console.log(proxy.myGraph.dijkstraWithoutHeap(1, null, true, true));
 
     await wait(waitMan.time3);
-    console.log(vars.myGraph.removeEdgesBetween(1, 2));
+    console.log(proxy.myGraph.removeEdgesBetween(1, 2));
 
     await wait(waitMan.time3);
-    console.log(vars.myGraph.removeEdgesBetween(1, 3));
+    console.log(proxy.myGraph.removeEdgesBetween(1, 3));
 
     await wait(waitMan.time3);
-    console.log(vars.myGraph.removeEdgeSrcToDest(1, 9));
+    console.log(proxy.myGraph.removeEdgeSrcToDest(1, 9));
 
     await wait(waitMan.time3);
-    console.log(vars.myGraph.removeEdgeSrcToDest(9, 7));
+    console.log(proxy.myGraph.removeEdgeSrcToDest(9, 7));
     await wait(waitMan.time3);
 
-    console.log(vars.myGraph.removeEdgeSrcToDest(7, 9));
+    console.log(proxy.myGraph.removeEdgeSrcToDest(7, 9));
     await wait(waitMan.time3);
 
-    console.log(vars.myGraph.outEdgeMap.size === 6, vars.myGraph.outEdgeMap);
-    console.log(vars.myGraph.inEdgeMap.size === 6, vars.myGraph.inEdgeMap);
+    console.log(proxy.myGraph.outEdgeMap.size === 6, proxy.myGraph.outEdgeMap);
+    console.log(proxy.myGraph.inEdgeMap.size === 6, proxy.myGraph.inEdgeMap);
 };
 
-export const testGraphAsMap = async (proxyHandler: TProxyHandler) => {
+export const testMapGraph = async (proxyHandler: TProxyHandler) => {
 
-    const vars: { graph: MapGraph<MapVertex, MapEdge> } = new DeepProxy({graph: new MapGraph<MapVertex, MapEdge>([5.500338826635057, 100.17366595261569], [5.211458, 100.515407])}, proxyHandler);
+    const proxy: { graph: MapGraph } = new DeepProxy({graph: new MapGraph([5.500338826635057, 100.17366595261569], [5.211458, 100.515407])}, proxyHandler);
+
+    proxy.graph.addVertex(new MapVertex('Surin', 5.466724136191213, 100.27480538701893));
     await wait(waitMan.time3);
-    const {graph} = vars;
+    proxy.graph.addVertex(new MapVertex('Batu Feringgi Beach', 5.475141052597724, 100.27667029001113));
+    await wait(waitMan.time3);
+    proxy.graph.addVertex(new MapVertex('Lotus', 5.4590440004999605, 100.30876778483604));
+    await wait(waitMan.time3);
+    proxy.graph.addVertex(new MapVertex('The Breeza', 5.454197137912398, 100.307859253614));
+    await wait(waitMan.time3);
+    proxy.graph.addVertex(new MapVertex('Hard Rock Hotel', 5.4678504056696235, 100.24187615943912));
+    await wait(waitMan.time3);
+    proxy.graph.addVertex(new MapVertex('Mira', 5.45674960567374, 100.28665074523022));
+    await wait(waitMan.time3);
+    proxy.graph.addVertex(new MapVertex('Penang Bible Church', 5.428683405260796, 100.31482546710885));
+    await wait(waitMan.time3);
+    proxy.graph.addVertex(new MapVertex('Queensbay', 5.332760781225292, 100.3066513112831));
+    await wait(waitMan.time3);
+    proxy.graph.addVertex(new MapVertex('Saanen Goat Farm', 5.405738390478683, 100.20769907079837));
+    await wait(waitMan.time3);
+    proxy.graph.addVertex(new MapVertex('Trinity Auto', 5.4011265174739, 100.30373905872294));
+    await wait(waitMan.time3);
+    proxy.graph.addVertex(new MapVertex('Penang Airport', 5.293185856392578, 100.26577201128295));
+    await wait(waitMan.time3);
+    proxy.graph.addEdge('Surin', 'Lotus', 4.7);
+    await wait(waitMan.time3);
+    proxy.graph.addEdge('Lotus', 'The Breeza', 1);
+    await wait(waitMan.time3);
+    proxy.graph.addEdge('Batu Feringgi Beach', 'Hard Rock Hotel', 5.2);
+    await wait(waitMan.time3);
+    proxy.graph.addEdge('Surin', 'Mira', 2.8);
+    await wait(waitMan.time3);
+    proxy.graph.addEdge('Mira', 'Penang Bible Church', 7.0);
+    await wait(waitMan.time3);
+    proxy.graph.addEdge('Lotus', 'Penang Bible Church', 5.7);
+    await wait(waitMan.time3);
+    proxy.graph.addEdge('Penang Bible Church', 'Queensbay', 13.9);
+    await wait(waitMan.time3);
+    proxy.graph.addEdge('Hard Rock Hotel', 'Saanen Goat Farm', 18.5);
+    await wait(waitMan.time3);
+    proxy.graph.addEdge('The Breeza', 'Trinity Auto', 9.1);
+    await wait(waitMan.time3);
+    proxy.graph.addEdge('Trinity Auto', 'Saanen Goat Farm', 26.3);
+    await wait(waitMan.time3);
+    proxy.graph.addEdge('The Breeza', 'Penang Airport', 24.8);
+    await wait(waitMan.time3);
+    proxy.graph.addEdge('Penang Airport', 'Saanen Goat Farm', 21.2);
+    await wait(waitMan.time3);
+    const expected1 = ['Surin', 'Lotus', 'The Breeza', 'Trinity Auto', 'Saanen Goat Farm'];
 
-    graph.addVertex(new MapVertex('Home', 5.466724136191213, 100.27480538701893));
-    graph.addVertex(new MapVertex('Batu Feringgi Beach', 5.475141052597724, 100.27667029001113));
-    graph.addVertex(new MapVertex('Lotus', 5.4590440004999605, 100.30876778483604));
-    graph.addVertex(new MapVertex('The Breeza', 5.454197137912398, 100.307859253614));
-    graph.addVertex(new MapVertex('Hard Rock Hotel', 5.4678504056696235, 100.24187615943912));
-    graph.addVertex(new MapVertex('Mira', 5.45674960567374, 100.28665074523022));
-    graph.addVertex(new MapVertex('Penang Bible Church', 5.428683405260796, 100.31482546710885));
-    graph.addVertex(new MapVertex('Queensbay', 5.332760781225292, 100.3066513112831));
-    graph.addVertex(new MapVertex('Saanen Goat Farm', 5.405738390478683, 100.20769907079837));
-    graph.addVertex(new MapVertex('Trinity Auto', 5.4011265174739, 100.30373905872294));
-    graph.addVertex(new MapVertex('Penang Airport', 5.293185856392578, 100.26577201128295));
-    graph.addEdge('Home', 'Lotus', 4.7);
-    graph.addEdge('Lotus', 'The Breeza', 1);
-    graph.addEdge('Batu Feringgi Beach', 'Hard Rock Hotel', 5.2);
-    graph.addEdge('Home', 'Mira', 2.8);
-    graph.addEdge('Mira', 'Penang Bible Church', 7.0);
-    graph.addEdge('Lotus', 'Penang Bible Church', 5.7);
-    graph.addEdge('Penang Bible Church', 'Queensbay', 13.9);
-    graph.addEdge('Hard Rock Hotel', 'Saanen Goat Farm', 18.5);
-    graph.addEdge('The Breeza', 'Trinity Auto', 9.1);
-    graph.addEdge('Trinity Auto', 'Saanen Goat Farm', 26.3);
-    graph.addEdge('The Breeza', 'Penang Airport', 24.8);
-    graph.addEdge('Penang Airport', 'Saanen Goat Farm', 21.2);
-    const minPathBetween = graph.getMinPathBetween('Home', 'Saanen Goat Farm');
-    console.log(minPathBetween);
-    const homeToSaanenGoatFarm = graph.dijkstra('Home', 'Saanen Goat Farm');
-    console.log(homeToSaanenGoatFarm);
-    graph.addEdge('Home', 'Batu Feringgi Beach', 1.5);
-    const minPathBetweenViaBFB = graph.getMinPathBetween('Home', 'Saanen Goat Farm', true);
-    console.log(minPathBetweenViaBFB);
-    const homeToSaanenGoatFarmViaBFB = graph.dijkstra('Home', 'Saanen Goat Farm', true);
-    console.log(homeToSaanenGoatFarmViaBFB);
+    const minPathBetween = proxy.graph.getMinPathBetween('Surin', 'Saanen Goat Farm');
+    await wait(waitMan.time3);
+    console.log(_.isEqual(minPathBetween?.map(v => v.id), expected1));
+    const surinToSaanenGoatFarmDij = proxy.graph.dijkstra('Surin', 'Saanen Goat Farm', true, true);
+    console.log(_.isEqual(surinToSaanenGoatFarmDij?.minPath.map(v => v.id), expected1));
+    console.log(surinToSaanenGoatFarmDij?.minDist === 41.1);
+    await wait(waitMan.time3);
+    proxy.graph.addEdge('Surin', 'Batu Feringgi Beach', 1.5);
+    await wait(waitMan.time3);
+    const expected2 = ['Surin', 'Batu Feringgi Beach', 'Hard Rock Hotel', 'Saanen Goat Farm'];
+    const minPathBetweenViaBFB = proxy.graph.getMinPathBetween('Surin', 'Saanen Goat Farm', true);
+    await wait(waitMan.time3);
+    console.log(_.isEqual(minPathBetweenViaBFB?.map(v => v.id), expected2));
+    const surinToSaanenGoatFarmViaDij = proxy.graph.dijkstra('Surin', 'Saanen Goat Farm', true, true);
+    await wait(waitMan.time3);
+    console.log(_.isEqual(surinToSaanenGoatFarmViaDij?.minPath.map(v => v.id), expected2));
+    console.log(surinToSaanenGoatFarmViaDij?.minDist === 25.2);
+
 };
 
 
@@ -351,8 +384,8 @@ function calcEquation(equations: [string, string][], values: number[], queries: 
 export async function networkDelayTime(times: number[][], n: number, k: number, proxyHandler?: TProxyHandler): Promise<number> {
     let graph;
     if (proxyHandler) {
-        const vars: { graph: DirectedGraph<DirectedVertex, DirectedEdge> } = new DeepProxy({graph: new DirectedGraph()}, proxyHandler);
-        graph = vars.graph;
+        const proxy: { graph: DirectedGraph<DirectedVertex, DirectedEdge> } = new DeepProxy({graph: new DirectedGraph()}, proxyHandler);
+        graph = proxy.graph;
     } else {
         graph = new DirectedGraph();
     }
@@ -499,8 +532,8 @@ const runAllCriticalConnections = async () => {
 export async function regionsBySlashes(grid: string[], proxyHandler?: TProxyHandler): Promise<number> {
     // let graph;
     // if (proxyHandler) {
-    //     const vars = new DeepProxy({graph: new UndirectedGraph()}, proxyHandler)
-    //     graph = vars.graph;
+    //     const proxy = new DeepProxy({graph: new UndirectedGraph()}, proxyHandler)
+    //     graph = proxy.graph;
     // } else {
     //     graph = new UndirectedGraph();
     // }
@@ -516,8 +549,8 @@ export async function regionsBySlashes(grid: string[], proxyHandler?: TProxyHand
 
     let graph2;
     if (proxyHandler) {
-        const vars = new DeepProxy({graph2: new DirectedGraph()}, proxyHandler);
-        graph2 = vars.graph2;
+        const proxy = new DeepProxy({graph2: new DirectedGraph()}, proxyHandler);
+        graph2 = proxy.graph2;
     } else {
         graph2 = new DirectedGraph();
     }

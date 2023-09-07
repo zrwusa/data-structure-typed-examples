@@ -5,14 +5,15 @@ import {
     AbstractVertex,
     DirectedEdge,
     DirectedGraph,
-    UndirectedEdge
+    UndirectedEdge,
+    UndirectedGraph
 } from 'data-structure-typed';
 import {Coordinate, getPointsByDelta} from '../../algorithms';
 import {LineWithArrow} from './LineWithArrow';
 import styles from './styles';
-import {SVGHeight, SVGWidth} from '../../types';
+import {SVGOptions, ViewControl} from '../../types';
 
-export const VividGraphIllustrator: React.FC<{ graph: AbstractGraph<AbstractVertex<any>, AbstractEdge<any>> }> = ({graph}) => {
+export const VividGraphIllustrator: React.FC<{ graph: AbstractGraph }> = ({graph}) => {
     const vertices = graph.vertices;
     const vertexCount = vertices.size;
     const edges = graph.edgeSet();
@@ -73,7 +74,7 @@ export const VividGraphIllustrator: React.FC<{ graph: AbstractGraph<AbstractVert
                 })}
             {
                 edges.map((edge) => {
-                    if (edge instanceof UndirectedEdge) {
+                    if (graph instanceof UndirectedGraph && edge instanceof UndirectedEdge) {
                         const ends = graph.getEndsOfEdge(edge);
                         if (ends && ends.length > 1) {
                             const v1Coordinate = coordsMap.get(ends[0]);
@@ -115,11 +116,14 @@ export const VividGraphIllustrator: React.FC<{ graph: AbstractGraph<AbstractVert
 
 export const VividGraph: React.FC<{
     data: AbstractGraph<AbstractVertex, AbstractEdge>,
-    svgHeight?: SVGHeight,
-    svgWidth?: SVGWidth,
-    svgBg?: string,
-}> = ({data, svgHeight, svgWidth, svgBg}) => {
-    return (<svg width={svgWidth ?? '100%'} height={svgHeight ?? 480} style={{backgroundImage: svgBg}}>
+    viewControl?: ViewControl
+} & SVGOptions> = ({data, svgHeight, svgWidth, svgBg}) => {
+    return (<svg width={svgWidth ?? '100%'} height={svgHeight ?? 480} style={{
+            backgroundImage: `url('${svgBg}')`,
+            backgroundPosition: 'top left',
+            
+            backgroundRepeat: 'no-repeat'
+        }}>
             {
                 data
                     ? <VividGraphIllustrator graph={data}/>
