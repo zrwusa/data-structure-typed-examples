@@ -435,4 +435,37 @@ export const factorial = (n: number) => {
     return total;
 }
 
+/**
+ * The function calculates new source and destination coordinates based on a given cutDelta value and returns them.
+ * @param {Coordinate} src - The `src` parameter represents the source coordinate, which is the starting point of a line
+ * segment. It is an object with properties `x` and `y` representing the x and y coordinates respectively.
+ * @param {Coordinate} dest - The `dest` parameter represents the destination coordinate, which is the coordinate where you
+ * want to calculate the points.
+ * @param {number} [cutDelta] - The `cutDelta` parameter is an optional number that represents the distance by which the
+ * source and destination coordinates should be cut. If `cutDelta` is not provided, it defaults to 0.
+ * @returns The function `getPointsByDelta` returns an object with properties `src` and `dest`.
+ */
+export const getPointsByDelta = (src: Coordinate, dest: Coordinate, cutDelta?: number) => {
+    if (cutDelta === undefined) cutDelta = 0;
+    const PI = Math.PI;
+    let angle: number = Math.atan2((dest.y - src.y), (dest.x - src.x));
+    const theta: number = angle * (180 / Math.PI);
+    const newSrc = new Coordinate(src.y, src.x);
+    const newDest = new Coordinate(dest.y, dest.x);
+    if (angle <= 0.5 * PI) {
+        newSrc.x = src.x + Math.cos(angle) * cutDelta;
+        newSrc.y = src.y + Math.sin(angle) * cutDelta;
+        newDest.x = dest.x - Math.cos(angle) * cutDelta;
+        newDest.y = dest.y - Math.sin(angle) * cutDelta;
+    } else if (angle > 0.5 * PI && angle <= PI) {
+        angle = PI - angle;
+        newSrc.x = src.x - Math.cos(angle) * cutDelta;
+        newSrc.y = src.y + Math.sin(angle) * cutDelta;
+        newDest.x = dest.x + Math.cos(angle) * cutDelta;
+        newDest.y = dest.y - Math.sin(angle) * cutDelta;
+    }
 
+    src = newSrc;
+    dest = newDest;
+    return {src, dest};
+};

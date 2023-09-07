@@ -23,7 +23,8 @@ import {
     testBST2,
     testBSTCase1,
     testSymmetricTree,
-    testSymmetricTreeCase2, testTreeMultiset,
+    testSymmetricTreeCase2,
+    testTreeMultiset,
     treeData,
     treeMaxDepth,
     trimABST,
@@ -49,7 +50,7 @@ export const TreeScreen = () => {
     }, [binaryTreeDataInput]);
 
 
-    return <>
+    return <div style={{width: '100%'}}>
         <AlgorithmPanel algorithm={testBinaryTree} testCase={testBinaryTreeCase2} buttonLabel={'Test BinaryTree'}/>
         <AlgorithmPanel algorithm={testBST} testCase={testBSTCase1} buttonLabel={'Test BST'}/>
         <AlgorithmPanel algorithm={testAVLTree} testCase={testBSTCase1} buttonLabel={'Test AVL'}/>
@@ -101,5 +102,5 @@ export const TreeScreen = () => {
             runAllLongestCommonPrefix().then();
         }}>Longest Common Prefix - Trie
         </Button>
-    </>
+    </div>
 }

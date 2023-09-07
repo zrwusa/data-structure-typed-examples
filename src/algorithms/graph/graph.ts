@@ -174,8 +174,7 @@ export const testGraphs = async (proxyHandler: TProxyHandler) => {
 };
 
 export const testGraphAsMap = async (proxyHandler: TProxyHandler) => {
-    // 5.528073, 100.134913
-    // 5.211458, 100.515407
+
     const vars: { graph: MapGraph<MapVertex, MapEdge> } = new DeepProxy({graph: new MapGraph<MapVertex, MapEdge>([5.500338826635057, 100.17366595261569], [5.211458, 100.515407])}, proxyHandler);
     await wait(waitMan.time3);
     const {graph} = vars;

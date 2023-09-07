@@ -8,8 +8,9 @@ import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import {TextField} from '@mui/material';
+import {MapGraphViewControl, SVGHeight, SVGOptions, SVGWidth} from '../../types';
 
-export interface AlgorithmPanelProps {
+export interface AlgorithmPanelProps extends SVGOptions {
     algorithm: (...args: any[]) => any;
     testCase: any[];
     buttonLabel: string;
@@ -17,7 +18,8 @@ export interface AlgorithmPanelProps {
     relatedNodeKey?: string | undefined;
     relatedRouteKey?: string | undefined;
     isDebug?: boolean;
-    children?: React.ReactNode
+    children?: React.ReactNode,
+    viewControl?: MapGraphViewControl,
 }
 
 export const AlgorithmPanel: React.FC<AlgorithmPanelProps> = ({
@@ -27,7 +29,11 @@ export const AlgorithmPanel: React.FC<AlgorithmPanelProps> = ({
                                                                   relatedNodeKey,
                                                                   referenceData,
                                                                   relatedRouteKey,
-                                                                  children
+                                                                  children,
+                                                                  svgHeight: svgHeightProp,
+                                                                  svgWidth: svgWidthProp,
+                                                                  svgBg,
+                                                                  viewControl
                                                               }) => {
 
     const [values, setValues] = useState<{ [key in string]: unknown }>();
@@ -39,8 +45,8 @@ export const AlgorithmPanel: React.FC<AlgorithmPanelProps> = ({
         setLoading(false);
     };
 
-    const [svgWidth, setSvgWith] = useState<string | number>('100%');
-    const [svgHeight, setSvgHeight] = useState<string | number>(480);
+    const [svgWidth, setSvgWith] = useState<string | number>(svgWidthProp ?? '100%');
+    const [svgHeight, setSvgHeight] = useState<string | number>(svgHeightProp ?? 480);
 
     return (
         <Paper
@@ -49,14 +55,14 @@ export const AlgorithmPanel: React.FC<AlgorithmPanelProps> = ({
                 p: 2,
                 flexGrow: 1,
                 minHeight: 200,
-                backgroundColor: (theme) =>
-                    theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+                backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
             }}
+            style={{width: '100%'}}
         >
-            <Grid container spacing={2}>
+            <Grid container spacing={2} style={{width: '100%'}}>
                 {/*<Grid item></Grid>*/}
-                <Grid item xs={12} sm container>
-                    <Grid item xs container direction="column" spacing={2}>
+                <Grid item xs={12} sm container style={{width: '100%'}}>
+                    <Grid item xs container direction="column" spacing={2} style={{width: '100%'}}>
                         <Grid item xs>
                             {children}
                         </Grid>
@@ -77,7 +83,7 @@ export const AlgorithmPanel: React.FC<AlgorithmPanelProps> = ({
                             </LoadingButton>
                         </Grid>
 
-                        <Grid item>
+                        <Grid item style={{width: '100%'}}>
                             {
                                 values
                                     ? <VividAlgorithm data={values}
@@ -85,6 +91,8 @@ export const AlgorithmPanel: React.FC<AlgorithmPanelProps> = ({
                                                       svgWidth={svgWidth}
                                                       relatedNodeKey={relatedNodeKey}
                                                       referenceData={referenceData}
+                                                      svgBg={svgBg}
+                                                      viewControl={viewControl}
                                                       relatedRouteKey={relatedRouteKey}/>
                                     : null
                             }
